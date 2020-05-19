@@ -9,33 +9,12 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = { git = "https://github.com/rust-fuzz/libfuzzer-sys" }
-tempfile = "3.0"
-wasmparser = { path = "../crates/wasmparser" }
-wasmprinter = { path = "../crates/wasmprinter" }
-wast = { path = "../crates/wast" }
-wat = { path = "../crates/wat" }
 
 [[bin]]
-name = "text-lexer"
-path = "fuzz_targets/text-lexer.rs"
+name = "foo"
+path = "fuzz_targets/foo.rs"
 test = false
-
 [[bin]]
-name = "text-parser"
-path = "fuzz_targets/text-parser.rs"
-test = false
-
-[[bin]]
-name = "binary-parse"
-path = "fuzz_targets/binary-parse.rs"
-test = false
-
-[[bin]]
-name = "validate"
-path = "fuzz_targets/validate.rs"
-test = false
-
-[[bin]]
-name = "print"
-path = "fuzz_targets/print.rs"
+name = "bar"
+path = "fuzz_targets/bar.rs"
 test = false

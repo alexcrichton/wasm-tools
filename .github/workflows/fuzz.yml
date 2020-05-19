@@ -1,0 +1,72 @@
+name: Fuzz
+on:
+  push:
+    branches: [auto-fuzz]
+
+jobs:
+  build:
+    env:
+      CARGO_FUZZ_VERSION: 0.7.4
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Install Rust
+      run: rustup update nightly && rustup default nightly
+    - uses: actions/cache@v1
+      with:
+        path: ${{ runner.tool_cache }}/cargo-fuzz
+        key: cargo-fuzz-bin-${{ env.CARGO_FUZZ_VERSION }}
+    - run: echo "::add-path::${{ runner.tool_cache }}/cargo-fuzz/bin"
+    - run: cargo install --root ${{ runner.tool_cache }}/cargo-fuzz --version ${{ env.CARGO_FUZZ_VERSION }} cargo-fuzz
+    - run: cargo fuzz build foo --release --debug-assertions
+    - run: cargo fuzz build bar --release --debug-assertions
+    - run: |
+        mkdir fuzzers
+        for f in fuzz/fuzz_targets/{foo,bar}.rs; do
+          FUZZ_TARGET_NAME=$(basename ${f%.*})
+          cp target/x86_64-unknown-linux-gnu/release/$FUZZ_TARGET_NAME fuzzers
+        done
+    - uses: actions/upload-artifact@v2
+      with:
+        name: fuzzers
+        path: ./fuzzers
+
+  run:
+    needs: build
+    name: Run
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fuzzer: [foo, bar]
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: fuzzers
+    - run: |
+        chmod +x ./${{ matrix.fuzzer }}
+        mkdir ${{ matrix.fuzzer }}_artifacts
+        ./${{ matrix.fuzzer }} \
+          -max_total_time=10 \
+          -artifact_prefix=./${{ matrix.fuzzer }}_artifacts/
+      id: run
+
+    # If the fuzzer crashed then upload the artifacts so we can reproduce it,
+    # and then also file an issue to notify folks
+    - uses: actions/upload-artifact@v2
+      if: failure() && steps.run.outcome == 'failure'
+      with:
+        name: ${{ matrix.fuzzer }}_artifacts
+        path: ./${{ matrix.fuzzer }}_artifacts
+    - uses: actions/github-script@v1
+      if: failure() && steps.run.outcome == 'failure'
+      with:
+        script: |
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "Fuzz run failed: ${{ matrix.fuzzer }}",
+            body: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          })
