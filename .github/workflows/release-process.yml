@@ -21,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'Publish script argument: "release-major", or "release-patch"'
+        description: 'Publish script argument: "release-major", or "release-minor"'
         required: false
         default: 'release-major'
 
