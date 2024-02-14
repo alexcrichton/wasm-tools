@@ -1,0 +1,25 @@
+# The purpose of this workflow is to publish the workspace of crates whenever a
+# tag is created. This baiscally boils down to running `ci/publish.rs` at the
+# right time.
+
+name: "Publish to crates.io"
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  publish:
+    if: github.repository_owner == 'bytecodealliance'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - run: rustup update stable && rustup default stable
+    - run: |
+        rustc ci/publish.rs
+        ./publish publish
+      env:
+        CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}

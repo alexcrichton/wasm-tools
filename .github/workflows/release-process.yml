@@ -1,0 +1,106 @@
+# The purpose of this workflow is to orchestrate Wasmtime's release process as
+# much as possible. This specific workflow is responsible for a few timed parts
+# of the process:
+#
+# * On the 5th of every month a new release branch is automatically created and
+#   the version number of the `main` branch is increased
+# * On the 20th of every month the previous release branch is published.
+#
+# This automation is all done through PRs except for the creation of the release
+# branch itself which is an write-action performed by this script. Otherwise
+# humans are ideally reviewing and rubber-stamping the output of the script all
+# other steps of the way.
+#
+# Note that this script also helps manage patch releases by sending a PR to the
+# release branch with a bumped version number for all crates with a patch-bump.
+
+name: "Automated Release Process"
+on:
+  # Allow manually triggering this request via the button on the action
+  # workflow page.
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Publish script argument: "release-major", or "release-patch"'
+        required: false
+        default: 'release-major'
+
+jobs:
+  release_process:
+    name: Run the release process
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Setup
+        run: |
+          rustc ci/publish.rs
+          git config user.name 'Auto Release Process'
+          git config user.email 'auto-release-process@users.noreply.github.com'
+          git remote set-url origin https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+      - run: rustup update stable && rustup default stable
+
+      - run: rustc ci/publish.rs
+
+      - name: Bump major version number
+        run: ./publish bump
+        if: github.event.inputs.action == 'release-major'
+
+      - name: Bump minor version number
+        run: ./publish bump-patch
+        if: github.event.inputs.action == 'release-minor'
+
+      - name: Prep PR metadata
+        run: |
+          set -ex
+          git fetch origin
+
+          cur=$(./ci/print-current-version.sh)
+
+          git commit --allow-empty -a -F-<<EOF
+          Release ${{ github.event.repository.name }} $cur
+
+          [automatically-tag-and-release-this-commit]
+          EOF
+
+          # Push the result to a branch and setup metadata for the step below
+          # that creates a PR
+          git push origin HEAD:ci/release-$cur
+          echo "PR_HEAD=ci/release-$cur" >> $GITHUB_ENV
+          echo "PR_TITLE=Release ${{ github.event.repository.name }} $cur" >> $GITHUB_ENV
+          echo "PR_BASE=release-$cur" >> $GITHUB_ENV
+          cat > pr-body <<-EOF
+          This is an automated pull request from CI to release
+          ${{ github.event.repository.name }} $cur when merged. The commit
+          message for this PR has a marker that is detected by CI to create
+          tags and publish crate artifacts.
+
+          [RELEASES.md]: https://github.com/${{ github.repository }}/blob/main/RELEASES.md
+          [process]: https://docs.wasmtime.dev/contributing-release-process.html
+          [branch]: https://github.com/${{ github.repository }}/tree/release-$cur
+          EOF
+
+      - name: Make a PR
+        # Note that the syntax here is kinda funky, and the general gist is that
+        # I couldn't figure out a good way to have a multiline string-literal
+        # become a json-encoded string literal to send to GitHub. This
+        # represents my best attempt.
+        run: |
+          set -ex
+          body=$(jq -sR < ./pr-body)
+
+          curl --include --request POST \
+            https://api.github.com/repos/${{ github.repository }}/pulls \
+            --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            --data @- << EOF
+          {
+            "head": "$PR_HEAD",
+            "base": "$PR_BASE",
+            "title": "$PR_TITLE",
+            "body": $body,
+            "maintainer_can_modify": true
+
+          }
+          EOF
