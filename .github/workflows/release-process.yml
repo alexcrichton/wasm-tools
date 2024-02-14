@@ -79,6 +79,6 @@ jobs:
           EOF
 
       - name: Make a PR
-        run: gh pr create -B "$PR_BASE" -H "$PR_HEAD" --title "$(cat ./pr-body)"
+        run: gh pr create -B "$PR_BASE" -H "$PR_HEAD" --title "$PR_TITLE" --body "$(cat ./pr-body)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
