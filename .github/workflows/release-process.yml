@@ -21,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'Publish script argument: "release-major", or "release-patch"'
+        description: 'Publish script argument: "release-major", or "release-minor"'
         required: false
         default: 'release-major'
 
@@ -83,24 +83,6 @@ jobs:
           EOF
 
       - name: Make a PR
-        # Note that the syntax here is kinda funky, and the general gist is that
-        # I couldn't figure out a good way to have a multiline string-literal
-        # become a json-encoded string literal to send to GitHub. This
-        # represents my best attempt.
-        run: |
-          set -ex
-          body=$(jq -sR < ./pr-body)
-
-          curl --include --request POST \
-            https://api.github.com/repos/${{ github.repository }}/pulls \
-            --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            --data @- << EOF
-          {
-            "head": "$PR_HEAD",
-            "base": "$PR_BASE",
-            "title": "$PR_TITLE",
-            "body": $body,
-            "maintainer_can_modify": true
-
-          }
-          EOF
+        run: gh pr create -B "$PR_BASE" -H "$PR_HEAD" --title "$(cat ./pr-body)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
