@@ -1328,6 +1328,48 @@ impl<'a> BinaryReader<'a> {
                 visitor.visit_memory_discard(mem)
             }
 
+            0x6e => visitor.visit_i64_mul_high_u(),
+            0x6f => visitor.visit_i64_mul_high_s(),
+            0x70 => visitor.visit_i32_swap_bytes(),
+            0x71 => visitor.visit_i64_swap_bytes(),
+            0x72 => visitor.visit_i64_mul_wide_s(),
+            0x73 => visitor.visit_i64_mul_wide_u(),
+
+            0x74 => visitor.visit_i32_add_overflow_s(),
+            0x75 => visitor.visit_i32_add_overflow_u(),
+            0x76 => visitor.visit_i32_sub_overflow_s(),
+            0x77 => visitor.visit_i32_sub_overflow_u(),
+            0x78 => visitor.visit_i32_mul_overflow_s(),
+            0x79 => visitor.visit_i32_mul_overflow_u(),
+            0x7a => visitor.visit_i64_add_overflow_s(),
+            0x7b => visitor.visit_i64_add_overflow_u(),
+            0x7c => visitor.visit_i64_sub_overflow_s(),
+            0x7d => visitor.visit_i64_sub_overflow_u(),
+            0x7e => visitor.visit_i64_mul_overflow_s(),
+            0x7f => visitor.visit_i64_mul_overflow_u(),
+
+            0x50 => visitor.visit_i32_add_with_carry_s(),
+            0x51 => visitor.visit_i32_add_with_carry_u(),
+            0x52 => visitor.visit_i32_sub_with_carry_s(),
+            0x53 => visitor.visit_i32_sub_with_carry_u(),
+            0x54 => visitor.visit_i64_add_with_carry_s(),
+            0x55 => visitor.visit_i64_add_with_carry_u(),
+            0x56 => visitor.visit_i64_sub_with_carry_s(),
+            0x57 => visitor.visit_i64_sub_with_carry_u(),
+
+            0x58 => visitor.visit_i64_add128(),
+            0x59 => visitor.visit_i64_sub128(),
+            0x5a => visitor.visit_i64_mul128(),
+
+            0x20 => visitor.visit_i64_lt128_s(),
+            0x21 => visitor.visit_i64_lt128_u(),
+            0x22 => visitor.visit_i64_gt128_s(),
+            0x23 => visitor.visit_i64_gt128_u(),
+            0x24 => visitor.visit_i64_le128_s(),
+            0x25 => visitor.visit_i64_le128_u(),
+            0x26 => visitor.visit_i64_ge128_s(),
+            0x27 => visitor.visit_i64_ge128_u(),
+
             _ => bail!(pos, "unknown 0xfc subopcode: 0x{code:x}"),
         })
     }

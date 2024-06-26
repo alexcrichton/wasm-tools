@@ -1,0 +1,59 @@
+(module
+  (type (;0;) (func (param i64 i64 i64 i64) (result i32)))
+  (func (;0;) (type 0) (param i64 i64 i64 i64) (result i32)
+    local.get 0
+    local.get 1
+    local.get 2
+    local.get 3
+    i64.lt128_s
+  )
+  (func (;1;) (type 0) (param i64 i64 i64 i64) (result i32)
+    local.get 0
+    local.get 1
+    local.get 2
+    local.get 3
+    i64.lt128_u
+  )
+  (func (;2;) (type 0) (param i64 i64 i64 i64) (result i32)
+    local.get 0
+    local.get 1
+    local.get 2
+    local.get 3
+    i64.gt128_s
+  )
+  (func (;3;) (type 0) (param i64 i64 i64 i64) (result i32)
+    local.get 0
+    local.get 1
+    local.get 2
+    local.get 3
+    i64.gt128_u
+  )
+  (func (;4;) (type 0) (param i64 i64 i64 i64) (result i32)
+    local.get 0
+    local.get 1
+    local.get 2
+    local.get 3
+    i64.le128_s
+  )
+  (func (;5;) (type 0) (param i64 i64 i64 i64) (result i32)
+    local.get 0
+    local.get 1
+    local.get 2
+    local.get 3
+    i64.le128_u
+  )
+  (func (;6;) (type 0) (param i64 i64 i64 i64) (result i32)
+    local.get 0
+    local.get 1
+    local.get 2
+    local.get 3
+    i64.ge128_s
+  )
+  (func (;7;) (type 0) (param i64 i64 i64 i64) (result i32)
+    local.get 0
+    local.get 1
+    local.get 2
+    local.get 3
+    i64.ge128_u
+  )
+)

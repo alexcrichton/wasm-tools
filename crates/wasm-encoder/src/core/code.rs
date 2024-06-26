@@ -1203,6 +1203,45 @@ pub enum Instruction<'a> {
         array_type_index: u32,
     },
     RefI31Shared,
+
+    I32SwapBytes,
+    I64SwapBytes,
+    I64MulWideS,
+    I64MulWideU,
+    I64MulHighS,
+    I64MulHighU,
+    I32AddOverflowS,
+    I32AddOverflowU,
+    I32SubOverflowS,
+    I32SubOverflowU,
+    I32MulOverflowS,
+    I32MulOverflowU,
+    I64AddOverflowS,
+    I64AddOverflowU,
+    I64SubOverflowS,
+    I64SubOverflowU,
+    I64MulOverflowS,
+    I64MulOverflowU,
+    I32AddWithCarryS,
+    I32AddWithCarryU,
+    I32SubWithCarryS,
+    I32SubWithCarryU,
+    I64AddWithCarryS,
+    I64AddWithCarryU,
+    I64SubWithCarryS,
+    I64SubWithCarryU,
+
+    I64Add128,
+    I64Sub128,
+    I64Mul128,
+    I64Lt128S,
+    I64Lt128U,
+    I64Gt128S,
+    I64Gt128U,
+    I64Le128S,
+    I64Le128U,
+    I64Ge128S,
+    I64Ge128U,
 }
 
 impl Encode for Instruction<'_> {
@@ -3694,6 +3733,155 @@ impl Encode for Instruction<'_> {
             Instruction::RefI31Shared => {
                 sink.push(0xFE);
                 sink.push(0x72);
+            }
+
+            Instruction::I64MulHighU => {
+                sink.push(0xFC);
+                sink.push(0x6e);
+            }
+            Instruction::I64MulHighS => {
+                sink.push(0xFC);
+                sink.push(0x6f);
+            }
+            Instruction::I32SwapBytes => {
+                sink.push(0xFC);
+                sink.push(0x70);
+            }
+            Instruction::I64SwapBytes => {
+                sink.push(0xFC);
+                sink.push(0x71);
+            }
+            Instruction::I64MulWideS => {
+                sink.push(0xFC);
+                sink.push(0x72);
+            }
+            Instruction::I64MulWideU => {
+                sink.push(0xFC);
+                sink.push(0x73);
+            }
+            Instruction::I32AddOverflowS => {
+                sink.push(0xFC);
+                sink.push(0x74);
+            }
+            Instruction::I32AddOverflowU => {
+                sink.push(0xFC);
+                sink.push(0x75);
+            }
+            Instruction::I32SubOverflowS => {
+                sink.push(0xFC);
+                sink.push(0x76);
+            }
+            Instruction::I32SubOverflowU => {
+                sink.push(0xFC);
+                sink.push(0x77);
+            }
+            Instruction::I32MulOverflowS => {
+                sink.push(0xFC);
+                sink.push(0x78);
+            }
+            Instruction::I32MulOverflowU => {
+                sink.push(0xFC);
+                sink.push(0x79);
+            }
+            Instruction::I64AddOverflowS => {
+                sink.push(0xFC);
+                sink.push(0x7a);
+            }
+            Instruction::I64AddOverflowU => {
+                sink.push(0xFC);
+                sink.push(0x7b);
+            }
+            Instruction::I64SubOverflowS => {
+                sink.push(0xFC);
+                sink.push(0x7c);
+            }
+            Instruction::I64SubOverflowU => {
+                sink.push(0xFC);
+                sink.push(0x7d);
+            }
+            Instruction::I64MulOverflowS => {
+                sink.push(0xFC);
+                sink.push(0x7e);
+            }
+            Instruction::I64MulOverflowU => {
+                sink.push(0xFC);
+                sink.push(0x7f);
+            }
+            Instruction::I32AddWithCarryS => {
+                sink.push(0xFC);
+                sink.push(0x50);
+            }
+            Instruction::I32AddWithCarryU => {
+                sink.push(0xFC);
+                sink.push(0x51);
+            }
+            Instruction::I32SubWithCarryS => {
+                sink.push(0xFC);
+                sink.push(0x52);
+            }
+            Instruction::I32SubWithCarryU => {
+                sink.push(0xFC);
+                sink.push(0x53);
+            }
+            Instruction::I64AddWithCarryS => {
+                sink.push(0xFC);
+                sink.push(0x54);
+            }
+            Instruction::I64AddWithCarryU => {
+                sink.push(0xFC);
+                sink.push(0x55);
+            }
+            Instruction::I64SubWithCarryS => {
+                sink.push(0xFC);
+                sink.push(0x56);
+            }
+            Instruction::I64SubWithCarryU => {
+                sink.push(0xFC);
+                sink.push(0x57);
+            }
+            Instruction::I64Add128 => {
+                sink.push(0xFC);
+                sink.push(0x58);
+            }
+            Instruction::I64Sub128 => {
+                sink.push(0xFC);
+                sink.push(0x59);
+            }
+            Instruction::I64Mul128 => {
+                sink.push(0xFC);
+                sink.push(0x5a);
+            }
+            Instruction::I64Lt128S => {
+                sink.push(0xFC);
+                sink.push(0x20);
+            }
+            Instruction::I64Lt128U => {
+                sink.push(0xFC);
+                sink.push(0x21);
+            }
+            Instruction::I64Gt128S => {
+                sink.push(0xFC);
+                sink.push(0x22);
+            }
+            Instruction::I64Gt128U => {
+                sink.push(0xFC);
+                sink.push(0x23);
+            }
+            Instruction::I64Le128S => {
+                sink.push(0xFC);
+                sink.push(0x24);
+            }
+            Instruction::I64Le128U => {
+                sink.push(0xFC);
+                sink.push(0x25);
+            }
+            Instruction::I64Ge128S => {
+                sink.push(0xFC);
+                sink.push(0x26);
+            }
+            Instruction::I64Ge128U => {
+                sink.push(0xFC);
+                sink.push(0x27);
             }
         }
     }

@@ -1278,7 +1278,48 @@ macro_rules! define_visit {
     (name ArrayAtomicRmwXor) => ("array.atomic.rmw.xor");
     (name ArrayAtomicRmwXchg) => ("array.atomic.rmw.xchg");
     (name ArrayAtomicRmwCmpxchg) => ("array.atomic.rmw.cmpxchg");
-    (name RefI31Shared) => ("ref.i31_shared")
+    (name RefI31Shared) => ("ref.i31_shared");
+
+
+
+
+    (name I32SwapBytes) => ("i32.swap_bytes");
+    (name I64SwapBytes) => ("i64.swap_bytes");
+    (name I64MulWideS) => ("i64.mul_wide_s");
+    (name I64MulWideU) => ("i64.mul_wide_u");
+    (name I64MulHighS) => ("i64.mul_high_s");
+    (name I64MulHighU) => ("i64.mul_high_u");
+    (name I32AddOverflowS) => ("i32.add_overflow_s");
+    (name I32AddOverflowU) => ("i32.add_overflow_u");
+    (name I32SubOverflowS) => ("i32.sub_overflow_s");
+    (name I32SubOverflowU) => ("i32.sub_overflow_u");
+    (name I32MulOverflowS) => ("i32.mul_overflow_s");
+    (name I32MulOverflowU) => ("i32.mul_overflow_u");
+    (name I64AddOverflowS) => ("i64.add_overflow_s");
+    (name I64AddOverflowU) => ("i64.add_overflow_u");
+    (name I64SubOverflowS) => ("i64.sub_overflow_s");
+    (name I64SubOverflowU) => ("i64.sub_overflow_u");
+    (name I64MulOverflowS) => ("i64.mul_overflow_s");
+    (name I64MulOverflowU) => ("i64.mul_overflow_u");
+    (name I32AddWithCarryS) => ("i32.add_with_carry_s");
+    (name I32AddWithCarryU) => ("i32.add_with_carry_u");
+    (name I32SubWithCarryS) => ("i32.sub_with_carry_s");
+    (name I32SubWithCarryU) => ("i32.sub_with_carry_u");
+    (name I64AddWithCarryS) => ("i64.add_with_carry_s");
+    (name I64AddWithCarryU) => ("i64.add_with_carry_u");
+    (name I64SubWithCarryS) => ("i64.sub_with_carry_s");
+    (name I64SubWithCarryU) => ("i64.sub_with_carry_u");
+    (name I64Add128) => ("i64.add128");
+    (name I64Sub128) => ("i64.sub128");
+    (name I64Mul128) => ("i64.mul128");
+    (name I64Lt128S) => ("i64.lt128_s");
+    (name I64Lt128U) => ("i64.lt128_u");
+    (name I64Gt128S) => ("i64.gt128_s");
+    (name I64Gt128U) => ("i64.gt128_u");
+    (name I64Le128S) => ("i64.le128_s");
+    (name I64Le128U) => ("i64.le128_u");
+    (name I64Ge128S) => ("i64.ge128_s");
+    (name I64Ge128U) => ("i64.ge128_u");
 }
 
 impl<'a> VisitOperator<'a> for PrintOperator<'_, '_, '_, '_> {

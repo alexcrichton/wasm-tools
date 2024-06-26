@@ -803,6 +803,44 @@ macro_rules! for_each_operator {
             @function_references RefAsNonNull => visit_ref_as_non_null
             @function_references BrOnNull { relative_depth: u32 } => visit_br_on_null
             @function_references BrOnNonNull { relative_depth: u32 } => visit_br_on_non_null
+
+            @alex I32SwapBytes => visit_i32_swap_bytes
+            @alex I64SwapBytes => visit_i64_swap_bytes
+            @alex I64MulWideS => visit_i64_mul_wide_s
+            @alex I64MulWideU => visit_i64_mul_wide_u
+            @alex I64MulHighS => visit_i64_mul_high_s
+            @alex I64MulHighU => visit_i64_mul_high_u
+            @alex I32AddOverflowS => visit_i32_add_overflow_s
+            @alex I32AddOverflowU => visit_i32_add_overflow_u
+            @alex I32SubOverflowS => visit_i32_sub_overflow_s
+            @alex I32SubOverflowU => visit_i32_sub_overflow_u
+            @alex I32MulOverflowS => visit_i32_mul_overflow_s
+            @alex I32MulOverflowU => visit_i32_mul_overflow_u
+            @alex I64AddOverflowS => visit_i64_add_overflow_s
+            @alex I64AddOverflowU => visit_i64_add_overflow_u
+            @alex I64SubOverflowS => visit_i64_sub_overflow_s
+            @alex I64SubOverflowU => visit_i64_sub_overflow_u
+            @alex I64MulOverflowS => visit_i64_mul_overflow_s
+            @alex I64MulOverflowU => visit_i64_mul_overflow_u
+            @alex I32AddWithCarryS => visit_i32_add_with_carry_s
+            @alex I32AddWithCarryU => visit_i32_add_with_carry_u
+            @alex I32SubWithCarryS => visit_i32_sub_with_carry_s
+            @alex I32SubWithCarryU => visit_i32_sub_with_carry_u
+            @alex I64AddWithCarryS => visit_i64_add_with_carry_s
+            @alex I64AddWithCarryU => visit_i64_add_with_carry_u
+            @alex I64SubWithCarryS => visit_i64_sub_with_carry_s
+            @alex I64SubWithCarryU => visit_i64_sub_with_carry_u
+            @alex I64Add128 => visit_i64_add128
+            @alex I64Sub128 => visit_i64_sub128
+            @alex I64Mul128 => visit_i64_mul128
+            @alex I64Lt128S => visit_i64_lt128_s
+            @alex I64Lt128U => visit_i64_lt128_u
+            @alex I64Gt128S => visit_i64_gt128_s
+            @alex I64Gt128U => visit_i64_gt128_u
+            @alex I64Le128S => visit_i64_le128_s
+            @alex I64Le128U => visit_i64_le128_u
+            @alex I64Ge128S => visit_i64_ge128_s
+            @alex I64Ge128U => visit_i64_ge128_u
         }
     };
 }

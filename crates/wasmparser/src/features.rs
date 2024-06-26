@@ -225,6 +225,11 @@ define_wasm_features! {
         /// feature. Those are expected to not require a full garbage collector
         /// so are not gated by this.
         pub gc_types: GC_TYPES(1 << 26) = true;
+
+
+
+        /// todo
+        pub alex: ALEX(1 << 31) = false;
     }
 }
 

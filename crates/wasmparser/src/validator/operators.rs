@@ -1488,6 +1488,38 @@ where
             Some(_) => bail!(self.offset, "unknown data segment {data_index}"),
         }
     }
+
+    fn check_overflowing_op(&mut self, ty: ValType) -> Result<()> {
+        self.check_binary_op(ty)?;
+        self.push_operand(ValType::I32)?;
+        Ok(())
+    }
+
+    fn check_with_carry_op(&mut self, ty: ValType) -> Result<()> {
+        self.pop_operand(Some(ValType::I32))?;
+        self.check_binary_op(ty)?;
+        self.push_operand(ValType::I32)?;
+        Ok(())
+    }
+
+    fn check_op128(&mut self) -> Result<()> {
+        self.pop_operand(Some(ValType::I64))?;
+        self.pop_operand(Some(ValType::I64))?;
+        self.pop_operand(Some(ValType::I64))?;
+        self.pop_operand(Some(ValType::I64))?;
+        self.push_operand(ValType::I64)?;
+        self.push_operand(ValType::I64)?;
+        Ok(())
+    }
+
+    fn check_cmp128(&mut self) -> Result<()> {
+        self.pop_operand(Some(ValType::I64))?;
+        self.pop_operand(Some(ValType::I64))?;
+        self.pop_operand(Some(ValType::I64))?;
+        self.pop_operand(Some(ValType::I64))?;
+        self.push_operand(ValType::I32)?;
+        Ok(())
+    }
 }
 
 pub fn ty_to_str(ty: ValType) -> &'static str {
@@ -1551,6 +1583,7 @@ macro_rules! validate_proposal {
     (desc memory_control) => ("memory control");
     (desc gc) => ("gc");
     (desc legacy_exceptions) => ("legacy exceptions");
+    (desc alex) => ("alex's private proposal");
 }
 
 impl<'a, T> VisitOperator<'a> for WasmProposalValidator<'_, '_, T>
@@ -4738,6 +4771,122 @@ where
             init_height,
         });
         Ok(())
+    }
+
+    fn visit_i32_swap_bytes(&mut self) -> Self::Output {
+        self.check_unary_op(ValType::I32)
+    }
+    fn visit_i64_swap_bytes(&mut self) -> Self::Output {
+        self.check_unary_op(ValType::I64)
+    }
+    fn visit_i64_mul_wide_s(&mut self) -> Self::Output {
+        self.check_binary_op(ValType::I64)?;
+        self.push_operand(ValType::I64)?;
+        Ok(())
+    }
+    fn visit_i64_mul_wide_u(&mut self) -> Self::Output {
+        self.check_binary_op(ValType::I64)?;
+        self.push_operand(ValType::I64)?;
+        Ok(())
+    }
+    fn visit_i64_mul_high_s(&mut self) -> Self::Output {
+        self.check_binary_op(ValType::I64)
+    }
+    fn visit_i64_mul_high_u(&mut self) -> Self::Output {
+        self.check_binary_op(ValType::I64)
+    }
+    fn visit_i32_add_overflow_s(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I32)
+    }
+    fn visit_i32_add_overflow_u(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I32)
+    }
+    fn visit_i32_sub_overflow_s(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I32)
+    }
+    fn visit_i32_sub_overflow_u(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I32)
+    }
+    fn visit_i32_mul_overflow_s(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I32)
+    }
+    fn visit_i32_mul_overflow_u(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I32)
+    }
+    fn visit_i64_add_overflow_s(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I64)
+    }
+    fn visit_i64_add_overflow_u(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I64)
+    }
+    fn visit_i64_sub_overflow_s(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I64)
+    }
+    fn visit_i64_sub_overflow_u(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I64)
+    }
+    fn visit_i64_mul_overflow_s(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I64)
+    }
+    fn visit_i64_mul_overflow_u(&mut self) -> Self::Output {
+        self.check_overflowing_op(ValType::I64)
+    }
+    fn visit_i32_add_with_carry_s(&mut self) -> Self::Output {
+        self.check_with_carry_op(ValType::I32)
+    }
+    fn visit_i32_add_with_carry_u(&mut self) -> Self::Output {
+        self.check_with_carry_op(ValType::I32)
+    }
+    fn visit_i32_sub_with_carry_s(&mut self) -> Self::Output {
+        self.check_with_carry_op(ValType::I32)
+    }
+    fn visit_i32_sub_with_carry_u(&mut self) -> Self::Output {
+        self.check_with_carry_op(ValType::I32)
+    }
+    fn visit_i64_add_with_carry_s(&mut self) -> Self::Output {
+        self.check_with_carry_op(ValType::I64)
+    }
+    fn visit_i64_add_with_carry_u(&mut self) -> Self::Output {
+        self.check_with_carry_op(ValType::I64)
+    }
+    fn visit_i64_sub_with_carry_s(&mut self) -> Self::Output {
+        self.check_with_carry_op(ValType::I64)
+    }
+    fn visit_i64_sub_with_carry_u(&mut self) -> Self::Output {
+        self.check_with_carry_op(ValType::I64)
+    }
+    fn visit_i64_add128(&mut self) -> Self::Output {
+        self.check_op128()
+    }
+    fn visit_i64_sub128(&mut self) -> Self::Output {
+        self.check_op128()
+    }
+    fn visit_i64_mul128(&mut self) -> Self::Output {
+        self.check_op128()
+    }
+    fn visit_i64_lt128_s(&mut self) -> Self::Output {
+        self.check_cmp128()
+    }
+    fn visit_i64_lt128_u(&mut self) -> Self::Output {
+        self.check_cmp128()
+    }
+    fn visit_i64_gt128_s(&mut self) -> Self::Output {
+        self.check_cmp128()
+    }
+    fn visit_i64_gt128_u(&mut self) -> Self::Output {
+        self.check_cmp128()
+    }
+    fn visit_i64_le128_s(&mut self) -> Self::Output {
+        self.check_cmp128()
+    }
+    fn visit_i64_le128_u(&mut self) -> Self::Output {
+        self.check_cmp128()
+    }
+    fn visit_i64_ge128_s(&mut self) -> Self::Output {
+        self.check_cmp128()
+    }
+    fn visit_i64_ge128_u(&mut self) -> Self::Output {
+        self.check_cmp128()
     }
 }
 
