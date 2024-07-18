@@ -1,0 +1,7 @@
+(module
+  (type (;0;) (func (param exnref)))
+  (func (;0;) (type 0) (param exnref)
+    (throw_ref
+      (local.get 0))
+  )
+)

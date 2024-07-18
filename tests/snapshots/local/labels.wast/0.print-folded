@@ -1,0 +1,31 @@
+(module
+  (type (;0;) (func))
+  (func (;0;) (type 0)
+    (br 0)
+    (try_table $a
+      (br $a)
+      (br 1)
+      (loop $b
+        (br $a)
+        (br $b)
+        (br 2)
+        (block $c
+          (br $a)
+          (br $b)
+          (br $c)
+          (if $d
+            (br 3)
+            (then
+              (br $a)
+              (br $b)
+              (br $c)
+              (br $d)
+              (br 4))
+            (else
+              (br $a)
+              (br $b)
+              (br $c)
+              (br $d)
+              (br 4))))))
+  )
+)

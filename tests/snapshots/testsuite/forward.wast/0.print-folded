@@ -1,0 +1,31 @@
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (export "even" (func $even))
+  (export "odd" (func $odd))
+  (func $even (;0;) (type 0) (param $n i32) (result i32)
+    (if (result i32) ;; label = @1
+      (i32.eq
+        (local.get $n)
+        (i32.const 0))
+      (then
+        (i32.const 1))
+      (else
+        (call $odd
+          (i32.sub
+            (local.get $n)
+            (i32.const 1)))))
+  )
+  (func $odd (;1;) (type 0) (param $n i32) (result i32)
+    (if (result i32) ;; label = @1
+      (i32.eq
+        (local.get $n)
+        (i32.const 0))
+      (then
+        (i32.const 0))
+      (else
+        (call $even
+          (i32.sub
+            (local.get $n)
+            (i32.const 1)))))
+  )
+)

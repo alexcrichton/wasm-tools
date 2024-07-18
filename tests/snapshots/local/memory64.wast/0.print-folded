@@ -1,0 +1,404 @@
+(module
+  (type (;0;) (func (result i64)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func))
+  (memory (;0;) i64 1)
+  (func (;0;) (type 0) (result i64)
+    (memory.size)
+  )
+  (func (;1;) (type 1) (param i64) (result i64)
+    (memory.grow
+      (local.get 0))
+  )
+  (func (;2;) (type 2)
+    (memory.copy
+      (i64.const 0)
+      (i64.const 0)
+      (i64.const 0))
+    (memory.fill
+      (i64.const 0)
+      (i32.const 0)
+      (i64.const 0))
+    (memory.init $seg
+      (i64.const 0)
+      (i32.const 0)
+      (i32.const 0))
+    (drop
+      (i32.load
+        (memory.size)))
+    (drop
+      (i64.load
+        (memory.grow
+          (i64.const 0))))
+    (drop
+      (i32.load offset=281474976710655
+        (i64.const 0)))
+    (drop
+      (i32.load
+        (i64.const 0)))
+    (drop
+      (i64.load
+        (i64.const 0)))
+    (drop
+      (f32.load
+        (i64.const 0)))
+    (drop
+      (f64.load
+        (i64.const 0)))
+    (drop
+      (i32.load8_s
+        (i64.const 0)))
+    (drop
+      (i32.load8_u
+        (i64.const 0)))
+    (drop
+      (i32.load16_s
+        (i64.const 0)))
+    (drop
+      (i32.load16_u
+        (i64.const 0)))
+    (drop
+      (i64.load8_s
+        (i64.const 0)))
+    (drop
+      (i64.load8_u
+        (i64.const 0)))
+    (drop
+      (i64.load16_s
+        (i64.const 0)))
+    (drop
+      (i64.load16_u
+        (i64.const 0)))
+    (drop
+      (i64.load32_s
+        (i64.const 0)))
+    (drop
+      (i64.load32_u
+        (i64.const 0)))
+    (i32.store
+      (i64.const 0)
+      (i32.const 0))
+    (i64.store
+      (i64.const 0)
+      (i64.const 0))
+    (f32.store
+      (i64.const 0)
+      (f32.const 0x0p+0 (;=0;)))
+    (f64.store
+      (i64.const 0)
+      (f64.const 0x0p+0 (;=0;)))
+    (i32.store8
+      (i64.const 0)
+      (i32.const 0))
+    (i32.store16
+      (i64.const 0)
+      (i32.const 0))
+    (i64.store8
+      (i64.const 0)
+      (i64.const 0))
+    (i64.store16
+      (i64.const 0)
+      (i64.const 0))
+    (i64.store32
+      (i64.const 0)
+      (i64.const 0))
+    (drop
+      (memory.atomic.notify
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (memory.atomic.wait32
+        (i64.const 0)
+        (i32.const 0)
+        (i64.const 0)))
+    (drop
+      (memory.atomic.wait64
+        (i64.const 0)
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.load
+        (i64.const 0)))
+    (drop
+      (i64.atomic.load
+        (i64.const 0)))
+    (drop
+      (i32.atomic.load8_u
+        (i64.const 0)))
+    (drop
+      (i32.atomic.load16_u
+        (i64.const 0)))
+    (drop
+      (i64.atomic.load8_u
+        (i64.const 0)))
+    (drop
+      (i64.atomic.load16_u
+        (i64.const 0)))
+    (drop
+      (i64.atomic.load32_u
+        (i64.const 0)))
+    (i32.atomic.store
+      (i64.const 0)
+      (i32.const 0))
+    (i64.atomic.store
+      (i64.const 0)
+      (i64.const 0))
+    (i32.atomic.store8
+      (i64.const 0)
+      (i32.const 0))
+    (i32.atomic.store16
+      (i64.const 0)
+      (i32.const 0))
+    (i64.atomic.store8
+      (i64.const 0)
+      (i64.const 0))
+    (i64.atomic.store16
+      (i64.const 0)
+      (i64.const 0))
+    (i64.atomic.store32
+      (i64.const 0)
+      (i64.const 0))
+    (drop
+      (i32.atomic.rmw.add
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw.add
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw8.add_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i32.atomic.rmw16.add_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw8.add_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw16.add_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw32.add_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw.sub
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw.sub
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw8.sub_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i32.atomic.rmw16.sub_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw8.sub_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw16.sub_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw32.sub_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw.and
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw.and
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw8.and_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i32.atomic.rmw16.and_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw8.and_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw16.and_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw32.and_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw.or
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw.or
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw8.or_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i32.atomic.rmw16.or_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw8.or_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw16.or_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw32.or_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw.xor
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw.xor
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw8.xor_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i32.atomic.rmw16.xor_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw8.xor_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw16.xor_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw32.xor_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw.xchg
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw.xchg
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw8.xchg_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i32.atomic.rmw16.xchg_u
+        (i64.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw8.xchg_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw16.xchg_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw32.xchg_u
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw.cmpxchg
+        (i64.const 0)
+        (i32.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw.cmpxchg
+        (i64.const 0)
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i32.atomic.rmw8.cmpxchg_u
+        (i64.const 0)
+        (i32.const 0)
+        (i32.const 0)))
+    (drop
+      (i32.atomic.rmw16.cmpxchg_u
+        (i64.const 0)
+        (i32.const 0)
+        (i32.const 0)))
+    (drop
+      (i64.atomic.rmw8.cmpxchg_u
+        (i64.const 0)
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw16.cmpxchg_u
+        (i64.const 0)
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (i64.atomic.rmw32.cmpxchg_u
+        (i64.const 0)
+        (i64.const 0)
+        (i64.const 0)))
+    (drop
+      (v128.load
+        (i64.const 0)))
+    (drop
+      (v128.load8x8_s
+        (i64.const 0)))
+    (drop
+      (v128.load8x8_u
+        (i64.const 0)))
+    (drop
+      (v128.load16x4_s
+        (i64.const 0)))
+    (drop
+      (v128.load16x4_u
+        (i64.const 0)))
+    (drop
+      (v128.load32x2_s
+        (i64.const 0)))
+    (drop
+      (v128.load32x2_u
+        (i64.const 0)))
+    (drop
+      (v128.load8_splat
+        (i64.const 0)))
+    (drop
+      (v128.load16_splat
+        (i64.const 0)))
+    (drop
+      (v128.load32_splat
+        (i64.const 0)))
+    (drop
+      (v128.load64_splat
+        (i64.const 0)))
+    (v128.store
+      (i64.const 0)
+      (i8x16.splat
+        (i32.const 0)))
+  )
+  (data (;0;) (i64.const 0) "..")
+  (data $seg (;1;) "..")
+)

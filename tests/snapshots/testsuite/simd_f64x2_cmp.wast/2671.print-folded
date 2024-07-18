@@ -1,0 +1,271 @@
+(module
+  (type (;0;) (func))
+  (memory (;0;) 1)
+  (export "f64x2.eq-in-block" (func 0))
+  (export "f64x2.ne-in-block" (func 1))
+  (export "f64x2.lt-in-block" (func 2))
+  (export "f64x2.le-in-block" (func 3))
+  (export "f64x2.gt-in-block" (func 4))
+  (export "f64x2.ge-in-block" (func 5))
+  (export "nested-f64x2.eq" (func 6))
+  (export "nested-f64x2.ne" (func 7))
+  (export "nested-f64x2.lt" (func 8))
+  (export "nested-f64x2.le" (func 9))
+  (export "nested-f64x2.gt" (func 10))
+  (export "nested-f64x2.ge" (func 11))
+  (export "as-param" (func 12))
+  (func (;0;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f64x2.eq
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;1;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f64x2.ne
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;2;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f64x2.lt
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;3;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f64x2.le
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;4;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f64x2.gt
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;5;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f64x2.ge
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;6;) (type 0)
+    (drop
+      (f64x2.eq
+        (f64x2.eq
+          (f64x2.eq
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.eq
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f64x2.eq
+          (f64x2.eq
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.eq
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;7;) (type 0)
+    (drop
+      (f64x2.ne
+        (f64x2.ne
+          (f64x2.ne
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.ne
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f64x2.ne
+          (f64x2.ne
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.ne
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;8;) (type 0)
+    (drop
+      (f64x2.lt
+        (f64x2.lt
+          (f64x2.lt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.lt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f64x2.lt
+          (f64x2.lt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.lt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;9;) (type 0)
+    (drop
+      (f64x2.le
+        (f64x2.le
+          (f64x2.le
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.le
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f64x2.le
+          (f64x2.le
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.le
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;10;) (type 0)
+    (drop
+      (f64x2.gt
+        (f64x2.gt
+          (f64x2.gt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.gt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f64x2.gt
+          (f64x2.gt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.gt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;11;) (type 0)
+    (drop
+      (f64x2.ge
+        (f64x2.ge
+          (f64x2.ge
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.ge
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f64x2.ge
+          (f64x2.ge
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.ge
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;12;) (type 0)
+    (drop
+      (f64x2.eq
+        (f64x2.ne
+          (f64x2.lt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.le
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f64x2.gt
+          (f64x2.ge
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f64x2.eq
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+)

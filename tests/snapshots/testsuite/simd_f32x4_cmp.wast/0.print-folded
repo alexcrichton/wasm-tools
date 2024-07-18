@@ -1,0 +1,39 @@
+(module
+  (type (;0;) (func (param v128 v128) (result v128)))
+  (export "eq" (func 0))
+  (export "ne" (func 1))
+  (export "lt" (func 2))
+  (export "le" (func 3))
+  (export "gt" (func 4))
+  (export "ge" (func 5))
+  (func (;0;) (type 0) (param $x v128) (param $y v128) (result v128)
+    (f32x4.eq
+      (local.get $x)
+      (local.get $y))
+  )
+  (func (;1;) (type 0) (param $x v128) (param $y v128) (result v128)
+    (f32x4.ne
+      (local.get $x)
+      (local.get $y))
+  )
+  (func (;2;) (type 0) (param $x v128) (param $y v128) (result v128)
+    (f32x4.lt
+      (local.get $x)
+      (local.get $y))
+  )
+  (func (;3;) (type 0) (param $x v128) (param $y v128) (result v128)
+    (f32x4.le
+      (local.get $x)
+      (local.get $y))
+  )
+  (func (;4;) (type 0) (param $x v128) (param $y v128) (result v128)
+    (f32x4.gt
+      (local.get $x)
+      (local.get $y))
+  )
+  (func (;5;) (type 0) (param $x v128) (param $y v128) (result v128)
+    (f32x4.ge
+      (local.get $x)
+      (local.get $y))
+  )
+)

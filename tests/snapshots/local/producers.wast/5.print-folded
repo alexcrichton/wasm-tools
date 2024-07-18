@@ -1,0 +1,5 @@
+(module
+  (@producers)
+  ;; failed to parse custom section `producers`: unexpected end-of-file (at offset 0x15)
+  
+)

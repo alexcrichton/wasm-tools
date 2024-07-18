@@ -1,0 +1,44 @@
+(module
+  (type (;0;) (func))
+  (table (;0;) 1 funcref)
+  (elem $a (;0;) func $f)
+  (func $f (;0;) (type 0))
+  (func (;1;) (type 0)
+    (drop
+      (table.get 0
+        (i32.const 0)))
+  )
+  (func (;2;) (type 0)
+    (table.set 0
+      (i32.const 0)
+      (ref.func $f))
+  )
+  (func (;3;) (type 0)
+    (drop
+      (table.size 0))
+  )
+  (func (;4;) (type 0)
+    (drop
+      (table.grow 0
+        (ref.func $f)
+        (i32.const 0)))
+  )
+  (func (;5;) (type 0)
+    (table.fill 0
+      (i32.const 0)
+      (ref.func $f)
+      (i32.const 0))
+  )
+  (func (;6;) (type 0)
+    (table.copy
+      (i32.const 0)
+      (i32.const 0)
+      (i32.const 0))
+  )
+  (func (;7;) (type 0)
+    (table.init $a
+      (i32.const 0)
+      (i32.const 0)
+      (i32.const 0))
+  )
+)

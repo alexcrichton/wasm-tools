@@ -1,0 +1,206 @@
+(module
+  (type $proc (;0;) (func))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (result i32)))
+  (table (;0;) 1 funcref)
+  (func (;0;) (type $proc)
+    (block ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (loop ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0)))
+      (else
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (block ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (loop ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0)))
+      (else
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (block ;; label = @1
+      (call_indirect (type 1)
+        (i32.const 0)
+        (i32.const 0)))
+    (loop ;; label = @1
+      (call_indirect (type 1)
+        (i32.const 0)
+        (i32.const 0)))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type 1)
+          (i32.const 0)
+          (i32.const 0))))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type 1)
+          (i32.const 0)
+          (i32.const 0)))
+      (else
+        (call_indirect (type 1)
+          (i32.const 0)
+          (i32.const 0))))
+    (drop
+      (block (result i32) ;; label = @1
+        (call_indirect (type 2)
+          (i32.const 0))))
+    (drop
+      (loop (result i32) ;; label = @1
+        (call_indirect (type 2)
+          (i32.const 0))))
+    (drop
+      (if (result i32) ;; label = @1
+        (i32.const 0)
+        (then
+          (call_indirect (type 2)
+            (i32.const 0)))
+        (else
+          (call_indirect (type 2)
+            (i32.const 0)))))
+    (block ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (loop ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0)))
+      (else
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (block ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (loop ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0)))
+      (else
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (block ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (loop ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0)))
+      (else
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (block ;; label = @1
+      (call_indirect (type 1)
+        (i32.const 0)
+        (i32.const 0)))
+    (loop ;; label = @1
+      (call_indirect (type 1)
+        (i32.const 0)
+        (i32.const 0)))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type 1)
+          (i32.const 0)
+          (i32.const 0))))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type 1)
+          (i32.const 0)
+          (i32.const 0)))
+      (else
+        (call_indirect (type 1)
+          (i32.const 0)
+          (i32.const 0))))
+    (drop
+      (block (result i32) ;; label = @1
+        (call_indirect (type 2)
+          (i32.const 0))))
+    (drop
+      (loop (result i32) ;; label = @1
+        (call_indirect (type 2)
+          (i32.const 0))))
+    (drop
+      (if (result i32) ;; label = @1
+        (i32.const 0)
+        (then
+          (call_indirect (type 2)
+            (i32.const 0)))
+        (else
+          (call_indirect (type 2)
+            (i32.const 0)))))
+    (block ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (loop ;; label = @1
+      (call_indirect (type $proc)
+        (i32.const 0)))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (if ;; label = @1
+      (i32.const 0)
+      (then
+        (call_indirect (type $proc)
+          (i32.const 0)))
+      (else
+        (call_indirect (type $proc)
+          (i32.const 0))))
+    (call_indirect (type $proc)
+      (i32.const 0))
+  )
+)

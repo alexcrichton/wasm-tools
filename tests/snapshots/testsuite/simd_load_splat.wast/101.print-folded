@@ -1,0 +1,86 @@
+(module
+  (type (;0;) (func (result v128)))
+  (type (;1;) (func (result i32)))
+  (memory (;0;) 1)
+  (export "v128.load8_splat-in-block" (func 0))
+  (export "v128.load16_splat-in-block" (func 1))
+  (export "v128.load32_splat-in-block" (func 2))
+  (export "v128.load64_splat-in-block" (func 3))
+  (export "v128.load8_splat-as-br-value" (func 4))
+  (export "v128.load16_splat-as-br-value" (func 5))
+  (export "v128.load32_splat-as-br-value" (func 6))
+  (export "v128.load64_splat-as-br-value" (func 7))
+  (export "v128.load8_splat-extract_lane_s-operand" (func 8))
+  (export "v128.load16_splat-extract_lane_s-operand" (func 9))
+  (export "v128.load32_splat-extract_lane_s-operand" (func 10))
+  (export "v128.load64_splat-extract_lane_s-operand" (func 11))
+  (func (;0;) (type 0) (result v128)
+    (block (result v128) ;; label = @1
+      (block (result v128) ;; label = @2
+        (v128.load8_splat
+          (i32.const 0))))
+  )
+  (func (;1;) (type 0) (result v128)
+    (block (result v128) ;; label = @1
+      (block (result v128) ;; label = @2
+        (v128.load16_splat
+          (i32.const 1))))
+  )
+  (func (;2;) (type 0) (result v128)
+    (block (result v128) ;; label = @1
+      (block (result v128) ;; label = @2
+        (v128.load32_splat
+          (i32.const 2))))
+  )
+  (func (;3;) (type 0) (result v128)
+    (block (result v128) ;; label = @1
+      (block (result v128) ;; label = @2
+        (v128.load64_splat
+          (i32.const 9))))
+  )
+  (func (;4;) (type 0) (result v128)
+    (block (result v128) ;; label = @1
+      (br 0 (;@1;)
+        (v128.load8_splat
+          (i32.const 3))))
+  )
+  (func (;5;) (type 0) (result v128)
+    (block (result v128) ;; label = @1
+      (br 0 (;@1;)
+        (v128.load16_splat
+          (i32.const 4))))
+  )
+  (func (;6;) (type 0) (result v128)
+    (block (result v128) ;; label = @1
+      (br 0 (;@1;)
+        (v128.load32_splat
+          (i32.const 5))))
+  )
+  (func (;7;) (type 0) (result v128)
+    (block (result v128) ;; label = @1
+      (br 0 (;@1;)
+        (v128.load64_splat
+          (i32.const 10))))
+  )
+  (func (;8;) (type 1) (result i32)
+    (i8x16.extract_lane_s 0
+      (v128.load8_splat
+        (i32.const 6)))
+  )
+  (func (;9;) (type 1) (result i32)
+    (i8x16.extract_lane_s 0
+      (v128.load16_splat
+        (i32.const 7)))
+  )
+  (func (;10;) (type 1) (result i32)
+    (i8x16.extract_lane_s 0
+      (v128.load32_splat
+        (i32.const 8)))
+  )
+  (func (;11;) (type 1) (result i32)
+    (i8x16.extract_lane_s 0
+      (v128.load64_splat
+        (i32.const 11)))
+  )
+  (data (;0;) (i32.const 0) "\00\01\02\03\04\05\06\07\08\09\0a")
+)

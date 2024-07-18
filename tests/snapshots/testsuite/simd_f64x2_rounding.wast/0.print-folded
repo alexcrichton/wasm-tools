@@ -1,0 +1,23 @@
+(module
+  (type (;0;) (func (param v128) (result v128)))
+  (export "f64x2.ceil" (func 0))
+  (export "f64x2.floor" (func 1))
+  (export "f64x2.trunc" (func 2))
+  (export "f64x2.nearest" (func 3))
+  (func (;0;) (type 0) (param v128) (result v128)
+    (f64x2.ceil
+      (local.get 0))
+  )
+  (func (;1;) (type 0) (param v128) (result v128)
+    (f64x2.floor
+      (local.get 0))
+  )
+  (func (;2;) (type 0) (param v128) (result v128)
+    (f64x2.trunc
+      (local.get 0))
+  )
+  (func (;3;) (type 0) (param v128) (result v128)
+    (f64x2.nearest
+      (local.get 0))
+  )
+)

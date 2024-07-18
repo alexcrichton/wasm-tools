@@ -1,0 +1,29 @@
+(module
+  (type (;0;) (func))
+  (func $a1 (;0;) (type 0)
+    (if ;; label = @1
+      (i32.const 0)
+      (then)
+      (else))
+  )
+  (func $a2 (;1;) (type 0)
+    (if ;; label = @1
+      (i32.eqz
+        (i32.const 1))
+      (then)
+      (else))
+  )
+  (func $a3 (;2;) (type 0)
+    (if ;; label = @1
+      (i32.eqz
+        (i32.const 1))
+      (then))
+  )
+  (func $a4 (;3;) (type 0)
+    (if ;; label = @1
+      (i32.eqz
+        (i32.const 1))
+      (then
+        (nop)))
+  )
+)

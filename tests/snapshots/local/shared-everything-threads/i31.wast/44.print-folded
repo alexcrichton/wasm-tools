@@ -1,0 +1,11 @@
+(module $i31ref_of_global_table_initializer
+  (type (;0;) (func (param i32) (result i32)))
+  (import "env" "g" (global $g (;0;) i32))
+  (table $t (;0;) 3 3 (ref (shared i31)) (ref.i31_shared (global.get $g)))
+  (export "get" (func 0))
+  (func (;0;) (type 0) (param i32) (result i32)
+    (i31.get_u
+      (table.get $t
+        (local.get 0)))
+  )
+)

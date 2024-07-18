@@ -1,0 +1,194 @@
+(module
+  (type $t0 (;0;) (sub (struct)))
+  (type $t1 (;1;) (sub $t0 (struct (field i32))))
+  (type $t1' (;2;) (sub $t0 (struct (field i32))))
+  (type $t2 (;3;) (sub $t1 (struct (field i32) (field i32))))
+  (type $t2' (;4;) (sub $t1' (struct (field i32) (field i32))))
+  (type $t3 (;5;) (sub $t0 (struct (field i32) (field i32))))
+  (type $t0' (;6;) (sub $t0 (struct)))
+  (type $t4 (;7;) (sub $t0' (struct (field i32) (field i32))))
+  (type (;8;) (func))
+  (table (;0;) 20 structref)
+  (export "test-sub" (func 1))
+  (export "test-canon" (func 2))
+  (func $init (;0;) (type 8)
+    (table.set 0
+      (i32.const 0)
+      (struct.new_default $t0))
+    (table.set 0
+      (i32.const 10)
+      (struct.new_default $t0))
+    (table.set 0
+      (i32.const 1)
+      (struct.new_default $t1))
+    (table.set 0
+      (i32.const 11)
+      (struct.new_default $t1'))
+    (table.set 0
+      (i32.const 2)
+      (struct.new_default $t2))
+    (table.set 0
+      (i32.const 12)
+      (struct.new_default $t2'))
+    (table.set 0
+      (i32.const 3)
+      (struct.new_default $t3))
+    (table.set 0
+      (i32.const 4)
+      (struct.new_default $t4))
+  )
+  (func (;1;) (type 8)
+    (call $init)
+    (drop
+      (ref.cast (ref null $t0)
+        (ref.null struct)))
+    (drop
+      (ref.cast (ref null $t0)
+        (table.get 0
+          (i32.const 0))))
+    (drop
+      (ref.cast (ref null $t0)
+        (table.get 0
+          (i32.const 1))))
+    (drop
+      (ref.cast (ref null $t0)
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref null $t0)
+        (table.get 0
+          (i32.const 3))))
+    (drop
+      (ref.cast (ref null $t0)
+        (table.get 0
+          (i32.const 4))))
+    (drop
+      (ref.cast (ref null $t0)
+        (ref.null struct)))
+    (drop
+      (ref.cast (ref null $t1)
+        (table.get 0
+          (i32.const 1))))
+    (drop
+      (ref.cast (ref null $t1)
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref null $t0)
+        (ref.null struct)))
+    (drop
+      (ref.cast (ref null $t2)
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref null $t0)
+        (ref.null struct)))
+    (drop
+      (ref.cast (ref null $t3)
+        (table.get 0
+          (i32.const 3))))
+    (drop
+      (ref.cast (ref null $t4)
+        (table.get 0
+          (i32.const 4))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 0))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 1))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 3))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 4))))
+    (drop
+      (ref.cast (ref $t1)
+        (table.get 0
+          (i32.const 1))))
+    (drop
+      (ref.cast (ref $t1)
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref $t2)
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref $t3)
+        (table.get 0
+          (i32.const 3))))
+    (drop
+      (ref.cast (ref $t4)
+        (table.get 0
+          (i32.const 4))))
+  )
+  (func (;2;) (type 8)
+    (call $init)
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 0))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 1))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 3))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 4))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 10))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 11))))
+    (drop
+      (ref.cast (ref $t0)
+        (table.get 0
+          (i32.const 12))))
+    (drop
+      (ref.cast (ref $t1')
+        (table.get 0
+          (i32.const 1))))
+    (drop
+      (ref.cast (ref $t1')
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref $t1)
+        (table.get 0
+          (i32.const 11))))
+    (drop
+      (ref.cast (ref $t1)
+        (table.get 0
+          (i32.const 12))))
+    (drop
+      (ref.cast (ref $t2')
+        (table.get 0
+          (i32.const 2))))
+    (drop
+      (ref.cast (ref $t2)
+        (table.get 0
+          (i32.const 12))))
+  )
+)

@@ -1,0 +1,90 @@
+(module
+  (type (;0;) (func (param i32)))
+  (memory $mem0 (;0;) 1)
+  (memory $mem1 (;1;) 1)
+  (memory $mem2 (;2;) 1)
+  (export "no_dce.i32.load" (func 0))
+  (export "no_dce.i32.load16_s" (func 1))
+  (export "no_dce.i32.load16_u" (func 2))
+  (export "no_dce.i32.load8_s" (func 3))
+  (export "no_dce.i32.load8_u" (func 4))
+  (export "no_dce.i64.load" (func 5))
+  (export "no_dce.i64.load32_s" (func 6))
+  (export "no_dce.i64.load32_u" (func 7))
+  (export "no_dce.i64.load16_s" (func 8))
+  (export "no_dce.i64.load16_u" (func 9))
+  (export "no_dce.i64.load8_s" (func 10))
+  (export "no_dce.i64.load8_u" (func 11))
+  (export "no_dce.f32.load" (func 12))
+  (export "no_dce.f64.load" (func 13))
+  (func (;0;) (type 0) (param $i i32)
+    (drop
+      (i32.load $mem1
+        (local.get $i)))
+  )
+  (func (;1;) (type 0) (param $i i32)
+    (drop
+      (i32.load16_s $mem1
+        (local.get $i)))
+  )
+  (func (;2;) (type 0) (param $i i32)
+    (drop
+      (i32.load16_u $mem1
+        (local.get $i)))
+  )
+  (func (;3;) (type 0) (param $i i32)
+    (drop
+      (i32.load8_s $mem1
+        (local.get $i)))
+  )
+  (func (;4;) (type 0) (param $i i32)
+    (drop
+      (i32.load8_u $mem1
+        (local.get $i)))
+  )
+  (func (;5;) (type 0) (param $i i32)
+    (drop
+      (i64.load $mem1
+        (local.get $i)))
+  )
+  (func (;6;) (type 0) (param $i i32)
+    (drop
+      (i64.load32_s $mem1
+        (local.get $i)))
+  )
+  (func (;7;) (type 0) (param $i i32)
+    (drop
+      (i64.load32_u $mem2
+        (local.get $i)))
+  )
+  (func (;8;) (type 0) (param $i i32)
+    (drop
+      (i64.load16_s $mem2
+        (local.get $i)))
+  )
+  (func (;9;) (type 0) (param $i i32)
+    (drop
+      (i64.load16_u $mem2
+        (local.get $i)))
+  )
+  (func (;10;) (type 0) (param $i i32)
+    (drop
+      (i64.load8_s $mem2
+        (local.get $i)))
+  )
+  (func (;11;) (type 0) (param $i i32)
+    (drop
+      (i64.load8_u $mem2
+        (local.get $i)))
+  )
+  (func (;12;) (type 0) (param $i i32)
+    (drop
+      (f32.load $mem2
+        (local.get $i)))
+  )
+  (func (;13;) (type 0) (param $i i32)
+    (drop
+      (f64.load $mem2
+        (local.get $i)))
+  )
+)

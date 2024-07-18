@@ -1,0 +1,295 @@
+(module
+  (type (;0;) (func))
+  (memory (;0;) 1)
+  (export "v128.not-in-block" (func 0))
+  (export "v128.and-in-block" (func 1))
+  (export "v128.or-in-block" (func 2))
+  (export "v128.xor-in-block" (func 3))
+  (export "v128.bitselect-in-block" (func 4))
+  (export "v128.andnot-in-block" (func 5))
+  (export "nested-v128.not" (func 6))
+  (export "nested-v128.and" (func 7))
+  (export "nested-v128.or" (func 8))
+  (export "nested-v128.xor" (func 9))
+  (export "nested-v128.bitselect" (func 10))
+  (export "nested-v128.andnot" (func 11))
+  (export "as-param" (func 12))
+  (func (;0;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (v128.not
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))))))
+  )
+  (func (;1;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (v128.and
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;2;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (v128.or
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;3;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (v128.xor
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;4;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (v128.bitselect
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 2)))))))
+  )
+  (func (;5;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (v128.andnot
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;6;) (type 0)
+    (drop
+      (v128.not
+        (v128.not
+          (v128.not
+            (v128.load
+              (i32.const 0))))))
+  )
+  (func (;7;) (type 0)
+    (drop
+      (v128.and
+        (v128.and
+          (v128.and
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (v128.and
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))
+        (v128.and
+          (v128.and
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (v128.and
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))))
+  )
+  (func (;8;) (type 0)
+    (drop
+      (v128.or
+        (v128.or
+          (v128.or
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (v128.or
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))
+        (v128.or
+          (v128.or
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (v128.or
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))))
+  )
+  (func (;9;) (type 0)
+    (drop
+      (v128.xor
+        (v128.xor
+          (v128.xor
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (v128.xor
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))
+        (v128.xor
+          (v128.xor
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (v128.xor
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))))
+  )
+  (func (;10;) (type 0)
+    (drop
+      (v128.bitselect
+        (v128.bitselect
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2)))
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2)))
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2))))
+        (v128.bitselect
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2)))
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2)))
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2))))
+        (v128.bitselect
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2)))
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2)))
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2))))))
+  )
+  (func (;11;) (type 0)
+    (drop
+      (v128.andnot
+        (v128.andnot
+          (v128.andnot
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (v128.andnot
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))
+        (v128.andnot
+          (v128.andnot
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (v128.andnot
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))))
+  )
+  (func (;12;) (type 0)
+    (drop
+      (v128.or
+        (v128.and
+          (v128.not
+            (v128.load
+              (i32.const 0)))
+          (v128.not
+            (v128.load
+              (i32.const 1))))
+        (v128.xor
+          (v128.bitselect
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))
+            (v128.load
+              (i32.const 2)))
+          (v128.andnot
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1))))))
+  )
+)

@@ -1,0 +1,88 @@
+(module
+  (type (;0;) (func))
+  (func (;0;) (type 0)
+    (unreachable)
+    (drop
+      (ref.eq
+        (ref.null (shared eq))
+        (drop
+          (ref.eq))
+        (ref.null eq)))
+  )
+  (func (;1;) (type 0)
+    (unreachable)
+    (drop
+      (ref.cast (ref i31)
+        (any.convert_extern)))
+  )
+  (func (;2;) (type 0)
+    (unreachable)
+    (drop
+      (ref.cast (ref (shared i31))
+        (any.convert_extern)))
+  )
+  (func (;3;) (type 0)
+    (unreachable)
+    (drop
+      (ref.eq))
+  )
+  (func (;4;) (type 0)
+    (local $a (ref null (shared eq)))
+    (unreachable)
+    (local.get $a)
+    (drop
+      (ref.eq))
+  )
+  (func (;5;) (type 0)
+    (local $a eqref)
+    (unreachable)
+    (local.get $a)
+    (drop
+      (ref.eq))
+  )
+  (func (;6;) (type 0)
+    (local $a eqref)
+    (unreachable)
+    (drop
+      (ref.eq
+        (ref.cast (ref eq))
+        (local.get $a)))
+  )
+  (func (;7;) (type 0)
+    (local $a (ref null (shared eq)))
+    (unreachable)
+    (drop
+      (ref.eq
+        (ref.cast (ref (shared eq)))
+        (local.get $a)))
+  )
+  (func (;8;) (type 0)
+    (local $a (ref null (shared eq)))
+    (unreachable)
+    (drop
+      (ref.eq
+        (ref.cast (ref (shared eq))
+          (any.convert_extern
+            (extern.convert_any
+              (any.convert_extern))))
+        (local.get $a)))
+  )
+  (func (;9;) (type 0)
+    (local $a eqref)
+    (unreachable)
+    (drop
+      (ref.eq
+        (ref.cast (ref eq)
+          (any.convert_extern
+            (extern.convert_any
+              (any.convert_extern))))
+        (local.get $a)))
+  )
+  (func (;10;) (type 0)
+    (unreachable)
+    (drop
+      (array.len
+        (ref.cast (ref (shared array))
+          (any.convert_extern))))
+  )
+)

@@ -1,0 +1,26 @@
+(module
+  (type (;0;) (struct))
+  (type (;1;) (struct (field i32)))
+  (type (;2;) (struct (field (mut i32))))
+  (type (;3;) (struct (field i32) (field i32)))
+  (type (;4;) (struct (field i32) (field (mut i32))))
+  (type (;5;) (struct (field (mut i32)) (field (mut i32))))
+  (type $a (;6;) (struct (field $field_a f32)))
+  (type $b (;7;) (struct (field $field_b (mut f32))))
+  (type (;8;) (struct (field $field_a externref)))
+  (type (;9;) (struct (field $field_b externref) (field $field_c funcref)))
+  (type (;10;) (func (param (ref $a) (ref $b))))
+  (func (;0;) (type 10) (param (ref $a) (ref $b))
+    (drop
+      (struct.new $a
+        (f32.const 0x1p+0 (;=1;))))
+    (drop
+      (struct.new_default $a))
+    (drop
+      (struct.get $a $field_a
+        (local.get 0)))
+    (struct.set $b $field_b
+      (local.get 1)
+      (f32.const 0x1p+0 (;=1;)))
+  )
+)

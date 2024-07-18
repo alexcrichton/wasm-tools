@@ -1,0 +1,37 @@
+(module
+  (type $i8 (;0;) (shared(struct (field (mut i8)))))
+  (type $i32 (;1;) (shared(struct (field (mut i32)))))
+  (type $unshared (;2;) (struct (field (mut i8))))
+  (type (;3;) (func))
+  (type (;4;) (func (param (ref null $i8))))
+  (type (;5;) (func (param (ref null $i32))))
+  (func (;0;) (type 3)
+    (drop
+      (struct.new $i8
+        (i32.const 0)))
+  )
+  (func (;1;) (type 3)
+    (drop
+      (struct.new_default $i8))
+  )
+  (func (;2;) (type 4) (param (ref null $i8))
+    (drop
+      (struct.get_s $i8 0
+        (local.get 0)))
+  )
+  (func (;3;) (type 4) (param (ref null $i8))
+    (drop
+      (struct.get_u $i8 0
+        (local.get 0)))
+  )
+  (func (;4;) (type 5) (param (ref null $i32))
+    (drop
+      (struct.get $i32 0
+        (local.get 0)))
+  )
+  (func (;5;) (type 4) (param (ref null $i8))
+    (struct.set $i8 0
+      (local.get 0)
+      (i32.const 0))
+  )
+)

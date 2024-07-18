@@ -1,0 +1,174 @@
+(module
+  (type $ft (;0;) (func))
+  (type $st (;1;) (struct))
+  (type $at (;2;) (array i8))
+  (type (;3;) (func (param externref)))
+  (type (;4;) (func (param i32) (result i32)))
+  (table $ta (;0;) 10 anyref)
+  (table $tf (;1;) 10 funcref)
+  (table $te (;2;) 10 externref)
+  (export "init" (func 1))
+  (export "ref_test_null_data" (func 2))
+  (export "ref_test_any" (func 3))
+  (export "ref_test_eq" (func 4))
+  (export "ref_test_i31" (func 5))
+  (export "ref_test_struct" (func 6))
+  (export "ref_test_array" (func 7))
+  (export "ref_test_null_func" (func 8))
+  (export "ref_test_func" (func 9))
+  (export "ref_test_null_extern" (func 10))
+  (export "ref_test_extern" (func 11))
+  (elem (;0;) declare func $f)
+  (func $f (;0;) (type $ft))
+  (func (;1;) (type 3) (param $x externref)
+    (table.set $ta
+      (i32.const 0)
+      (ref.null any))
+    (table.set $ta
+      (i32.const 1)
+      (ref.null struct))
+    (table.set $ta
+      (i32.const 2)
+      (ref.null none))
+    (table.set $ta
+      (i32.const 3)
+      (ref.i31
+        (i32.const 7)))
+    (table.set $ta
+      (i32.const 4)
+      (struct.new_default $st))
+    (table.set $ta
+      (i32.const 5)
+      (array.new_default $at
+        (i32.const 0)))
+    (table.set $ta
+      (i32.const 6)
+      (any.convert_extern
+        (local.get $x)))
+    (table.set $ta
+      (i32.const 7)
+      (any.convert_extern
+        (ref.null extern)))
+    (table.set $tf
+      (i32.const 0)
+      (ref.null nofunc))
+    (table.set $tf
+      (i32.const 1)
+      (ref.null func))
+    (table.set $tf
+      (i32.const 2)
+      (ref.func $f))
+    (table.set $te
+      (i32.const 0)
+      (ref.null noextern))
+    (table.set $te
+      (i32.const 1)
+      (ref.null extern))
+    (table.set $te
+      (i32.const 2)
+      (local.get $x))
+    (table.set $te
+      (i32.const 3)
+      (extern.convert_any
+        (ref.i31
+          (i32.const 8))))
+    (table.set $te
+      (i32.const 4)
+      (extern.convert_any
+        (struct.new_default $st)))
+    (table.set $te
+      (i32.const 5)
+      (extern.convert_any
+        (ref.null any)))
+  )
+  (func (;2;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.is_null
+        (table.get $ta
+          (local.get $i)))
+      (ref.test nullref
+        (table.get $ta
+          (local.get $i))))
+  )
+  (func (;3;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.test (ref any)
+        (table.get $ta
+          (local.get $i)))
+      (ref.test anyref
+        (table.get $ta
+          (local.get $i))))
+  )
+  (func (;4;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.test (ref eq)
+        (table.get $ta
+          (local.get $i)))
+      (ref.test eqref
+        (table.get $ta
+          (local.get $i))))
+  )
+  (func (;5;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.test (ref i31)
+        (table.get $ta
+          (local.get $i)))
+      (ref.test i31ref
+        (table.get $ta
+          (local.get $i))))
+  )
+  (func (;6;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.test (ref struct)
+        (table.get $ta
+          (local.get $i)))
+      (ref.test structref
+        (table.get $ta
+          (local.get $i))))
+  )
+  (func (;7;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.test (ref array)
+        (table.get $ta
+          (local.get $i)))
+      (ref.test arrayref
+        (table.get $ta
+          (local.get $i))))
+  )
+  (func (;8;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.is_null
+        (table.get $tf
+          (local.get $i)))
+      (ref.test nullfuncref
+        (table.get $tf
+          (local.get $i))))
+  )
+  (func (;9;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.test (ref func)
+        (table.get $tf
+          (local.get $i)))
+      (ref.test funcref
+        (table.get $tf
+          (local.get $i))))
+  )
+  (func (;10;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.is_null
+        (table.get $te
+          (local.get $i)))
+      (ref.test nullexternref
+        (table.get $te
+          (local.get $i))))
+  )
+  (func (;11;) (type 4) (param $i i32) (result i32)
+    (i32.add
+      (ref.test (ref extern)
+        (table.get $te
+          (local.get $i)))
+      (ref.test externref
+        (table.get $te
+          (local.get $i))))
+  )
+)

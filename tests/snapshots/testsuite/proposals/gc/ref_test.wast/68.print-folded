@@ -1,0 +1,417 @@
+(module
+  (type $t0 (;0;) (sub (struct)))
+  (type $t1 (;1;) (sub $t0 (struct (field i32))))
+  (type $t1' (;2;) (sub $t0 (struct (field i32))))
+  (type $t2 (;3;) (sub $t1 (struct (field i32) (field i32))))
+  (type $t2' (;4;) (sub $t1' (struct (field i32) (field i32))))
+  (type $t3 (;5;) (sub $t0 (struct (field i32) (field i32))))
+  (type $t0' (;6;) (sub $t0 (struct)))
+  (type $t4 (;7;) (sub $t0' (struct (field i32) (field i32))))
+  (type (;8;) (func))
+  (table (;0;) 20 structref)
+  (export "test-sub" (func 1))
+  (export "test-canon" (func 2))
+  (func $init (;0;) (type 8)
+    (table.set 0
+      (i32.const 0)
+      (struct.new_default $t0))
+    (table.set 0
+      (i32.const 10)
+      (struct.new_default $t0))
+    (table.set 0
+      (i32.const 1)
+      (struct.new_default $t1))
+    (table.set 0
+      (i32.const 11)
+      (struct.new_default $t1'))
+    (table.set 0
+      (i32.const 2)
+      (struct.new_default $t2))
+    (table.set 0
+      (i32.const 12)
+      (struct.new_default $t2'))
+    (table.set 0
+      (i32.const 3)
+      (struct.new_default $t3))
+    (table.set 0
+      (i32.const 4)
+      (struct.new_default $t4))
+  )
+  (func (;1;) (type 8)
+    (call $init)
+    (block $l
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (ref.null struct))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (ref.null $t0))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (ref.null $t1))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (ref.null $t2))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (ref.null $t3))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (ref.null $t4))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (table.get 0
+              (i32.const 0)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (table.get 0
+              (i32.const 1)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (table.get 0
+              (i32.const 3)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t0)
+            (table.get 0
+              (i32.const 4)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t1)
+            (ref.null struct))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t1)
+            (ref.null $t0))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t1)
+            (ref.null $t1))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t1)
+            (ref.null $t2))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t1)
+            (ref.null $t3))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t1)
+            (ref.null $t4))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t1)
+            (table.get 0
+              (i32.const 1)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t1)
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t2)
+            (ref.null struct))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t2)
+            (ref.null $t0))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t2)
+            (ref.null $t1))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t2)
+            (ref.null $t2))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t2)
+            (ref.null $t3))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t2)
+            (ref.null $t4))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t2)
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t3)
+            (ref.null struct))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t3)
+            (ref.null $t0))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t3)
+            (ref.null $t1))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t3)
+            (ref.null $t2))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t3)
+            (ref.null $t3))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t3)
+            (ref.null $t4))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t3)
+            (table.get 0
+              (i32.const 3)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t4)
+            (ref.null struct))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t4)
+            (ref.null $t0))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t4)
+            (ref.null $t1))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t4)
+            (ref.null $t2))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t4)
+            (ref.null $t3))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t4)
+            (ref.null $t4))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref null $t4)
+            (table.get 0
+              (i32.const 4)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 0)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 1)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 3)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 4)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t1)
+            (table.get 0
+              (i32.const 1)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t1)
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t2)
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t3)
+            (table.get 0
+              (i32.const 3)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t4)
+            (table.get 0
+              (i32.const 4)))))
+      (br_if $l
+        (ref.test (ref $t0)
+          (ref.null struct)))
+      (br_if $l
+        (ref.test (ref $t1)
+          (ref.null struct)))
+      (br_if $l
+        (ref.test (ref $t2)
+          (ref.null struct)))
+      (br_if $l
+        (ref.test (ref $t3)
+          (ref.null struct)))
+      (br_if $l
+        (ref.test (ref $t4)
+          (ref.null struct)))
+      (br_if $l
+        (ref.test (ref $t1)
+          (table.get 0
+            (i32.const 0))))
+      (br_if $l
+        (ref.test (ref $t1)
+          (table.get 0
+            (i32.const 3))))
+      (br_if $l
+        (ref.test (ref $t1)
+          (table.get 0
+            (i32.const 4))))
+      (br_if $l
+        (ref.test (ref $t2)
+          (table.get 0
+            (i32.const 0))))
+      (br_if $l
+        (ref.test (ref $t2)
+          (table.get 0
+            (i32.const 1))))
+      (br_if $l
+        (ref.test (ref $t2)
+          (table.get 0
+            (i32.const 3))))
+      (br_if $l
+        (ref.test (ref $t2)
+          (table.get 0
+            (i32.const 4))))
+      (br_if $l
+        (ref.test (ref $t3)
+          (table.get 0
+            (i32.const 0))))
+      (br_if $l
+        (ref.test (ref $t3)
+          (table.get 0
+            (i32.const 1))))
+      (br_if $l
+        (ref.test (ref $t3)
+          (table.get 0
+            (i32.const 2))))
+      (br_if $l
+        (ref.test (ref $t3)
+          (table.get 0
+            (i32.const 4))))
+      (br_if $l
+        (ref.test (ref $t4)
+          (table.get 0
+            (i32.const 0))))
+      (br_if $l
+        (ref.test (ref $t4)
+          (table.get 0
+            (i32.const 1))))
+      (br_if $l
+        (ref.test (ref $t4)
+          (table.get 0
+            (i32.const 2))))
+      (br_if $l
+        (ref.test (ref $t4)
+          (table.get 0
+            (i32.const 3))))
+      (return))
+    (unreachable)
+  )
+  (func (;2;) (type 8)
+    (call $init)
+    (block $l
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 0)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 1)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 3)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 4)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 10)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 11)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t0)
+            (table.get 0
+              (i32.const 12)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t1')
+            (table.get 0
+              (i32.const 1)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t1')
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t1)
+            (table.get 0
+              (i32.const 11)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t1)
+            (table.get 0
+              (i32.const 12)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t2')
+            (table.get 0
+              (i32.const 2)))))
+      (br_if $l
+        (i32.eqz
+          (ref.test (ref $t2)
+            (table.get 0
+              (i32.const 12)))))
+      (return))
+    (unreachable)
+  )
+)

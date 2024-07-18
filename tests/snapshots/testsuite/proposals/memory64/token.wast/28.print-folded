@@ -1,0 +1,8 @@
+(module
+  (type (;0;) (func))
+  (func (;0;) (type 0)
+    (block $l$l
+      (br_table $l$l
+        (i32.const 0)))
+  )
+)

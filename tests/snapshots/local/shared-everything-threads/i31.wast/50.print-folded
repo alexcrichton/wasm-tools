@@ -1,0 +1,21 @@
+(module $anyref_global_of_i31ref
+  (type (;0;) (func (result i32 i32)))
+  (type (;1;) (func (param i32)))
+  (global $c (;0;) (ref null (shared any)) (ref.i31_shared (i32.const 1234)))
+  (global $m (;1;) (mut (ref null (shared any))) (ref.i31_shared (i32.const 5678)))
+  (export "get_globals" (func 0))
+  (export "set_global" (func 1))
+  (func (;0;) (type 0) (result i32 i32)
+    (i31.get_u
+      (ref.cast (ref null (shared i31))
+        (global.get $c)))
+    (i31.get_u
+      (ref.cast (ref null (shared i31))
+        (global.get $m)))
+  )
+  (func (;1;) (type 1) (param i32)
+    (global.set $m
+      (ref.i31_shared
+        (local.get 0)))
+  )
+)

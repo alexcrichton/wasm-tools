@@ -1,0 +1,57 @@
+(module
+  (type $ft (;0;) (func))
+  (type $st (;1;) (struct))
+  (type $at (;2;) (array i8))
+  (type (;3;) (func (param externref)))
+  (type (;4;) (func (param externref) (result anyref)))
+  (type (;5;) (func (param anyref) (result externref)))
+  (type (;6;) (func (param i32) (result externref)))
+  (type (;7;) (func (param i32) (result anyref)))
+  (table (;0;) 10 anyref)
+  (export "init" (func 1))
+  (export "internalize" (func 2))
+  (export "externalize" (func 3))
+  (export "externalize-i" (func 4))
+  (export "externalize-ii" (func 5))
+  (elem (;0;) declare func $f)
+  (func $f (;0;) (type $ft))
+  (func (;1;) (type 3) (param $x externref)
+    (table.set 0
+      (i32.const 0)
+      (ref.null any))
+    (table.set 0
+      (i32.const 1)
+      (ref.i31
+        (i32.const 7)))
+    (table.set 0
+      (i32.const 2)
+      (struct.new_default $st))
+    (table.set 0
+      (i32.const 3)
+      (array.new_default $at
+        (i32.const 0)))
+    (table.set 0
+      (i32.const 4)
+      (any.convert_extern
+        (local.get $x)))
+  )
+  (func (;2;) (type 4) (param externref) (result anyref)
+    (any.convert_extern
+      (local.get 0))
+  )
+  (func (;3;) (type 5) (param anyref) (result externref)
+    (extern.convert_any
+      (local.get 0))
+  )
+  (func (;4;) (type 6) (param i32) (result externref)
+    (extern.convert_any
+      (table.get 0
+        (local.get 0)))
+  )
+  (func (;5;) (type 7) (param i32) (result anyref)
+    (any.convert_extern
+      (extern.convert_any
+        (table.get 0
+          (local.get 0))))
+  )
+)

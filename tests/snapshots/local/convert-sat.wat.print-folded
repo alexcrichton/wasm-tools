@@ -1,0 +1,29 @@
+(module
+  (type (;0;) (func))
+  (func (;0;) (type 0)
+    (drop
+      (i32.trunc_sat_f32_s
+        (f32.const 0x0p+0 (;=0;))))
+    (drop
+      (i32.trunc_sat_f32_u
+        (f32.const 0x0p+0 (;=0;))))
+    (drop
+      (i32.trunc_sat_f64_s
+        (f64.const 0x0p+0 (;=0;))))
+    (drop
+      (i32.trunc_sat_f64_u
+        (f64.const 0x0p+0 (;=0;))))
+    (drop
+      (i64.trunc_sat_f32_s
+        (f32.const 0x0p+0 (;=0;))))
+    (drop
+      (i64.trunc_sat_f32_u
+        (f32.const 0x0p+0 (;=0;))))
+    (drop
+      (i64.trunc_sat_f64_s
+        (f64.const 0x0p+0 (;=0;))))
+    (drop
+      (i64.trunc_sat_f64_u
+        (f64.const 0x0p+0 (;=0;))))
+  )
+)

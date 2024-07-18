@@ -1,0 +1,271 @@
+(module
+  (type (;0;) (func))
+  (memory (;0;) 1)
+  (export "eq-in-block" (func 0))
+  (export "ne-in-block" (func 1))
+  (export "lt-in-block" (func 2))
+  (export "le-in-block" (func 3))
+  (export "gt-in-block" (func 4))
+  (export "ge-in-block" (func 5))
+  (export "nested-eq" (func 6))
+  (export "nested-ne" (func 7))
+  (export "nested-lt" (func 8))
+  (export "nested-le" (func 9))
+  (export "nested-gt" (func 10))
+  (export "nested-ge" (func 11))
+  (export "as-param" (func 12))
+  (func (;0;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f32x4.eq
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;1;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f32x4.ne
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;2;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f32x4.lt
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;3;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f32x4.le
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;4;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f32x4.gt
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;5;) (type 0)
+    (block ;; label = @1
+      (drop
+        (block (result v128) ;; label = @2
+          (f32x4.ge
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 0)))
+            (block (result v128) ;; label = @3
+              (v128.load
+                (i32.const 1)))))))
+  )
+  (func (;6;) (type 0)
+    (drop
+      (f32x4.eq
+        (f32x4.eq
+          (f32x4.eq
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.eq
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f32x4.eq
+          (f32x4.eq
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.eq
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;7;) (type 0)
+    (drop
+      (f32x4.ne
+        (f32x4.ne
+          (f32x4.ne
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.ne
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f32x4.ne
+          (f32x4.ne
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.ne
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;8;) (type 0)
+    (drop
+      (f32x4.lt
+        (f32x4.lt
+          (f32x4.lt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.lt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f32x4.lt
+          (f32x4.lt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.lt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;9;) (type 0)
+    (drop
+      (f32x4.le
+        (f32x4.le
+          (f32x4.le
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.le
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f32x4.le
+          (f32x4.le
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.le
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;10;) (type 0)
+    (drop
+      (f32x4.gt
+        (f32x4.gt
+          (f32x4.gt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.gt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f32x4.gt
+          (f32x4.gt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.gt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;11;) (type 0)
+    (drop
+      (f32x4.ge
+        (f32x4.ge
+          (f32x4.ge
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.ge
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f32x4.ge
+          (f32x4.ge
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.ge
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+  (func (;12;) (type 0)
+    (drop
+      (f32x4.ge
+        (f32x4.eq
+          (f32x4.lt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.le
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))
+        (f32x4.ne
+          (f32x4.gt
+            (v128.load
+              (i32.const 0))
+            (v128.load
+              (i32.const 1)))
+          (f32x4.lt
+            (v128.load
+              (i32.const 2))
+            (v128.load
+              (i32.const 3))))))
+  )
+)

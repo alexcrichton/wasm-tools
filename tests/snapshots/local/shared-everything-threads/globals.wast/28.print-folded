@@ -1,0 +1,9 @@
+(module
+  (type (;0;) (func))
+  (global $g (;0;) (mut eqref) (ref.null eq))
+  (func (;0;) (type 0)
+    (drop
+      (global.atomic.rmw.xchg acq_rel $g
+        (ref.null eq)))
+  )
+)

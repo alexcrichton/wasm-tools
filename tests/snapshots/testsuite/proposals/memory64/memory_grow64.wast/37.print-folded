@@ -1,0 +1,38 @@
+(module
+  (type (;0;) (func (param i64) (result i64)))
+  (type (;1;) (func (param i64 i64) (result i32)))
+  (memory (;0;) i64 1)
+  (export "grow" (func 0))
+  (export "check-memory-zero" (func 1))
+  (func (;0;) (type 0) (param i64) (result i64)
+    (memory.grow
+      (local.get 0))
+  )
+  (func (;1;) (type 1) (param i64 i64) (result i32)
+    (local i32)
+    (local.set 2
+      (i32.const 1))
+    (block ;; label = @1
+      (loop ;; label = @2
+        (local.set 2
+          (i32.load8_u
+            (local.get 0)))
+        (br_if 1 (;@1;)
+          (i32.ne
+            (local.get 2)
+            (i32.const 0)))
+        (br_if 1 (;@1;)
+          (i64.ge_u
+            (local.get 0)
+            (local.get 1)))
+        (local.set 0
+          (i64.add
+            (local.get 0)
+            (i64.const 1)))
+        (br_if 0 (;@2;)
+          (i64.le_u
+            (local.get 0)
+            (local.get 1)))))
+    (local.get 2)
+  )
+)

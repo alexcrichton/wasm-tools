@@ -1,0 +1,54 @@
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param funcref)))
+  (global (;0;) externref (ref.null extern))
+  (func (;0;) (type 0)
+    (local externref funcref)
+    (local.set 0
+      (ref.null extern))
+    (local.set 1
+      (ref.null func))
+  )
+  (func (;1;) (type 1) (param funcref)
+    (drop
+      (ref.is_null
+        (global.get 0)))
+    (drop
+      (ref.is_null
+        (local.get 0)))
+  )
+  (func $select-join (;2;) (type 0)
+    (drop
+      (select (result funcref)
+        (ref.null func)
+        (ref.null func)
+        (i32.const 0)))
+    (drop
+      (select (result externref)
+        (ref.null extern)
+        (ref.null extern)
+        (i32.const 0)))
+    (block ;; label = @1
+      (unreachable)
+      (drop
+        (select (result externref))))
+    (block ;; label = @1
+      (unreachable)
+      (i32.const 0)
+      (drop
+        (select (result externref))))
+    (block ;; label = @1
+      (unreachable)
+      (ref.null extern)
+      (i32.const 0)
+      (drop
+        (select (result externref))))
+    (block ;; label = @1
+      (unreachable)
+      (drop
+        (select (result externref)
+          (ref.null extern)
+          (ref.null extern)
+          (i32.const 0))))
+  )
+)

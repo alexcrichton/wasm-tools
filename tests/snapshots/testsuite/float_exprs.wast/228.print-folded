@@ -1,0 +1,28 @@
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (export "i32.no_fold_f32_s" (func 0))
+  (export "i32.no_fold_f32_u" (func 1))
+  (export "i64.no_fold_f64_s" (func 2))
+  (export "i64.no_fold_f64_u" (func 3))
+  (func (;0;) (type 0) (param i32) (result i32)
+    (i32.trunc_f32_s
+      (f32.convert_i32_s
+        (local.get 0)))
+  )
+  (func (;1;) (type 0) (param i32) (result i32)
+    (i32.trunc_f32_u
+      (f32.convert_i32_u
+        (local.get 0)))
+  )
+  (func (;2;) (type 1) (param i64) (result i64)
+    (i64.trunc_f64_s
+      (f64.convert_i64_s
+        (local.get 0)))
+  )
+  (func (;3;) (type 1) (param i64) (result i64)
+    (i64.trunc_f64_u
+      (f64.convert_i64_u
+        (local.get 0)))
+  )
+)

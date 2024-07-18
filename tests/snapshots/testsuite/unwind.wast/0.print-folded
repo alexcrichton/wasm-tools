@@ -1,0 +1,428 @@
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (result i32)))
+  (export "func-unwind-by-unreachable" (func 0))
+  (export "func-unwind-by-br" (func 1))
+  (export "func-unwind-by-br-value" (func 2))
+  (export "func-unwind-by-br_if" (func 3))
+  (export "func-unwind-by-br_if-value" (func 4))
+  (export "func-unwind-by-br_table" (func 5))
+  (export "func-unwind-by-br_table-value" (func 6))
+  (export "func-unwind-by-return" (func 7))
+  (export "block-unwind-by-unreachable" (func 8))
+  (export "block-unwind-by-br" (func 9))
+  (export "block-unwind-by-br-value" (func 10))
+  (export "block-unwind-by-br_if" (func 11))
+  (export "block-unwind-by-br_if-value" (func 12))
+  (export "block-unwind-by-br_table" (func 13))
+  (export "block-unwind-by-br_table-value" (func 14))
+  (export "block-unwind-by-return" (func 15))
+  (export "block-nested-unwind-by-unreachable" (func 16))
+  (export "block-nested-unwind-by-br" (func 17))
+  (export "block-nested-unwind-by-br-value" (func 18))
+  (export "block-nested-unwind-by-br_if" (func 19))
+  (export "block-nested-unwind-by-br_if-value" (func 20))
+  (export "block-nested-unwind-by-br_table" (func 21))
+  (export "block-nested-unwind-by-br_table-value" (func 22))
+  (export "block-nested-unwind-by-return" (func 23))
+  (export "unary-after-unreachable" (func 24))
+  (export "unary-after-br" (func 25))
+  (export "unary-after-br_if" (func 26))
+  (export "unary-after-br_table" (func 27))
+  (export "unary-after-return" (func 28))
+  (export "binary-after-unreachable" (func 29))
+  (export "binary-after-br" (func 30))
+  (export "binary-after-br_if" (func 31))
+  (export "binary-after-br_table" (func 32))
+  (export "binary-after-return" (func 33))
+  (export "select-after-unreachable" (func 34))
+  (export "select-after-br" (func 35))
+  (export "select-after-br_if" (func 36))
+  (export "select-after-br_table" (func 37))
+  (export "select-after-return" (func 38))
+  (export "block-value-after-unreachable" (func 39))
+  (export "block-value-after-br" (func 40))
+  (export "block-value-after-br_if" (func 41))
+  (export "block-value-after-br_table" (func 42))
+  (export "block-value-after-return" (func 43))
+  (export "loop-value-after-unreachable" (func 44))
+  (export "loop-value-after-br" (func 45))
+  (export "loop-value-after-br_if" (func 46))
+  (export "loop-value-after-br_table" (func 47))
+  (export "loop-value-after-return" (func 48))
+  (func (;0;) (type 0)
+    (i32.const 3)
+    (i64.const 1)
+    (unreachable)
+  )
+  (func (;1;) (type 0)
+    (i32.const 3)
+    (i64.const 1)
+    (br 0)
+  )
+  (func (;2;) (type 1) (result i32)
+    (i32.const 3)
+    (i64.const 1)
+    (br 0
+      (i32.const 9))
+  )
+  (func (;3;) (type 0)
+    (drop
+      (i32.const 3)
+      (drop
+        (i64.const 1)
+        (br_if 0
+          (i32.const 1))))
+  )
+  (func (;4;) (type 1) (result i32)
+    (i32.const 3)
+    (drop
+      (i64.const 1)
+      (drop
+        (br_if 0
+          (i32.const 9)
+          (i32.const 1))))
+  )
+  (func (;5;) (type 0)
+    (i32.const 3)
+    (i64.const 1)
+    (br_table 0
+      (i32.const 0))
+  )
+  (func (;6;) (type 1) (result i32)
+    (i32.const 3)
+    (i64.const 1)
+    (br_table 0
+      (i32.const 9)
+      (i32.const 0))
+  )
+  (func (;7;) (type 1) (result i32)
+    (i32.const 3)
+    (i64.const 1)
+    (return
+      (i32.const 9))
+  )
+  (func (;8;) (type 0)
+    (block ;; label = @1
+      (i32.const 3)
+      (i64.const 1)
+      (unreachable))
+  )
+  (func (;9;) (type 1) (result i32)
+    (block ;; label = @1
+      (i32.const 3)
+      (i64.const 1)
+      (br 0 (;@1;)))
+    (i32.const 9)
+  )
+  (func (;10;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (i64.const 1)
+      (br 0 (;@1;)
+        (i32.const 9)))
+  )
+  (func (;11;) (type 1) (result i32)
+    (block ;; label = @1
+      (drop
+        (i32.const 3)
+        (drop
+          (i64.const 1)
+          (br_if 0 (;@1;)
+            (i32.const 1)))))
+    (i32.const 9)
+  )
+  (func (;12;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (drop
+        (i64.const 1)
+        (drop
+          (br_if 0 (;@1;)
+            (i32.const 9)
+            (i32.const 1)))))
+  )
+  (func (;13;) (type 1) (result i32)
+    (block ;; label = @1
+      (i32.const 3)
+      (i64.const 1)
+      (br_table 0 (;@1;)
+        (i32.const 0)))
+    (i32.const 9)
+  )
+  (func (;14;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (i64.const 1)
+      (br_table 0 (;@1;)
+        (i32.const 9)
+        (i32.const 0)))
+  )
+  (func (;15;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (i64.const 1)
+      (return
+        (i32.const 9)))
+  )
+  (func (;16;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (block ;; label = @2
+        (i64.const 1)
+        (unreachable)))
+  )
+  (func (;17;) (type 1) (result i32)
+    (block ;; label = @1
+      (drop
+        (i32.const 3)
+        (block ;; label = @2
+          (i64.const 1)
+          (br 1 (;@1;)))))
+    (i32.const 9)
+  )
+  (func (;18;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (block ;; label = @2
+        (i64.const 1)
+        (br 1 (;@1;)
+          (i32.const 9))))
+  )
+  (func (;19;) (type 1) (result i32)
+    (block ;; label = @1
+      (drop
+        (i32.const 3)
+        (block ;; label = @2
+          (drop
+            (i64.const 1)
+            (br_if 1 (;@1;)
+              (i32.const 1))))))
+    (i32.const 9)
+  )
+  (func (;20;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (block ;; label = @2
+        (drop
+          (i64.const 1)
+          (drop
+            (br_if 1 (;@1;)
+              (i32.const 9)
+              (i32.const 1))))))
+  )
+  (func (;21;) (type 1) (result i32)
+    (block ;; label = @1
+      (drop
+        (i32.const 3)
+        (block ;; label = @2
+          (i64.const 1)
+          (br_table 1 (;@1;)
+            (i32.const 1)))))
+    (i32.const 9)
+  )
+  (func (;22;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (block ;; label = @2
+        (i64.const 1)
+        (br_table 1 (;@1;)
+          (i32.const 9)
+          (i32.const 1))))
+  )
+  (func (;23;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 3)
+      (block ;; label = @2
+        (i64.const 1)
+        (return
+          (i32.const 9))))
+  )
+  (func (;24;) (type 1) (result i32)
+    (i64.eqz
+      (f32.const 0x0p+0 (;=0;))
+      (unreachable))
+  )
+  (func (;25;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i64.eqz
+        (f32.const 0x0p+0 (;=0;))
+        (br 0 (;@1;)
+          (i32.const 9))))
+  )
+  (func (;26;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i64.eqz
+        (i64.const 0)
+        (drop
+          (br_if 0 (;@1;)
+            (i32.const 9)
+            (i32.const 1)))))
+  )
+  (func (;27;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i64.eqz
+        (f32.const 0x0p+0 (;=0;))
+        (br_table 0 (;@1;) 0 (;@1;)
+          (i32.const 9)
+          (i32.const 0))))
+  )
+  (func (;28;) (type 1) (result i32)
+    (i64.eqz
+      (f32.const 0x0p+0 (;=0;))
+      (return
+        (i32.const 9)))
+  )
+  (func (;29;) (type 1) (result i32)
+    (i64.eq
+      (f32.const 0x0p+0 (;=0;))
+      (f64.const 0x1p+0 (;=1;))
+      (unreachable))
+  )
+  (func (;30;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i64.eq
+        (f32.const 0x0p+0 (;=0;))
+        (f64.const 0x1p+0 (;=1;))
+        (br 0 (;@1;)
+          (i32.const 9))))
+  )
+  (func (;31;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i64.eq
+        (i64.const 0)
+        (i64.const 1)
+        (drop
+          (br_if 0 (;@1;)
+            (i32.const 9)
+            (i32.const 1)))))
+  )
+  (func (;32;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i64.eq
+        (f32.const 0x0p+0 (;=0;))
+        (f64.const 0x1p+0 (;=1;))
+        (br_table 0 (;@1;)
+          (i32.const 9)
+          (i32.const 0))))
+  )
+  (func (;33;) (type 1) (result i32)
+    (i64.eq
+      (f32.const 0x0p+0 (;=0;))
+      (f64.const 0x1p+0 (;=1;))
+      (return
+        (i32.const 9)))
+  )
+  (func (;34;) (type 1) (result i32)
+    (select
+      (f32.const 0x0p+0 (;=0;))
+      (f64.const 0x1p+0 (;=1;))
+      (i64.const 0)
+      (unreachable))
+  )
+  (func (;35;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (select
+        (f32.const 0x0p+0 (;=0;))
+        (f64.const 0x1p+0 (;=1;))
+        (i64.const 0)
+        (br 0 (;@1;)
+          (i32.const 9))))
+  )
+  (func (;36;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (select
+        (i32.const 0)
+        (i32.const 1)
+        (i32.const 0)
+        (drop
+          (br_if 0 (;@1;)
+            (i32.const 9)
+            (i32.const 1)))))
+  )
+  (func (;37;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (select
+        (f32.const 0x0p+0 (;=0;))
+        (f64.const 0x1p+0 (;=1;))
+        (i64.const 0)
+        (br_table 0 (;@1;)
+          (i32.const 9)
+          (i32.const 0))))
+  )
+  (func (;38;) (type 1) (result i32)
+    (select
+      (f32.const 0x0p+0 (;=0;))
+      (f64.const 0x1p+0 (;=1;))
+      (i64.const 1)
+      (return
+        (i32.const 9)))
+  )
+  (func (;39;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (f32.const 0x0p+0 (;=0;))
+      (unreachable))
+  )
+  (func (;40;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (f32.const 0x0p+0 (;=0;))
+      (br 0 (;@1;)
+        (i32.const 9)))
+  )
+  (func (;41;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (i32.const 0)
+      (drop
+        (br_if 0 (;@1;)
+          (i32.const 9)
+          (i32.const 1))))
+  )
+  (func (;42;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (f32.const 0x0p+0 (;=0;))
+      (br_table 0 (;@1;) 0 (;@1;)
+        (i32.const 9)
+        (i32.const 0)))
+  )
+  (func (;43;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (f32.const 0x0p+0 (;=0;))
+      (return
+        (i32.const 9)))
+  )
+  (func (;44;) (type 1) (result i32)
+    (loop (result i32) ;; label = @1
+      (f32.const 0x0p+0 (;=0;))
+      (unreachable))
+  )
+  (func (;45;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (loop (result i32) ;; label = @2
+        (f32.const 0x0p+0 (;=0;))
+        (br 1 (;@1;)
+          (i32.const 9))))
+  )
+  (func (;46;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (loop (result i32) ;; label = @2
+        (i32.const 0)
+        (drop
+          (br_if 1 (;@1;)
+            (i32.const 9)
+            (i32.const 1)))))
+  )
+  (func (;47;) (type 1) (result i32)
+    (block (result i32) ;; label = @1
+      (loop (result i32) ;; label = @2
+        (f32.const 0x0p+0 (;=0;))
+        (br_table 1 (;@1;) 1 (;@1;)
+          (i32.const 9)
+          (i32.const 0))))
+  )
+  (func (;48;) (type 1) (result i32)
+    (loop (result i32) ;; label = @1
+      (f32.const 0x0p+0 (;=0;))
+      (return
+        (i32.const 9)))
+  )
+)

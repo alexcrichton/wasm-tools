@@ -1,0 +1,32 @@
+(module
+  (type (;0;) (func (param i32 i32)))
+  (type (;1;) (func (param i64 i64)))
+  (export "no_dce.i32.div_s" (func 0))
+  (export "no_dce.i32.div_u" (func 1))
+  (export "no_dce.i64.div_s" (func 2))
+  (export "no_dce.i64.div_u" (func 3))
+  (func (;0;) (type 0) (param $x i32) (param $y i32)
+    (drop
+      (i32.div_s
+        (local.get $x)
+        (local.get $y)))
+  )
+  (func (;1;) (type 0) (param $x i32) (param $y i32)
+    (drop
+      (i32.div_u
+        (local.get $x)
+        (local.get $y)))
+  )
+  (func (;2;) (type 1) (param $x i64) (param $y i64)
+    (drop
+      (i64.div_s
+        (local.get $x)
+        (local.get $y)))
+  )
+  (func (;3;) (type 1) (param $x i64) (param $y i64)
+    (drop
+      (i64.div_u
+        (local.get $x)
+        (local.get $y)))
+  )
+)

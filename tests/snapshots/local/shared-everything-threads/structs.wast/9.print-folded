@@ -1,0 +1,19 @@
+(module
+  (type $i8 (;0;) (shared(struct (field (mut i8)))))
+  (type (;1;) (func))
+  (func (;0;) (type 1)
+    (drop
+      (struct.get_s $i8 0
+        (ref.null (shared none))))
+  )
+  (func (;1;) (type 1)
+    (drop
+      (struct.get_u $i8 0
+        (ref.null (shared none))))
+  )
+  (func (;2;) (type 1)
+    (struct.set $i8 0
+      (ref.null (shared none))
+      (i32.const 0))
+  )
+)

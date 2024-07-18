@@ -1,0 +1,46 @@
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param (ref null (shared i31)))))
+  (type (;2;) (func (param (ref null (shared array)))))
+  (type (;3;) (func (param (ref null (shared extern))) (result (ref null (shared any)))))
+  (type (;4;) (func (param (ref (shared extern))) (result (ref (shared any)))))
+  (type (;5;) (func (param (ref null (shared any))) (result (ref null (shared extern)))))
+  (type (;6;) (func (param (ref (shared any))) (result (ref (shared extern)))))
+  (func (;0;) (type 0)
+    (drop
+      (ref.eq
+        (ref.null (shared none))
+        (ref.null (shared none))))
+  )
+  (func (;1;) (type 1) (param (ref null (shared i31)))
+    (drop
+      (i31.get_s
+        (local.get 0)))
+  )
+  (func (;2;) (type 1) (param (ref null (shared i31)))
+    (drop
+      (i31.get_u
+        (local.get 0)))
+  )
+  (func (;3;) (type 2) (param (ref null (shared array)))
+    (drop
+      (array.len
+        (local.get 0)))
+  )
+  (func (;4;) (type 3) (param (ref null (shared extern))) (result (ref null (shared any)))
+    (any.convert_extern
+      (local.get 0))
+  )
+  (func (;5;) (type 4) (param (ref (shared extern))) (result (ref (shared any)))
+    (any.convert_extern
+      (local.get 0))
+  )
+  (func (;6;) (type 5) (param (ref null (shared any))) (result (ref null (shared extern)))
+    (extern.convert_any
+      (local.get 0))
+  )
+  (func (;7;) (type 6) (param (ref (shared any))) (result (ref (shared extern)))
+    (extern.convert_any
+      (local.get 0))
+  )
+)

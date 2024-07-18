@@ -1,0 +1,31 @@
+(module
+  (type $t (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i32 (ref null $t)) (result i32)))
+  (type (;2;) (func (result i32 (ref $t))))
+  (export "args-null" (func 2))
+  (export "args-f" (func 3))
+  (elem (;0;) func $f)
+  (func $f (;0;) (type $t) (param i32) (result i32)
+    (i32.mul
+      (local.get 0)
+      (local.get 0))
+  )
+  (func $a (;1;) (type 1) (param $n i32) (param $r (ref null $t)) (result i32)
+    (call_ref $t
+      (block $l (type 2) (result i32 (ref $t))
+        (return
+          (br_on_non_null $l
+            (local.get $n)
+            (local.get $r)))))
+  )
+  (func (;2;) (type $t) (param $n i32) (result i32)
+    (call $a
+      (local.get $n)
+      (ref.null $t))
+  )
+  (func (;3;) (type $t) (param $n i32) (result i32)
+    (call $a
+      (local.get $n)
+      (ref.func $f))
+  )
+)

@@ -1,0 +1,35 @@
+(module
+  (type $named (;0;) (struct (field $x i32) (field $y i32)))
+  (type $partially_named (;1;) (struct (field $x i32) (field i32)))
+  (type $unnamed (;2;) (struct (field i32) (field i32)))
+  (type (;3;) (func (param (ref $named) (ref $partially_named) (ref $unnamed))))
+  (func (;0;) (type 3) (param (ref $named) (ref $partially_named) (ref $unnamed))
+    (drop
+      (struct.get $named $x
+        (local.tee 0
+          (struct.new $named
+            (i32.const 1)
+            (i32.const 2))))
+      (drop
+        (struct.get $named $y
+          (local.get 0))))
+    (drop
+      (struct.get $partially_named $x
+        (local.tee 1
+          (struct.new $partially_named
+            (i32.const 1)
+            (i32.const 2))))
+      (drop
+        (struct.get $partially_named 1
+          (local.get 1))))
+    (drop
+      (struct.get $unnamed 0
+        (local.tee 2
+          (struct.new $unnamed
+            (i32.const 1)
+            (i32.const 2))))
+      (drop
+        (struct.get $unnamed 1
+          (local.get 2))))
+  )
+)

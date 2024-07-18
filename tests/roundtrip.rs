@@ -32,6 +32,7 @@ use std::sync::atomic::{AtomicUsize, Ordering::SeqCst};
 use std::sync::Arc;
 use wasm_encoder::reencode::{Reencode, ReencodeComponent, RoundtripReencoder};
 use wasmparser::*;
+use wasmprinter::PrintFmtWrite;
 use wast::component::{Component, ComponentKind};
 use wast::core::{Module, ModuleKind};
 use wast::lexer::Lexer;
@@ -172,6 +173,29 @@ impl TestState {
             .context("failed to validate the `print` snapshot")?;
         self.bump_ntests();
 
+        let mut test_folding = true;
+        for part in test.iter().filter_map(|t| t.to_str()) {
+            match part {
+                "legacy-exceptions" => test_folding = false,
+                _ => (),
+            }
+        }
+
+        let mut folded_string = String::new();
+        if test_folding {
+            // Same test, printing instructions in folded form.
+            let mut folding_printer = wasmprinter::Config::new();
+            folding_printer.fold_instructions(true);
+            folding_printer
+                .print(contents, &mut PrintFmtWrite(&mut folded_string))
+                .context("failed to print wasm in folded form")?;
+            self.bump_ntests();
+            // Snapshot the folded WAT as well.
+            self.snapshot("print-folded", test, &folded_string)
+                .context("failed to validate the `print-folded` snapshot")?;
+            self.bump_ntests();
+        }
+
         // If we can, convert the string back to bytes and assert it has the
         // same binary representation.
         if test_roundtrip {
@@ -180,6 +204,14 @@ impl TestState {
             self.bump_ntests();
             self.binary_compare(&binary2, contents)
                 .context("failed to compare original `wat` with roundtrip `wat`")?;
+
+            if test_folding {
+                let binary2f = wat::parse_str(&folded_string)
+                    .context("failed to parse folded `wat` from `wasmprinter`")?;
+                self.bump_ntests();
+                self.binary_compare(&binary2f, contents)
+                    .context("failed to compare original `wat` with roundtrip folded `wat`")?;
+            }
 
             if wasmparser::Parser::is_component(contents) {
                 let mut reencode = Default::default();
@@ -198,16 +230,21 @@ impl TestState {
             }
         }
 
-        // Test that the `wasmprinter`-printed bytes have "pretty" whitespace
-        // which means that all whitespace is either categorized as leading
-        // whitespace or a single space. Examples of "bad whitespace" are:
-        //
-        // * trailing whitespace at the end of a line
-        // * two spaces in a row
-        //
-        // Both of these cases indicate possible bugs in `wasmprinter` itself
-        // which while they don't actually affect the meaning they do "affect"
-        // humans reading the output.
+        self.test_pretty_whitespace(&string)?;
+        self.test_pretty_whitespace(&folded_string)
+    }
+
+    // Test that the `wasmprinter`-printed bytes have "pretty" whitespace
+    // which means that all whitespace is either categorized as leading
+    // whitespace or a single space. Examples of "bad whitespace" are:
+    //
+    // * trailing whitespace at the end of a line
+    // * two spaces in a row
+    //
+    // Both of these cases indicate possible bugs in `wasmprinter` itself
+    // which while they don't actually affect the meaning they do "affect"
+    // humans reading the output.
+    fn test_pretty_whitespace(&self, string: &str) -> Result<()> {
         for token in wast::lexer::Lexer::new(&string)
             .allow_confusing_unicode(true)
             .iter(0)
