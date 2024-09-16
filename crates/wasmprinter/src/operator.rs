@@ -1457,13 +1457,7 @@ macro_rules! define_visit_folded {
 						 code_section_hints: Vec::new() };
 
 	    let mut op_printer = PrintOperator::new(&mut internal_printer, self.state, self.operator_state);
-	    define_visit!(before_op op_printer $op);
-
-	    op_printer.push_str(define_visit!(name $op))?;
-            $(
-                define_visit!(payload op_printer $op $($arg)*);
-            )?
-            define_visit!(after_op op_printer $op);
+	    op_printer.$visit($($($arg),*)?)?;
 
 	    self.printer.nesting = internal_printer.nesting;
             self.printer.line = internal_printer.line;
@@ -1557,37 +1551,37 @@ impl<'printer, 'state, 'a, 'b> PrintOperatorFolded<'printer, 'state, 'a, 'b> {
     // it may not be possible to hit the params target exactly. This doesn't necessarily mean the
     // Wasm is invalid, but it can't be represented sensibly in folded form.
     fn handle_plain(&mut self, plain: String, params: u32, mut results: u32) -> Result<()> {
-        match self.control.last_mut() {
-            Some(stack) => {
-                let mut first_param = stack.folded.len();
-                let mut param_count: u32 = 0;
-                if params > 0 {
-                    for (pos, inst) in stack.folded.iter().enumerate().rev() {
-                        param_count = param_count.saturating_add(inst.results);
-                        if param_count == params {
-                            first_param = pos;
-                            break;
-                        } else if param_count > params {
-                            // unfoldable instruction
-                            results = u32::MAX;
-                            break;
-                        }
-                    }
-                }
+        let stack = match self.control.last_mut() {
+            Some(stack) => stack,
+            None => bail!("instruction without enclosing block"),
+        };
 
-                let mut inst = FoldedInstruction {
-                    plain,
-                    folded: stack.folded.drain(first_param..).collect(),
-                    results,
-                    offset: self.operator_state.op_offset,
-                };
-                if let Some(hint) = self.branch_hint.take() {
-                    inst.folded.push(hint);
+        let mut first_param = stack.folded.len();
+        let mut param_count: u32 = 0;
+        if params > 0 {
+            for (pos, inst) in stack.folded.iter().enumerate().rev() {
+                param_count = param_count.saturating_add(inst.results);
+                if param_count == params {
+                    first_param = pos;
+                    break;
+                } else if param_count > params {
+                    // unfoldable instruction
+                    results = u32::MAX;
+                    break;
                 }
-                stack.folded.push(inst);
             }
-            _ => bail!("instruction without enclosing block"),
         }
+
+        let mut inst = FoldedInstruction {
+            plain,
+            folded: stack.folded.drain(first_param..).collect(),
+            results,
+            offset: self.operator_state.op_offset,
+        };
+        if let Some(hint) = self.branch_hint.take() {
+            inst.folded.push(hint);
+        }
+        stack.folded.push(inst);
 
         Ok(())
     }
@@ -1621,6 +1615,7 @@ impl<'printer, 'state, 'a, 'b> PrintOperatorFolded<'printer, 'state, 'a, 'b> {
         printer.result.write_str("(")?;
         printer.result.write_str(&inst.plain)?;
         if inst.folded.is_empty() && inst.plain.contains(";;") {
+            // Wasm line comment (e.g. label annotation) shouldn't comment out the closing parenthesis
             printer.newline(inst.offset)?;
         }
         printer.nesting += 1;

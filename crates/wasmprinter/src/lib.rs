@@ -1282,7 +1282,7 @@ impl Printer<'_, '_> {
         self.result.write_str(" ")?;
         let ty = match state.core.func_to_type.get(func_idx as usize) {
             Some(Some(x)) => *x,
-            _ => bail!("invalid function type"),
+            _ => panic!("invalid function type"),
         };
         let params = self
             .print_core_functype_idx(state, ty, Some(func_idx))?
