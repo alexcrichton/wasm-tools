@@ -103,6 +103,7 @@ wasm-mutate = { version = "0.217.0", path = "crates/wasm-mutate" }
 wasm-shrink = { version = "0.217.0", path = "crates/wasm-shrink" }
 wasm-smith = { version = "0.217.0", path = "crates/wasm-smith" }
 wasmparser = { version = "0.217.0", path = "crates/wasmparser", default-features = false, features = ['std'] }
+wasmparser-opcodes = { version = "0.217.0", path = "crates/wasmparser/opcodes" }
 wasmprinter = { version = "0.217.0", path = "crates/wasmprinter" }
 wast = { version = "217.0.0", path = "crates/wast" }
 wat = { version = "1.217.0", path = "crates/wat" }

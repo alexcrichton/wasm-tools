@@ -1,0 +1,732 @@
+# ============================================================================
+# non-prefixed operators
+# ============================================================================
+
+mvp {
+  0x00 | unreachable                                  | Fixed(0,0)
+  0x01 | nop                                          | Fixed(0,0)
+  0x02 | block { BlockType }                          | Block
+  0x03 | loop { BlockType }                           | Block
+  0x04 | if { BlockType }                             | Block
+  0x05 | else                                         | Else
+}
+legacy_exceptions {
+  0x06 | try { BlockType }                            | Block
+  0x07 | catch { Tag }                                | Catch
+  0x08 | throw { Tag }                                | Tag
+  0x09 | rethrow { Depth }                            | Fixed(0,0)
+  0x0a | throw_ref                                    | Fixed(1,0)
+}
+mvp {
+  0x0b | end                                          | End
+  0x0c | br { Depth }                                 | Br
+  0x0d | br_if { Depth }                              | BrIf
+  0x0e | br_table { BrTable }                         | BrTable
+  0x0f | return                                       | Return
+  0x10 | call { Func }                                | Call
+  0x11 | call_indirect { Type TableMvp }              | CallIndirect
+}
+tail_call {
+  0x12 | return_call { Func }                         | Call
+  0x13 | return_call_indirect { Type Table }          | CallIndirect
+}
+function_references {
+  0x14 | call_ref { Type }                            | Call
+  0x15 | return_call_ref { Type }                     | CallIndirect
+}
+legacy_exceptions {
+  0x18 | delegate { Depth }                           | Delegate
+  0x19 | catch_all                                    | CatchAll
+}
+mvp {
+  0x1a | drop                                         | Fixed(1,0)
+  0x1b | select                                       | Fixed(3,1)
+}
+reference_types {
+  0x1c | typed_select { ValType }                     | Fixed(3,1)
+}
+# 0x1d
+# 0x1e
+exceptions {
+  0x1f | try_table { TryTable }                       | TryTable
+}
+mvp {
+  0x20 | local.get { Local }                          | Fixed(0,1)
+  0x21 | local.set { Local }                          | Fixed(1,0)
+  0x22 | local.tee { Local }                          | Fixed(1,0)
+  0x23 | global.get { Global }                        | Fixed(0,1)
+  0x24 | global.set { Global }                        | Fixed(1,0)
+  0x25 | table.get { Table }                          | Fixed(1,1)
+  0x26 | table.set { Table }                          | Fixed(2,0)
+# 0x27
+  0x28 | i32.load { MemArg(4) }                       | Fixed(1,1)
+  0x29 | i64.load { MemArg(8) }                       | Fixed(1,1)
+  0x2a | f32.load { MemArg(4) }                       | Fixed(1,1)
+  0x2b | f64.load { MemArg(8) }                       | Fixed(1,1)
+  0x2c | i32.load8_s { MemArg(1) }                    | Fixed(1,1)
+  0x2d | i32.load8_u { MemArg(1) }                    | Fixed(1,1)
+  0x2e | i32.load16_s { MemArg(2) }                   | Fixed(1,1)
+  0x2f | i32.load16_u { MemArg(2) }                   | Fixed(1,1)
+  0x30 | i64.load8_s { MemArg(1) }                    | Fixed(1,1)
+  0x31 | i64.load8_u { MemArg(1) }                    | Fixed(1,1)
+  0x32 | i64.load16_s { MemArg(2) }                   | Fixed(1,1)
+  0x33 | i64.load16_u { MemArg(2) }                   | Fixed(1,1)
+  0x34 | i64.load32_s { MemArg(4) }                   | Fixed(1,1)
+  0x35 | i64.load32_u { MemArg(4) }                   | Fixed(1,1)
+  0x36 | i32.store { MemArg(4) }                      | Fixed(2,0)
+  0x37 | i64.store { MemArg(4) }                      | Fixed(2,0)
+  0x38 | f32.store { MemArg(4) }                      | Fixed(2,0)
+  0x39 | f64.store { MemArg(4) }                      | Fixed(2,0)
+  0x3a | i32.store8 { MemArg(1) }                     | Fixed(2,0)
+  0x3b | i32.store16 { MemArg(2) }                    | Fixed(2,0)
+  0x3c | i64.store8 { MemArg(1) }                     | Fixed(2,0)
+  0x3d | i64.store16 { MemArg(2) }                    | Fixed(2,0)
+  0x3e | i64.store32 { MemArg(4) }                    | Fixed(2,0)
+  0x3f | memory.size { MemoryMvp }                    | Fixed(0,1)
+  0x40 | memory.grow { MemoryMvp }                    | Fixed(1,1)
+  0x41 | i32.const { I32 }                            | Fixed(0,1)
+  0x42 | i64.const { I64 }                            | Fixed(0,1)
+  0x43 | f32.const { F32 }                            | Fixed(0,1)
+  0x44 | f64.const { F64 }                            | Fixed(0,1)
+  0x45 | i32.eqz                                      | Fixed(1,1)
+  0x46 | i32.eq                                       | Fixed(2,1)
+  0x47 | i32.ne                                       | Fixed(2,1)
+  0x48 | i32.lt_s                                     | Fixed(2,1)
+  0x49 | i32.lt_u                                     | Fixed(2,1)
+  0x4a | i32.gt_s                                     | Fixed(2,1)
+  0x4b | i32.gt_u                                     | Fixed(2,1)
+  0x4c | i32.le_s                                     | Fixed(2,1)
+  0x4d | i32.le_u                                     | Fixed(2,1)
+  0x4e | i32.ge_s                                     | Fixed(2,1)
+  0x4f | i32.ge_u                                     | Fixed(2,1)
+  0x50 | i64.eqz                                      | Fixed(1,1)
+  0x51 | i64.eq                                       | Fixed(2,1)
+  0x52 | i64.ne                                       | Fixed(2,1)
+  0x53 | i64.lt_s                                     | Fixed(2,1)
+  0x54 | i64.lt_u                                     | Fixed(2,1)
+  0x55 | i64.gt_s                                     | Fixed(2,1)
+  0x56 | i64.gt_u                                     | Fixed(2,1)
+  0x57 | i64.le_s                                     | Fixed(2,1)
+  0x58 | i64.le_u                                     | Fixed(2,1)
+  0x59 | i64.ge_s                                     | Fixed(2,1)
+  0x5a | i64.ge_u                                     | Fixed(2,1)
+  0x5b | f32.eq                                       | Fixed(2,1)
+  0x5c | f32.ne                                       | Fixed(2,1)
+  0x5d | f32.lt                                       | Fixed(2,1)
+  0x5e | f32.gt                                       | Fixed(2,1)
+  0x5f | f32.le                                       | Fixed(2,1)
+  0x60 | f32.ge                                       | Fixed(2,1)
+  0x61 | f64.eq                                       | Fixed(2,1)
+  0x62 | f64.ne                                       | Fixed(2,1)
+  0x63 | f64.lt                                       | Fixed(2,1)
+  0x64 | f64.gt                                       | Fixed(2,1)
+  0x65 | f64.le                                       | Fixed(2,1)
+  0x66 | f64.ge                                       | Fixed(2,1)
+  0x67 | i32.clz                                      | Fixed(1,1)
+  0x68 | i32.ctz                                      | Fixed(1,1)
+  0x69 | i32.popcnt                                   | Fixed(1,1)
+  0x6a | i32.add                                      | Fixed(2,1)
+  0x6b | i32.sub                                      | Fixed(2,1)
+  0x6c | i32.mul                                      | Fixed(2,1)
+  0x6d | i32.div_s                                    | Fixed(2,1)
+  0x6e | i32.div_u                                    | Fixed(2,1)
+  0x6f | i32.rem_s                                    | Fixed(2,1)
+  0x70 | i32.rem_u                                    | Fixed(2,1)
+  0x71 | i32.and                                      | Fixed(2,1)
+  0x72 | i32.or                                       | Fixed(2,1)
+  0x73 | i32.xor                                      | Fixed(2,1)
+  0x74 | i32.shl                                      | Fixed(2,1)
+  0x75 | i32.shr_s                                    | Fixed(2,1)
+  0x76 | i32.shr_u                                    | Fixed(2,1)
+  0x77 | i32.rotl                                     | Fixed(2,1)
+  0x78 | i32.rotr                                     | Fixed(2,1)
+  0x79 | i64.clz                                      | Fixed(1,1)
+  0x7a | i64.ctz                                      | Fixed(1,1)
+  0x7b | i64.popcnt                                   | Fixed(1,1)
+  0x7c | i64.add                                      | Fixed(2,1)
+  0x7d | i64.sub                                      | Fixed(2,1)
+  0x7e | i64.mul                                      | Fixed(2,1)
+  0x7f | i64.div_s                                    | Fixed(2,1)
+  0x80 | i64.div_u                                    | Fixed(2,1)
+  0x81 | i64.rem_s                                    | Fixed(2,1)
+  0x82 | i64.rem_u                                    | Fixed(2,1)
+  0x83 | i64.and                                      | Fixed(2,1)
+  0x84 | i64.or                                       | Fixed(2,1)
+  0x85 | i64.xor                                      | Fixed(2,1)
+  0x86 | i64.shl                                      | Fixed(2,1)
+  0x87 | i64.shr_s                                    | Fixed(2,1)
+  0x88 | i64.shr_u                                    | Fixed(2,1)
+  0x89 | i64.rotl                                     | Fixed(2,1)
+  0x8a | i64.rotr                                     | Fixed(2,1)
+  0x8b | f32.abs                                      | Fixed(2,1)
+  0x8c | f32.neg                                      | Fixed(2,1)
+  0x8d | f32.ceil                                     | Fixed(2,1)
+  0x8e | f32.floor                                    | Fixed(2,1)
+  0x8f | f32.trunc                                    | Fixed(2,1)
+  0x90 | f32.nearest                                  | Fixed(2,1)
+  0x91 | f32.sqrt                                     | Fixed(2,1)
+  0x92 | f32.add                                      | Fixed(2,1)
+  0x93 | f32.sub                                      | Fixed(2,1)
+  0x94 | f32.mul                                      | Fixed(2,1)
+  0x95 | f32.div                                      | Fixed(2,1)
+  0x96 | f32.min                                      | Fixed(2,1)
+  0x97 | f32.max                                      | Fixed(2,1)
+  0x98 | f32.copysign                                 | Fixed(2,1)
+  0x99 | f64.abs                                      | Fixed(2,1)
+  0x9a | f64.neg                                      | Fixed(2,1)
+  0x9b | f64.ceil                                     | Fixed(2,1)
+  0x9c | f64.floor                                    | Fixed(2,1)
+  0x9d | f64.trunc                                    | Fixed(2,1)
+  0x9e | f64.nearest                                  | Fixed(2,1)
+  0x9f | f64.sqrt                                     | Fixed(2,1)
+  0xa0 | f64.add                                      | Fixed(2,1)
+  0xa1 | f64.sub                                      | Fixed(2,1)
+  0xa2 | f64.mul                                      | Fixed(2,1)
+  0xa3 | f64.div                                      | Fixed(2,1)
+  0xa4 | f64.min                                      | Fixed(2,1)
+  0xa5 | f64.max                                      | Fixed(2,1)
+  0xa6 | f64.copysign                                 | Fixed(2,1)
+  0xa7 | i32.wrap_i64                                 | Fixed(2,1)
+  0xa8 | i32.trunc_f32_s                              | Fixed(2,1)
+  0xa9 | i32.trunc_f32_u                              | Fixed(2,1)
+  0xaa | i32.trunc_f64_s                              | Fixed(2,1)
+  0xab | i32.trunc_f64_u                              | Fixed(2,1)
+  0xac | i64.extend_i32_s                             | Fixed(2,1)
+  0xad | i64.extend_i32_u                             | Fixed(2,1)
+  0xae | i64.trunc_f32_s                              | Fixed(2,1)
+  0xaf | i64.trunc_f32_u                              | Fixed(2,1)
+  0xb0 | i64.trunc_f64_s                              | Fixed(2,1)
+  0xb1 | i64.trunc_f64_u                              | Fixed(2,1)
+  0xb2 | f32.convert_i32_s                            | Fixed(2,1)
+  0xb3 | f32.convert_i32_u                            | Fixed(2,1)
+  0xb4 | f32.convert_i64_s                            | Fixed(2,1)
+  0xb5 | f32.convert_i64_u                            | Fixed(2,1)
+  0xb6 | f32.demote_f64                               | Fixed(2,1)
+  0xb7 | f64.convert_i32_s                            | Fixed(2,1)
+  0xb8 | f64.convert_i32_u                            | Fixed(2,1)
+  0xb9 | f64.convert_i64_s                            | Fixed(2,1)
+  0xba | f64.convert_i64_u                            | Fixed(2,1)
+  0xbb | f64.promote_f32                              | Fixed(2,1)
+  0xbc | i32.reinterpret_f32                          | Fixed(2,1)
+  0xbd | i64.reinterpret_f64                          | Fixed(2,1)
+  0xbe | f32.reinterpret_f32                          | Fixed(2,1)
+  0xbf | f64.reinterpret_f64                          | Fixed(2,1)
+}
+
+sign_extension {
+  0xc0 | i32.extend8_s                                | Fixed(2,1)
+  0xc1 | i32.extend16_s                               | Fixed(2,1)
+  0xc2 | i64.extend8_s                                | Fixed(2,1)
+  0xc3 | i64.extend16_s                               | Fixed(2,1)
+  0xc4 | i64.extend32_s                               | Fixed(2,1)
+}
+
+# 0xc5
+# 0xc6
+# 0xc7
+# 0xc8
+# 0xc9
+# 0xca
+# 0xcb
+# 0xcc
+# 0xcd
+# 0xce
+# 0xcf
+
+reference_types {
+  0xd0 | ref.null { HeapType }                        | Fixed(2,1)
+  0xd1 | ref.is_null                                  | Fixed(2,1)
+  0xd2 | ref.func { Func }                            | Fixed(2,1)
+}
+
+gc {
+  0xd3 | ref.eq                                       | Fixed(2,1)
+  0xd4 | ref.as_non_null                              | Fixed(2,1)
+  0xd5 | br_on_null { Depth }                         | Fixed(2,1)
+  0xd6 | br_on_non_null { Depth }                     | Fixed(2,1)
+}
+
+# 0xd7 ... 0xfa
+
+# ============================================================================
+# 0xfb operators
+# ============================================================================
+
+# Garbage Collection: http://github.com/WebAssembly/gc
+gc {
+  0xfb    0 | struct.new { Type }                     | Fixed(2,1)
+  0xfb    1 | struct.new_default { Type }             | Fixed(2,1)
+  0xfb    2 | struct.get { Type Field }               | Fixed(2,1)
+  0xfb    3 | struct.get_s { Type Field }             | Fixed(2,1)
+  0xfb    4 | struct.get_u { Type Field }             | Fixed(2,1)
+  0xfb    5 | struct.set { Type Field }               | Fixed(2,1)
+  0xfb    6 | array.new { Type }                      | Fixed(2,1)
+  0xfb    7 | array.new_default { Type }              | Fixed(2,1)
+  0xfb    8 | array.new_fixed { Type U32 }            | Fixed(2,1)
+  0xfb    9 | array.new_data { Type Data }            | Fixed(2,1)
+  0xfb   10 | array.new_elem { Type Elem }            | Fixed(2,1)
+  0xfb   11 | array.get { Type }                      | Fixed(2,1)
+  0xfb   12 | array.get_s { Type }                    | Fixed(2,1)
+  0xfb   13 | array.get_u { Type }                    | Fixed(2,1)
+  0xfb   14 | array.set { Type }                      | Fixed(2,1)
+  0xfb   15 | array.len                               | Fixed(2,1)
+  0xfb   16 | array.fill { Type }                     | Fixed(2,1)
+  0xfb   17 | array.copy { Type Type }                | Fixed(2,1)
+  0xfb   18 | array.init_data { Type Data }           | Fixed(2,1)
+  0xfb   19 | array.init_elem { Type Elem }           | Fixed(2,1)
+  0xfb   20 | ref.test_non_null { HeapType }          | Fixed(2,1)
+  0xfb   21 | ref.test_nullable { HeapType }          | Fixed(2,1)
+  0xfb   22 | ref.cast_non_null { HeapType }          | Fixed(2,1)
+  0xfb   23 | ref.cast_nullable { HeapType }          | Fixed(2,1)
+  0xfb   24 | br_on_cast { BrOnCast }                 | Fixed(2,1)
+  0xfb   25 | br_on_cast_fail { BrOnCast }            | Fixed(2,1)
+  0xfb   26 | any.convert_extern                      | Fixed(2,1)
+  0xfb   27 | extern.convert_any                      | Fixed(2,1)
+  0xfb   28 | ref.i31                                 | Fixed(2,1)
+  0xfb   29 | i31.get_s                               | Fixed(2,1)
+  0xfb   30 | i31.get_u                               | Fixed(2,1)
+}
+
+# ============================================================================
+# 0xfc operators
+# ============================================================================
+
+# Non-trapping Float-to-int Conversions
+# https://github.com/WebAssembly/nontrapping-float-to-int-conversions
+saturating_float_to_int {
+  0xfc    0 | i32.trunc_sat_f32_s                     | Fixed(1,1)
+  0xfc    1 | i32.trunc_sat_f32_u                     | Fixed(1,1)
+  0xfc    2 | i32.trunc_sat_f64_s                     | Fixed(1,1)
+  0xfc    3 | i32.trunc_sat_f64_u                     | Fixed(1,1)
+  0xfc    4 | i64.trunc_sat_f32_s                     | Fixed(1,1)
+  0xfc    5 | i64.trunc_sat_f32_u                     | Fixed(1,1)
+  0xfc    6 | i64.trunc_sat_f64_s                     | Fixed(1,1)
+  0xfc    7 | i64.trunc_sat_f64_u                     | Fixed(1,1)
+}
+
+bulk_memory {
+  0xfc    8 | memory.init { Data Memory }             | Fixed(3,0)
+  0xfc    9 | data.drop { Data }                      | Fixed(3,0)
+  0xfc   10 | memory.copy { Memory Memory }           | Fixed(3,0)
+  0xfc   11 | memory.fill { Memory }                  | Fixed(3,0)
+  0xfc   12 | table.init { Elem Table }               | Fixed(3,0)
+  0xfc   13 | elem.drop { Elem }                      | Fixed(3,0)
+  0xfc   14 | table.copy { Table Table }              | Fixed(3,0)
+  0xfc   15 | table.grow { Table }                    | Fixed(3,0)
+  0xfc   16 | table.size { Table }                    | Fixed(3,0)
+  0xfc   17 | table.fill { Table }                    | Fixed(3,0)
+}
+
+memory_control {
+  0xfc   18 | memory.discard { Memory }               | Fixed(3,0)
+}
+
+# ============================================================================
+# 0xfd operators
+# ============================================================================
+
+simd {
+  0xfd    0 | v128.load { MemArg(16) }                | Fixed(3,0)
+  0xfd    1 | v128.load8x8_s { MemArg(8) }            | Fixed(3,0)
+  0xfd    2 | v128.load8x8_u { MemArg(8) }            | Fixed(3,0)
+  0xfd    3 | v128.load16x4_s { MemArg(8) }           | Fixed(3,0)
+  0xfd    4 | v128.load16x4_u { MemArg(8) }           | Fixed(3,0)
+  0xfd    5 | v128.load32x2_s { MemArg(8) }           | Fixed(3,0)
+  0xfd    6 | v128.load32x2_u { MemArg(8) }           | Fixed(3,0)
+  0xfd    7 | v128.load8_splat { MemArg(1) }          | Fixed(3,0)
+  0xfd    8 | v128.load16_splat { MemArg(2) }         | Fixed(3,0)
+  0xfd    9 | v128.load32_splat { MemArg(4) }         | Fixed(3,0)
+  0xfd   10 | v128.load64_splat { MemArg(8) }         | Fixed(3,0)
+  0xfd   11 | v128.store { MemArg(16) }               | Fixed(3,0)
+  0xfd   12 | v128.const { V128 }                     | Fixed(3,0)
+  0xfd   13 | v128.shuffle { ShuffleLanes }           | Fixed(3,0)
+  0xfd   14 | i8x16.swizzle                           | Fixed(3,0)
+  0xfd   15 | i8x16.splat                             | Fixed(3,0)
+  0xfd   16 | i16x8.splat                             | Fixed(3,0)
+  0xfd   17 | i32x4.splat                             | Fixed(3,0)
+  0xfd   18 | i64x2.splat                             | Fixed(3,0)
+  0xfd   19 | f32x4.splat                             | Fixed(3,0)
+  0xfd   20 | f64x2.splat                             | Fixed(3,0)
+  0xfd   21 | i8x16.extract_lane_s { Lane(16) }       | Fixed(3,0)
+  0xfd   22 | i8x16.extract_lane_u { Lane(16) }       | Fixed(3,0)
+  0xfd   23 | i8x16.replace_lane { Lane(16) }         | Fixed(3,0)
+  0xfd   24 | i16x8.extract_lane_s { Lane(8) }        | Fixed(3,0)
+  0xfd   25 | i16x8.extract_lane_u { Lane(8) }        | Fixed(3,0)
+  0xfd   26 | i16x8.replace_lane { Lane(8) }          | Fixed(3,0)
+  0xfd   27 | i32x4.extract_lane { Lane(4) }          | Fixed(3,0)
+  0xfd   28 | i32x4.replace_lane { Lane(4) }          | Fixed(3,0)
+  0xfd   29 | i64x2.extract_lane { Lane(2) }          | Fixed(3,0)
+  0xfd   30 | i64x2.replace_lane { Lane(2) }          | Fixed(3,0)
+  0xfd   31 | f32x4.extract_lane { Lane(4) }          | Fixed(3,0)
+  0xfd   32 | f32x4.replace_lane { Lane(4) }          | Fixed(3,0)
+  0xfd   33 | f64x2.extract_lane { Lane(2) }          | Fixed(3,0)
+  0xfd   34 | f64x2.replace_lane { Lane(2) }          | Fixed(3,0)
+  0xfd   35 | i8x16.eq                                | Fixed(3,0)
+  0xfd   36 | i8x16.ne                                | Fixed(3,0)
+  0xfd   37 | i8x16.lt_s                              | Fixed(3,0)
+  0xfd   38 | i8x16.lt_u                              | Fixed(3,0)
+  0xfd   39 | i8x16.gt_s                              | Fixed(3,0)
+  0xfd   40 | i8x16.gt_u                              | Fixed(3,0)
+  0xfd   41 | i8x16.le_s                              | Fixed(3,0)
+  0xfd   42 | i8x16.le_u                              | Fixed(3,0)
+  0xfd   43 | i8x16.ge_s                              | Fixed(3,0)
+  0xfd   44 | i8x16.ge_u                              | Fixed(3,0)
+  0xfd   45 | i16x8.eq                                | Fixed(3,0)
+  0xfd   46 | i16x8.ne                                | Fixed(3,0)
+  0xfd   47 | i16x8.lt_s                              | Fixed(3,0)
+  0xfd   48 | i16x8.lt_u                              | Fixed(3,0)
+  0xfd   49 | i16x8.gt_s                              | Fixed(3,0)
+  0xfd   50 | i16x8.gt_u                              | Fixed(3,0)
+  0xfd   51 | i16x8.le_s                              | Fixed(3,0)
+  0xfd   52 | i16x8.le_u                              | Fixed(3,0)
+  0xfd   53 | i16x8.ge_s                              | Fixed(3,0)
+  0xfd   54 | i16x8.ge_u                              | Fixed(3,0)
+  0xfd   55 | i32x4.eq                                | Fixed(3,0)
+  0xfd   56 | i32x4.ne                                | Fixed(3,0)
+  0xfd   57 | i32x4.lt_s                              | Fixed(3,0)
+  0xfd   58 | i32x4.lt_u                              | Fixed(3,0)
+  0xfd   59 | i32x4.gt_s                              | Fixed(3,0)
+  0xfd   60 | i32x4.gt_u                              | Fixed(3,0)
+  0xfd   61 | i32x4.le_s                              | Fixed(3,0)
+  0xfd   62 | i32x4.le_u                              | Fixed(3,0)
+  0xfd   63 | i32x4.ge_s                              | Fixed(3,0)
+  0xfd   64 | i32x4.ge_u                              | Fixed(3,0)
+  0xfd   65 | f32x4.eq                                | Fixed(3,0)
+  0xfd   66 | f32x4.ne                                | Fixed(3,0)
+  0xfd   67 | f32x4.lt                                | Fixed(3,0)
+  0xfd   68 | f32x4.gt                                | Fixed(3,0)
+  0xfd   69 | f32x4.le                                | Fixed(3,0)
+  0xfd   70 | f32x4.ge                                | Fixed(3,0)
+  0xfd   71 | f64x2.eq                                | Fixed(3,0)
+  0xfd   72 | f64x2.ne                                | Fixed(3,0)
+  0xfd   73 | f64x2.lt                                | Fixed(3,0)
+  0xfd   74 | f64x2.gt                                | Fixed(3,0)
+  0xfd   75 | f64x2.le                                | Fixed(3,0)
+  0xfd   76 | f64x2.ge                                | Fixed(3,0)
+  0xfd   77 | v128.not                                | Fixed(3,0)
+  0xfd   78 | v128.and                                | Fixed(3,0)
+  0xfd   79 | v128.andnot                             | Fixed(3,0)
+  0xfd   80 | v128.or                                 | Fixed(3,0)
+  0xfd   81 | v128.xor                                | Fixed(3,0)
+  0xfd   82 | v128.bitselect                          | Fixed(3,0)
+  0xfd   83 | v128.any_true                           | Fixed(3,0)
+  0xfd   84 | v128.load8_lane { MemArg(1) Lane(16) }  | Fixed(3,0)
+  0xfd   85 | v128.load16_lane { MemArg(2) Lane(8) }  | Fixed(3,0)
+  0xfd   86 | v128.load32_lane { MemArg(4) Lane(4) }  | Fixed(3,0)
+  0xfd   87 | v128.load64_lane { MemArg(8) Lane(2) }  | Fixed(3,0)
+  0xfd   88 | v128.store8_lane { MemArg(1) Lane(16) } | Fixed(3,0)
+  0xfd   89 | v128.store16_lane { MemArg(2) Lane(8) } | Fixed(3,0)
+  0xfd   90 | v128.store32_lane { MemArg(4) Lane(4) } | Fixed(3,0)
+  0xfd   91 | v128.store64_lane { MemArg(8) Lane(2) } | Fixed(3,0)
+  0xfd   92 | v128.load32_zero { MemArg(4) }          | Fixed(3,0)
+  0xfd   93 | v128.load64_zero { MemArg(8) }          | Fixed(3,0)
+  0xfd   94 | f32x4.demote_f64x2_zero                 | Fixed(3,0)
+  0xfd   95 | f32x4.promote_low_f32x4                 | Fixed(3,0)
+  0xfd   96 | i8x16.abs                               | Fixed(3,0)
+  0xfd   97 | i8x16.neg                               | Fixed(3,0)
+  0xfd   98 | i8x16.popcnt                            | Fixed(3,0)
+  0xfd   99 | i8x16.all_true                          | Fixed(3,0)
+  0xfd  100 | i8x16.bitmask                           | Fixed(3,0)
+  0xfd  101 | i8x16.narrow_i16x8_s                    | Fixed(3,0)
+  0xfd  102 | i8x16.narrow_i16x8_u                    | Fixed(3,0)
+  0xfd  103 | f32x4.ceil                              | Fixed(3,0)
+  0xfd  104 | f32x4.floor                             | Fixed(3,0)
+  0xfd  105 | f32x4.trunc                             | Fixed(3,0)
+  0xfd  106 | f32x4.nearest                           | Fixed(3,0)
+  0xfd  107 | i8x16.shl                               | Fixed(3,0)
+  0xfd  108 | i8x16.shr_s                             | Fixed(3,0)
+  0xfd  109 | i8x16.shr_u                             | Fixed(3,0)
+  0xfd  110 | i8x16.add                               | Fixed(3,0)
+  0xfd  111 | i8x16.add_sat_s                         | Fixed(3,0)
+  0xfd  112 | i8x16.add_sat_u                         | Fixed(3,0)
+  0xfd  113 | i8x16.sub                               | Fixed(3,0)
+  0xfd  114 | i8x16.sub_sat_s                         | Fixed(3,0)
+  0xfd  115 | i8x16.sub_sat_u                         | Fixed(3,0)
+  0xfd  116 | f64x2.ceil                              | Fixed(3,0)
+  0xfd  117 | f64x2.floor                             | Fixed(3,0)
+  0xfd  118 | i8x16.min_s                             | Fixed(3,0)
+  0xfd  119 | i8x16.min_u                             | Fixed(3,0)
+  0xfd  120 | i8x16.max_s                             | Fixed(3,0)
+  0xfd  121 | i8x16.max_u                             | Fixed(3,0)
+  0xfd  122 | f64x2.trunc                             | Fixed(3,0)
+  0xfd  123 | i8x16.avgr_u                            | Fixed(3,0)
+  0xfd  124 | i16x8.extadd_pairwise_i8x16_s           | Fixed(3,0)
+  0xfd  125 | i16x8.extadd_pairwise_i8x16_u           | Fixed(3,0)
+  0xfd  126 | i32x4.extadd_pairwise_i16x8_s           | Fixed(3,0)
+  0xfd  127 | i32x4.extadd_pairwise_i16x8_u           | Fixed(3,0)
+  0xfd  128 | i16x8.abs                               | Fixed(3,0)
+  0xfd  129 | i16x8.neg                               | Fixed(3,0)
+  0xfd  130 | i16x8.q15mulr_sat_s                     | Fixed(3,0)
+  0xfd  131 | i16x8.all_true                          | Fixed(3,0)
+  0xfd  132 | i16x8.bitmask                           | Fixed(3,0)
+  0xfd  133 | i16x8.narrow_i32x4_s                    | Fixed(3,0)
+  0xfd  134 | i16x8.narrow_i32x4_u                    | Fixed(3,0)
+  0xfd  135 | i16x8.extend_low_i8x16_s                | Fixed(3,0)
+  0xfd  136 | i16x8.extend_high_i8x16_s               | Fixed(3,0)
+  0xfd  137 | i16x8.extend_low_i8x16_u                | Fixed(3,0)
+  0xfd  138 | i16x8.extend_high_i8x16_u               | Fixed(3,0)
+  0xfd  139 | i16x8.shl                               | Fixed(3,0)
+  0xfd  140 | i16x8.shr_s                             | Fixed(3,0)
+  0xfd  141 | i16x8.shr_u                             | Fixed(3,0)
+  0xfd  142 | i16x8.add                               | Fixed(3,0)
+  0xfd  143 | i16x8.add_sat_s                         | Fixed(3,0)
+  0xfd  144 | i16x8.add_sat_u                         | Fixed(3,0)
+  0xfd  145 | i16x8.sub                               | Fixed(3,0)
+  0xfd  146 | i16x8.sub_sat_s                         | Fixed(3,0)
+  0xfd  147 | i16x8.sub_sat_u                         | Fixed(3,0)
+  0xfd  148 | f64x2.nearest                           | Fixed(3,0)
+  0xfd  149 | i16x8.mul                               | Fixed(3,0)
+  0xfd  150 | i16x8.min_s                             | Fixed(3,0)
+  0xfd  151 | i16x8.min_u                             | Fixed(3,0)
+  0xfd  152 | i16x8.max_s                             | Fixed(3,0)
+  0xfd  153 | i16x8.max_u                             | Fixed(3,0)
+  0xfd  154 | i16x8.avgr_u                            | Fixed(3,0)
+  # ... 155
+  0xfd  156 | i16x8.extmul_low_i8x16_s                | Fixed(3,0)
+  0xfd  157 | i16x8.extmul_high_i8x16_s               | Fixed(3,0)
+  0xfd  158 | i16x8.extmul_low_i8x16_u                | Fixed(3,0)
+  0xfd  159 | i16x8.extmul_high_i8x16_u               | Fixed(3,0)
+  0xfd  160 | i32x4.abs                               | Fixed(3,0)
+  0xfd  161 | i32x4.neg                               | Fixed(3,0)
+  # ... 162
+  0xfd  163 | i32x4.all_true                          | Fixed(3,0)
+  0xfd  164 | i32x4.bitmask                           | Fixed(3,0)
+  # ... 165
+  # ... 166
+  0xfd  167 | i32x4.extend_low_i16x8_s                | Fixed(3,0)
+  0xfd  168 | i32x4.extend_high_i16x8_s               | Fixed(3,0)
+  0xfd  169 | i32x4.extend_low_i16x8_u                | Fixed(3,0)
+  0xfd  170 | i32x4.extend_high_i16x8_u               | Fixed(3,0)
+  0xfd  171 | i32x4.shl                               | Fixed(3,0)
+  0xfd  172 | i32x4.shr_s                             | Fixed(3,0)
+  0xfd  173 | i32x4.shr_u                             | Fixed(3,0)
+  0xfd  174 | i32x4.add                               | Fixed(3,0)
+  # ... 175
+  # ... 176
+  0xfd  177 | i32x4.sub                               | Fixed(3,0)
+  # ... 178
+  # ... 179
+  # ... 180
+  0xfd  181 | i32x4.mul                               | Fixed(3,0)
+  0xfd  182 | i32x4.min_s                             | Fixed(3,0)
+  0xfd  183 | i32x4.min_u                             | Fixed(3,0)
+  0xfd  184 | i32x4.max_s                             | Fixed(3,0)
+  0xfd  185 | i32x4.max_u                             | Fixed(3,0)
+  0xfd  186 | i32x4.dot_i16x8_s                       | Fixed(3,0)
+  # ... 187
+  0xfd  188 | i32x4.extmul_low_i16x8_s                | Fixed(3,0)
+  0xfd  189 | i32x4.extmul_high_i16x8_s               | Fixed(3,0)
+  0xfd  190 | i32x4.extmul_low_i16x8_u                | Fixed(3,0)
+  0xfd  191 | i32x4.extmul_high_i16x8_u               | Fixed(3,0)
+  0xfd  192 | i64x2.abs                               | Fixed(3,0)
+  0xfd  193 | i64x2.neg                               | Fixed(3,0)
+  # ... 194
+  0xfd  195 | i64x2.all_true                          | Fixed(3,0)
+  0xfd  196 | i64x2.bitmask                           | Fixed(3,0)
+  # ... 197
+  # ... 198
+  0xfd  199 | i64x2.extend_low_i32x4_s                | Fixed(3,0)
+  0xfd  200 | i64x2.extend_high_i32x4_s               | Fixed(3,0)
+  0xfd  201 | i64x2.extend_low_i32x4_u                | Fixed(3,0)
+  0xfd  202 | i64x2.extend_high_i32x4_u               | Fixed(3,0)
+  0xfd  203 | i64x2.shl                               | Fixed(3,0)
+  0xfd  204 | i64x2.shr_s                             | Fixed(3,0)
+  0xfd  205 | i64x2.shr_u                             | Fixed(3,0)
+  0xfd  206 | i64x2.add                               | Fixed(3,0)
+  # ... 207
+  # ... 208
+  0xfd  209 | i64x2.sub                               | Fixed(3,0)
+  # ... 210
+  # ... 211
+  # ... 212
+  0xfd  213 | i64x2.mul                               | Fixed(3,0)
+  0xfd  214 | i64x2.eq                                | Fixed(3,0)
+  0xfd  215 | i64x2.ne                                | Fixed(3,0)
+  0xfd  216 | i64x2.lt_s                              | Fixed(3,0)
+  0xfd  217 | i64x2.gt_s                              | Fixed(3,0)
+  0xfd  218 | i64x2.le_s                              | Fixed(3,0)
+  0xfd  219 | i64x2.ge_s                              | Fixed(3,0)
+  0xfd  220 | i64x2.extmul_low_i32x4_s                | Fixed(3,0)
+  0xfd  221 | i64x2.extmul_low_i32x4_s                | Fixed(3,0)
+  0xfd  222 | i64x2.extmul_high_i32x4_u               | Fixed(3,0)
+  0xfd  223 | i64x2.extmul_high_i32x4_u               | Fixed(3,0)
+  0xfd  224 | f32x4.abs                               | Fixed(3,0)
+  0xfd  225 | f32x4.neg                               | Fixed(3,0)
+  # ... 226
+  0xfd  227 | f32x4.sqrt                              | Fixed(3,0)
+  0xfd  228 | f32x4.add                               | Fixed(3,0)
+  0xfd  229 | f32x4.sub                               | Fixed(3,0)
+  0xfd  230 | f32x4.mul                               | Fixed(3,0)
+  0xfd  231 | f32x4.div                               | Fixed(3,0)
+  0xfd  232 | f32x4.min                               | Fixed(3,0)
+  0xfd  233 | f32x4.max                               | Fixed(3,0)
+  0xfd  234 | f32x4.pmin                              | Fixed(3,0)
+  0xfd  235 | f32x4.pmax                              | Fixed(3,0)
+  0xfd  236 | f64x2.abs                               | Fixed(3,0)
+  0xfd  237 | f64x2.neg                               | Fixed(3,0)
+  # ... 238
+  0xfd  239 | f64x2.sqrt                              | Fixed(3,0)
+  0xfd  240 | f64x2.add                               | Fixed(3,0)
+  0xfd  241 | f64x2.sub                               | Fixed(3,0)
+  0xfd  242 | f64x2.mul                               | Fixed(3,0)
+  0xfd  243 | f64x2.div                               | Fixed(3,0)
+  0xfd  244 | f64x2.min                               | Fixed(3,0)
+  0xfd  245 | f64x2.max                               | Fixed(3,0)
+  0xfd  246 | f64x2.pmin                              | Fixed(3,0)
+  0xfd  247 | f64x2.pmax                              | Fixed(3,0)
+  0xfd  248 | i32x4.trunc_sat_f32x4_s                 | Fixed(3,0)
+  0xfd  249 | i32x4.trunc_sat_f32x4_u                 | Fixed(3,0)
+  0xfd  250 | f32x4.convert_i32x4_s                   | Fixed(3,0)
+  0xfd  251 | f32x4.convert_i32x4_u                   | Fixed(3,0)
+  0xfd  252 | i32x4.trunc_sat_f64x2_s_zero            | Fixed(3,0)
+  0xfd  253 | i32x4.trunc_sat_f64x2_u_zero            | Fixed(3,0)
+  0xfd  254 | f64x2.convert_low_i32x4_s               | Fixed(3,0)
+  0xfd  255 | f64x2.convert_low_i32x4_u               | Fixed(3,0)
+}
+relaxed_simd {
+  0xfd  256 | i8x16.relaxed_swizzle                   | Fixed(3,0)
+  0xfd  257 | i32x4.relaxed_trunc_f32x4_s             | Fixed(3,0)
+  0xfd  258 | i32x4.relaxed_trunc_f32x4_u             | Fixed(3,0)
+  0xfd  259 | i32x4.relaxed_trunc_f64x2_s_zero        | Fixed(3,0)
+  0xfd  260 | i32x4.relaxed_trunc_f64x2_u_zero        | Fixed(3,0)
+  0xfd  261 | f32x4.relaxed_madd                      | Fixed(3,0)
+  0xfd  262 | f32x4.relaxed_nmadd                     | Fixed(3,0)
+  0xfd  263 | f64x2.relaxed_madd                      | Fixed(3,0)
+  0xfd  264 | f64x2.relaxed_nmadd                     | Fixed(3,0)
+  0xfd  265 | i8x16.relaxed_laneselect                | Fixed(3,0)
+  0xfd  266 | i16x8.relaxed_laneselect                | Fixed(3,0)
+  0xfd  267 | i32x4.relaxed_laneselect                | Fixed(3,0)
+  0xfd  268 | i64x2.relaxed_laneselect                | Fixed(3,0)
+  0xfd  269 | f32x4.relaxed_min                       | Fixed(3,0)
+  0xfd  270 | f32x4.relaxed_max                       | Fixed(3,0)
+  0xfd  271 | f64x2.relaxed_min                       | Fixed(3,0)
+  0xfd  272 | f64x2.relaxed_max                       | Fixed(3,0)
+  0xfd  273 | i16x8.relaxed_q15mulr_s                 | Fixed(3,0)
+  0xfd  274 | i16x8.relaxed_dot_i8x16_i7x16_s         | Fixed(3,0)
+  0xfd  275 | i32x4.relaxed_dot_i8x16_i7x16_add_s     | Fixed(3,0)
+}
+
+# ============================================================================
+# 0xfe operators
+# ============================================================================
+
+threads {
+  0xfe    0 | memory.atomic.notify { MemArg(4) }       | Fixed(3,0)
+  0xfe    1 | memory.atomic.wait32 { MemArg(4) }       | Fixed(3,0)
+  0xfe    2 | memory.atomic.wait64 { MemArg(8) }       | Fixed(3,0)
+  0xfe    3 | atomic.fence { FenceFlags }              | Fixed(3,0)
+  # ...   4
+  # ...   5
+  # ...   6
+  # ...   7
+  # ...   8
+  # ...   9
+  # ...  10
+  # ...  11
+  # ...  12
+  # ...  13
+  # ...  14
+  # ...  15
+  0xfe   16 | i32.atomic.load { MemArg(4) }            | Fixed(3,0)
+  0xfe   17 | i64.atomic.load { MemArg(8) }            | Fixed(3,0)
+  0xfe   18 | i32.atomic.load8_u { MemArg(1) }         | Fixed(3,0)
+  0xfe   19 | i32.atomic.load16_u { MemArg(2) }        | Fixed(3,0)
+  0xfe   20 | i64.atomic.load8_u { MemArg(1) }         | Fixed(3,0)
+  0xfe   21 | i64.atomic.load16_u { MemArg(2) }        | Fixed(3,0)
+  0xfe   22 | i64.atomic.load32_u { MemArg(4) }        | Fixed(3,0)
+  0xfe   23 | i32.atomic.store { MemArg(4) }           | Fixed(3,0)
+  0xfe   24 | i64.atomic.store { MemArg(8) }           | Fixed(3,0)
+  0xfe   25 | i32.atomic.store8 { MemArg(1) }          | Fixed(3,0)
+  0xfe   26 | i32.atomic.store16 { MemArg(2) }         | Fixed(3,0)
+  0xfe   27 | i64.atomic.store8 { MemArg(1) }          | Fixed(3,0)
+  0xfe   28 | i64.atomic.store16 { MemArg(2) }         | Fixed(3,0)
+  0xfe   29 | i64.atomic.store32 { MemArg(4) }         | Fixed(3,0)
+  0xfe   30 | i32.atomic.rmw.add { MemArg(4) }         | Fixed(3,0)
+  0xfe   31 | i64.atomic.rmw.add { MemArg(8) }         | Fixed(3,0)
+  0xfe   32 | i32.atomic.rmw8.add_u { MemArg(1) }      | Fixed(3,0)
+  0xfe   33 | i32.atomic.rmw16.add_u { MemArg(2) }     | Fixed(3,0)
+  0xfe   34 | i64.atomic.rmw8.add_u { MemArg(1) }      | Fixed(3,0)
+  0xfe   35 | i64.atomic.rmw16.add_u { MemArg(2) }     | Fixed(3,0)
+  0xfe   36 | i64.atomic.rmw32.add_u { MemArg(4) }     | Fixed(3,0)
+  0xfe   37 | i32.atomic.rmw.sub { MemArg(4) }         | Fixed(3,0)
+  0xfe   38 | i64.atomic.rmw.sub { MemArg(8) }         | Fixed(3,0)
+  0xfe   39 | i32.atomic.rmw8.sub_u { MemArg(1) }      | Fixed(3,0)
+  0xfe   40 | i32.atomic.rmw16.sub_u { MemArg(2) }     | Fixed(3,0)
+  0xfe   41 | i64.atomic.rmw8.sub_u { MemArg(1) }      | Fixed(3,0)
+  0xfe   42 | i64.atomic.rmw16.sub_u { MemArg(2) }     | Fixed(3,0)
+  0xfe   43 | i64.atomic.rmw32.sub_u { MemArg(4) }     | Fixed(3,0)
+  0xfe   44 | i32.atomic.rmw.and { MemArg(4) }         | Fixed(3,0)
+  0xfe   45 | i64.atomic.rmw.and { MemArg(8) }         | Fixed(3,0)
+  0xfe   46 | i32.atomic.rmw8.and_u { MemArg(1) }      | Fixed(3,0)
+  0xfe   47 | i32.atomic.rmw16.and_u { MemArg(2) }     | Fixed(3,0)
+  0xfe   48 | i64.atomic.rmw8.and_u { MemArg(1) }      | Fixed(3,0)
+  0xfe   49 | i64.atomic.rmw16.and_u { MemArg(2) }     | Fixed(3,0)
+  0xfe   50 | i64.atomic.rmw32.and_u { MemArg(4) }     | Fixed(3,0)
+  0xfe   51 | i32.atomic.rmw.or { MemArg(4) }          | Fixed(3,0)
+  0xfe   52 | i64.atomic.rmw.or { MemArg(8) }          | Fixed(3,0)
+  0xfe   53 | i32.atomic.rmw8.or_u { MemArg(1) }       | Fixed(3,0)
+  0xfe   54 | i32.atomic.rmw16.or_u { MemArg(2) }      | Fixed(3,0)
+  0xfe   55 | i64.atomic.rmw8.or_u { MemArg(1) }       | Fixed(3,0)
+  0xfe   56 | i64.atomic.rmw16.or_u { MemArg(2) }      | Fixed(3,0)
+  0xfe   57 | i64.atomic.rmw32.or_u { MemArg(4) }      | Fixed(3,0)
+  0xfe   58 | i32.atomic.rmw.xor { MemArg(4) }         | Fixed(3,0)
+  0xfe   59 | i64.atomic.rmw.xor { MemArg(8) }         | Fixed(3,0)
+  0xfe   60 | i32.atomic.rmw8.xor_u { MemArg(1) }      | Fixed(3,0)
+  0xfe   61 | i32.atomic.rmw16.xor_u { MemArg(2) }     | Fixed(3,0)
+  0xfe   62 | i64.atomic.rmw8.xor_u { MemArg(1) }      | Fixed(3,0)
+  0xfe   63 | i64.atomic.rmw16.xor_u { MemArg(2) }     | Fixed(3,0)
+  0xfe   64 | i64.atomic.rmw32.xor_u { MemArg(4) }     | Fixed(3,0)
+  0xfe   65 | i32.atomic.rmw.xchg { MemArg(4) }        | Fixed(3,0)
+  0xfe   66 | i64.atomic.rmw.xchg { MemArg(8) }        | Fixed(3,0)
+  0xfe   67 | i32.atomic.rmw8.xchg_u { MemArg(1) }     | Fixed(3,0)
+  0xfe   68 | i32.atomic.rmw16.xchg_u { MemArg(2) }    | Fixed(3,0)
+  0xfe   69 | i64.atomic.rmw8.xchg_u { MemArg(1) }     | Fixed(3,0)
+  0xfe   70 | i64.atomic.rmw16.xchg_u { MemArg(2) }    | Fixed(3,0)
+  0xfe   71 | i64.atomic.rmw32.xchg_u { MemArg(4) }    | Fixed(3,0)
+  0xfe   72 | i32.atomic.rmw.cmpxchg { MemArg(4) }     | Fixed(3,0)
+  0xfe   73 | i64.atomic.rmw.cmpxchg { MemArg(8) }     | Fixed(3,0)
+  0xfe   74 | i32.atomic.rmw8.cmpxchg_u { MemArg(1) }  | Fixed(3,0)
+  0xfe   75 | i32.atomic.rmw16.cmpxchg_u { MemArg(2) } | Fixed(3,0)
+  0xfe   76 | i64.atomic.rmw8.cmpxchg_u { MemArg(1) }  | Fixed(3,0)
+  0xfe   77 | i64.atomic.rmw16.cmpxchg_u { MemArg(2) } | Fixed(3,0)
+  0xfe   78 | i64.atomic.rmw32.cmpxchg_u { MemArg(4) } | Fixed(3,0)
+}
+
+shared_everything_threads {
+  0xfe   79 | global.atomic.get { Ordering Global }             | Fixed(3,0)
+  0xfe   80 | global.atomic.set { Ordering Global }             | Fixed(3,0)
+  0xfe   81 | global.atomic.rmw.add { Ordering Global }         | Fixed(3,0)
+  0xfe   82 | global.atomic.rmw.sub { Ordering Global }         | Fixed(3,0)
+  0xfe   83 | global.atomic.rmw.and { Ordering Global }         | Fixed(3,0)
+  0xfe   84 | global.atomic.rmw.or { Ordering Global }          | Fixed(3,0)
+  0xfe   85 | global.atomic.rmw.xor { Ordering Global }         | Fixed(3,0)
+  0xfe   86 | global.atomic.rmw.xchg { Ordering Global }        | Fixed(3,0)
+  0xfe   87 | global.atomic.rmw.cmpxchg { Ordering Global }     | Fixed(3,0)
+  0xfe   88 | table.atomic.get { Ordering Table }               | Fixed(3,0)
+  0xfe   89 | table.atomic.set { Ordering Table }               | Fixed(3,0)
+  0xfe   90 | table.atomic.rmw.xchg { Ordering Table }          | Fixed(3,0)
+  0xfe   91 | table.atomic.rmw.cmpxchg { Ordering Table }       | Fixed(3,0)
+  0xfe   92 | struct.atomic.get { Ordering Type Field }         | Fixed(3,0)
+  0xfe   93 | struct.atomic.get_s { Ordering Type Field }       | Fixed(3,0)
+  0xfe   94 | struct.atomic.get_u { Ordering Type Field }       | Fixed(3,0)
+  0xfe   95 | struct.atomic.set { Ordering Type Field }         | Fixed(3,0)
+  0xfe   96 | struct.atomic.rmw.add { Ordering Type Field }     | Fixed(3,0)
+  0xfe   97 | struct.atomic.rmw.sub { Ordering Type Field }     | Fixed(3,0)
+  0xfe   98 | struct.atomic.rmw.and { Ordering Type Field }     | Fixed(3,0)
+  0xfe   99 | struct.atomic.rmw.or { Ordering Type Field }      | Fixed(3,0)
+  0xfe  100 | struct.atomic.rmw.xor { Ordering Type Field }     | Fixed(3,0)
+  0xfe  101 | struct.atomic.rmw.xchg { Ordering Type Field }    | Fixed(3,0)
+  0xfe  102 | struct.atomic.rmw.cmpxchg { Ordering Type Field } | Fixed(3,0)
+  0xfe  103 | array.atomic.get { Ordering Type Field }          | Fixed(3,0)
+  0xfe  104 | array.atomic.get_s { Ordering Type Field }        | Fixed(3,0)
+  0xfe  105 | array.atomic.get_u { Ordering Type Field }        | Fixed(3,0)
+  0xfe  106 | array.atomic.set { Ordering Type Field }          | Fixed(3,0)
+  0xfe  107 | array.atomic.rmw.add { Ordering Type Field }      | Fixed(3,0)
+  0xfe  108 | array.atomic.rmw.sub { Ordering Type Field }      | Fixed(3,0)
+  0xfe  109 | array.atomic.rmw.and { Ordering Type Field }      | Fixed(3,0)
+  0xfe  110 | array.atomic.rmw.or { Ordering Type Field }       | Fixed(3,0)
+  0xfe  111 | array.atomic.rmw.xor { Ordering Type Field }      | Fixed(3,0)
+  0xfe  112 | array.atomic.rmw.xchg { Ordering Type Field }     | Fixed(3,0)
+  0xfe  113 | array.atomic.rmw.cmpxchg { Ordering Type Field }  | Fixed(3,0)
+  0xfe  114 | ref.i31_shared                                    | Fixed(3,0)
+}

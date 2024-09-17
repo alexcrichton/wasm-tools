@@ -19,6 +19,9 @@ workspace = true
 [package.metadata.docs.rs]
 all-features = true
 
+[build-dependencies]
+wasmparser-opcodes = { workspace = true }
+
 [dependencies]
 bitflags = "2.4.1"
 indexmap = { workspace = true, optional = true }

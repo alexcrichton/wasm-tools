@@ -1883,9 +1883,14 @@ dependencies = [
  "semver",
  "serde",
  "wasm-encoder 0.217.0",
+ "wasmparser-opcodes",
  "wast",
  "wat",
 ]
+
+[[package]]
+name = "wasmparser-opcodes"
+version = "0.217.0"
 
 [[package]]
 name = "wasmprinter"
