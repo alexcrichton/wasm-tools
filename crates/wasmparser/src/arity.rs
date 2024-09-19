@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-use crate::{BlockType, FrameKind};
+use crate::{BinaryReader, BinaryReaderError, BlockType, FrameKind, Operator, Result};
 
 /// To compute the arity of "variable-arity" operators, the operator_arity macro needs
 /// some information about the module's types and the current control stack. The
@@ -44,9 +44,20 @@ pub trait ModuleArity {
     }
 }
 
+impl BinaryReader<'_> {
+    /// TODO
+    pub fn operator_arity(&self, module: &impl ModuleArity) -> Result<(u32, u32)> {
+        self.clone()
+            .read_operator()?
+            .operator_arity(module)
+            .ok_or_else(|| {
+                BinaryReaderError::new("operator arity is unknown", self.original_position())
+            })
+    }
+}
+
 /// The operator_arity macro interprets the annotations in the for_each_operator macro
 /// to compute the arity of each operator. It needs access to a ModuleArity implementation.
-#[macro_export]
 macro_rules! operator_arity {
     (arities $self:ident $({ $($arg:ident: $argty:ty),* })? arity $($ann:tt)*) => {
 	{
@@ -174,4 +185,25 @@ macro_rules! operator_arity {
     (fixed atomic rmw array $($_:tt)*) => {(3, 1)};
     (fixed atomic rmw $($_:tt)*)       => {(2, 1)};
     (fixed atomic cmpxchg $($_:tt)*)   => {(3, 1)};
+}
+
+impl Operator<'_> {
+    /// TODO
+    pub fn operator_arity(&self, module: &impl ModuleArity) -> Option<(u32, u32)> {
+        macro_rules! define_arity {
+            ($(@$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*) )*) => (
+                match self.clone() {
+                    $(
+                        Operator::$op $({ $($arg),* })? => {
+                            $(
+                                $(let _ = $arg;)*
+                            )?
+                            operator_arity!(arities module $({ $($arg: $argty),* })? $($ann)*)
+                        }
+                    )*
+                }
+            );
+        }
+        for_each_operator!(define_arity)
+    }
 }

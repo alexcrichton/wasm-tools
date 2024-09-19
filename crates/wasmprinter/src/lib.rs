@@ -1373,7 +1373,7 @@ impl Printer<'_, '_> {
         Ok(())
     }
 
-    fn print_operators<'a, O: OpPrinter + VisitOperator<'a, Output = Result<()>>>(
+    fn print_operators<'a, O: OpPrinter>(
         body: &mut BinaryReader<'a>,
         mut branch_hints: &[(usize, BranchHint)],
         func_start: usize,
@@ -1390,7 +1390,7 @@ impl Printer<'_, '_> {
             }
 
             op_printer.set_offset(body.original_position());
-            body.visit_operator(op_printer)??;
+            op_printer.visit_operator(body)?;
         }
         Ok(())
     }

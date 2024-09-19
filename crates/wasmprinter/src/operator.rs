@@ -2,8 +2,8 @@ use super::{Config, Print, PrintTermcolor, Printer, State};
 use anyhow::{anyhow, bail, Result};
 use termcolor::{Ansi, NoColor};
 use wasmparser::{
-    operator_arity, BlockType, BrTable, Catch, CompositeInnerType, CompositeType, FrameKind,
-    MemArg, ModuleArity, Ordering, RefType, SubType, TryTable, VisitOperator,
+    BinaryReader, BlockType, BrTable, Catch, CompositeInnerType, CompositeType, FrameKind, MemArg,
+    ModuleArity, Operator, Ordering, RefType, SubType, TryTable, VisitOperator,
 };
 
 pub struct OperatorState {
@@ -1345,6 +1345,7 @@ impl<'a> VisitOperator<'a> for PrintOperator<'_, '_, '_, '_> {
 pub trait OpPrinter {
     fn branch_hint(&mut self, offset: usize, taken: bool) -> Result<()>;
     fn set_offset(&mut self, offset: usize);
+    fn visit_operator(&mut self, reader: &mut BinaryReader<'_>) -> Result<()>;
 }
 
 impl OpPrinter for PrintOperator<'_, '_, '_, '_> {
@@ -1359,6 +1360,10 @@ impl OpPrinter for PrintOperator<'_, '_, '_, '_> {
 
     fn set_offset(&mut self, offset: usize) {
         self.operator_state.op_offset = offset;
+    }
+
+    fn visit_operator(&mut self, reader: &mut BinaryReader<'_>) -> Result<()> {
+        reader.visit_operator(self)?
     }
 }
 
@@ -1378,6 +1383,67 @@ impl OpPrinter for PrintOperatorFolded<'_, '_, '_, '_> {
 
     fn set_offset(&mut self, offset: usize) {
         self.operator_state.op_offset = offset;
+    }
+
+    fn visit_operator(&mut self, reader: &mut BinaryReader<'_>) -> Result<()> {
+        let operator = reader.clone().read_operator()?;
+        let (params, results) = operator
+            .operator_arity(self)
+            .ok_or_else(|| anyhow::anyhow!("could not calculate operator arity"))?;
+        let use_color = self.printer.result.supports_async_color();
+        let mut buf_color = PrintTermcolor(Ansi::new(Vec::new()));
+        let mut buf_nocolor = PrintTermcolor(NoColor::new(Vec::new()));
+        let internal_config = Config {
+            print_offsets: false,
+            print_skeleton: false,
+            name_unnamed: self.printer.config.name_unnamed,
+            fold_instructions: false,
+        };
+        let mut internal_printer = Printer {
+            config: &internal_config,
+            result: if use_color {
+                &mut buf_color
+            } else {
+                &mut buf_nocolor
+            },
+            nesting: self.printer.nesting,
+            line: self.printer.line,
+            group_lines: Vec::new(),
+            code_section_hints: Vec::new(),
+        };
+
+        let mut op_printer =
+            PrintOperator::new(&mut internal_printer, self.state, self.operator_state);
+        reader.visit_operator(&mut op_printer)??;
+
+        self.printer.nesting = internal_printer.nesting;
+        self.printer.line = internal_printer.line;
+
+        let inst = String::from_utf8(if use_color {
+            buf_color.0.into_inner()
+        } else {
+            buf_nocolor.0.into_inner()
+        })
+        .expect("invalid UTF-8");
+
+        match operator {
+            Operator::Loop { blockty } => self.push_block(blockty, FrameKind::Loop, inst),
+            Operator::Block { blockty } => self.push_block(blockty, FrameKind::Block, inst),
+            Operator::TryTable { try_table } => {
+                self.push_block(try_table.ty, FrameKind::TryTable, inst)
+            }
+            Operator::If { blockty } => self.push_if(blockty, inst),
+            Operator::Else => self.handle_else(),
+            Operator::End => self.handle_end(results),
+
+            Operator::Try { .. }
+            | Operator::Catch { .. }
+            | Operator::CatchAll { .. }
+            | Operator::Delegate { .. } => {
+                bail!("legacy-exceptions not supported")
+            }
+            _ => self.handle_plain(inst, params, results),
+        }
     }
 }
 
@@ -1429,70 +1495,6 @@ impl ModuleArity for PrintOperatorFolded<'_, '_, '_, '_> {
             None => None,
         }
     }
-}
-
-// The define_visit_folded macro defines a visitor for each operator that will push the corresponding
-// folded instruction (or block entry) on the stack. The folded instructions will be printed to the
-// "real" printer in `finalize`.
-macro_rules! define_visit_folded {
-    ($(@$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*) )*) => ($(
-        fn $visit(&mut self $( , $($arg: $argty),* )?) -> Self::Output {
-	    let arities = operator_arity!(arities self $({ $($arg: $argty),* })? $($ann)*);
-	    let (_params, _results) = arities.expect("instruction has unknown arities");
-
-	    define_visit_folded!(get_block_type $op blockty $($($arg)*)?);
-
-	    let use_color = self.printer.result.supports_async_color();
-	    let mut buf_color = PrintTermcolor(Ansi::new(Vec::new()));
-	    let mut buf_nocolor = PrintTermcolor(NoColor::new(Vec::new()));
-	    let internal_config = Config { print_offsets: false,
-					   print_skeleton: false,
-					   name_unnamed: self.printer.config.name_unnamed,
-					   fold_instructions: false };
-	    let mut internal_printer = Printer { config: &internal_config,
-						 result: if use_color { &mut buf_color } else { &mut buf_nocolor },
-						 nesting: self.printer.nesting,
-						 line: self.printer.line,
-						 group_lines: Vec::new(),
-						 code_section_hints: Vec::new() };
-
-	    let mut op_printer = PrintOperator::new(&mut internal_printer, self.state, self.operator_state);
-	    op_printer.$visit($($($arg),*)?)?;
-
-	    self.printer.nesting = internal_printer.nesting;
-            self.printer.line = internal_printer.line;
-
-	    let _inst = String::from_utf8(if use_color { buf_color.0.into_inner() } else { buf_nocolor.0.into_inner() }).expect("invalid UTF-8");
-	    define_visit_folded!(handle $op self blockty _inst _params _results)
-        }
-    )*);
-
-    (get_block_type Loop      $var:ident $ty:ident) => {let $var = $ty;};
-    (get_block_type Block     $var:ident $ty:ident) => {let $var = $ty;};
-    (get_block_type If        $var:ident $ty:ident) => {let $var = $ty;};
-    (get_block_type TryTable  $var:ident $ty:ident) => {let $var = $ty.ty;};
-    (get_block_type $op:ident $var:ident $($_:tt)*) => {};
-
-    (handle Loop      $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {$self.push_block($ty, FrameKind::Loop, $inst)};
-    (handle Block     $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {$self.push_block($ty, FrameKind::Block, $inst)};
-    (handle TryTable  $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {$self.push_block($ty, FrameKind::TryTable, $inst)};
-    (handle If        $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {$self.push_if($ty, $inst)};
-
-    (handle Else      $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {$self.handle_else()};
-    (handle End       $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {$self.handle_end($results)};
-
-    (handle Try       $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {bail!("legacy-exceptions not supported")};
-    (handle Catch     $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {bail!("legacy-exceptions not supported")};
-    (handle CatchAll  $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {bail!("legacy-exceptions not supported")};
-    (handle Delegate  $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {bail!("legacy-exceptions not supported")};
-
-    (handle $op:ident $self:ident $ty:ident $inst:ident $params:ident $results:ident) => {$self.handle_plain($inst, $params, $results)};
-}
-
-impl<'a> VisitOperator<'a> for PrintOperatorFolded<'_, '_, '_, '_> {
-    type Output = Result<()>;
-
-    wasmparser::for_each_operator!(define_visit_folded);
 }
 
 impl<'printer, 'state, 'a, 'b> PrintOperatorFolded<'printer, 'state, 'a, 'b> {
