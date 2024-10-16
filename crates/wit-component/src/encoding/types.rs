@@ -160,6 +160,7 @@ pub trait ValtypeEncoder<'a> {
                         let name = ty.name.as_ref().expect("resources must be named");
                         let index = self.export_resource(name);
                         self.type_map().insert(id, index);
+                        // here
                         return Ok(ComponentValType::Type(index));
                     }
                     TypeDefKind::Handle(Handle::Own(id)) => {

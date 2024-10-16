@@ -431,7 +431,7 @@ impl WitPrinter {
             }
             WorldKey::Interface(id) => {
                 match item {
-                    WorldItem::Interface { id: id2, .. } => assert_eq!(id, id2),
+                    WorldItem::Interface { .. } => {}
                     _ => unreachable!(),
                 }
                 self.print_path_to_interface(resolve, *id, cur_pkg)?;

@@ -383,19 +383,21 @@ impl<'a> ComponentWorld<'a> {
         let resolve = &self.encoder.metadata.resolve;
         let world = self.encoder.metadata.world;
 
-        let exports = &resolve.worlds[world].exports;
-        for (_name, item) in exports.iter() {
-            let id = match item {
-                WorldItem::Function(_) => continue,
-                WorldItem::Interface { id, .. } => *id,
-                WorldItem::Type(_) => unreachable!(),
-            };
+        let export_interfaces = resolve.worlds[world]
+            .exports
+            .values()
+            .filter_map(|item| match item {
+                WorldItem::Interface { id, .. } => Some(*id),
+                _ => None,
+            })
+            .collect::<IndexSet<_>>();
+        for id in export_interfaces.iter() {
             let mut set = HashSet::new();
 
-            for other in resolve.interface_direct_deps(id) {
+            for other in resolve.interface_direct_deps(*id) {
                 // If this dependency is not exported, then it'll show up
                 // through an import, so we're not interested in it.
-                if !exports.contains_key(&WorldKey::Interface(other)) {
+                if !export_interfaces.contains(&other) {
                     continue;
                 }
 
@@ -406,7 +408,7 @@ impl<'a> ComponentWorld<'a> {
                     set.extend(self.exports_used[&other].iter().copied());
                 }
             }
-            let prev = self.exports_used.insert(id, set);
+            let prev = self.exports_used.insert(*id, set);
             assert!(prev.is_none());
         }
     }

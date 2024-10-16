@@ -536,6 +536,18 @@ pub struct Interface {
     /// The package that owns this interface.
     #[cfg_attr(feature = "serde", serde(serialize_with = "serialize_optional_id"))]
     pub package: Option<PackageId>,
+
+    /// The interface that this one is a clone of, if applicable.
+    ///
+    /// TODO: fill out more words here
+    #[cfg_attr(
+        feature = "serde",
+        serde(
+            serialize_with = "serialize_optional_id",
+            skip_serializing_if = "Option::is_none",
+        )
+    )]
+    pub clone_of: Option<InterfaceId>,
 }
 
 #[derive(Debug, Clone, PartialEq)]

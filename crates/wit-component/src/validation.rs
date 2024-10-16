@@ -892,20 +892,18 @@ impl NameMangling for Standard {
         items: &IndexMap<WorldKey, WorldItem>,
     ) -> Result<(WorldKey, InterfaceId)> {
         for (key, item) in items.iter() {
-            let id = match key {
-                // Bare keys are matched exactly against `interface`
-                WorldKey::Name(name) => match item {
-                    WorldItem::Interface { id, .. } if name == interface => *id,
-                    _ => continue,
-                },
-                // ID-identified keys are matched with their "canonical name"
-                WorldKey::Interface(id) => {
-                    if resolve.canonicalized_id_of(*id).as_deref() != Some(interface) {
-                        continue;
-                    }
-                    *id
-                }
+            let id = match item {
+                WorldItem::Interface { id, .. } => *id,
+                _ => continue,
             };
+            match key {
+                // Bare keys are matched exactly against `interface`
+                WorldKey::Name(name) if name == interface => {}
+                // ID-identified keys are matched with their "canonical name"
+                WorldKey::Interface(id)
+                    if resolve.canonicalized_id_of(*id).as_deref() == Some(interface) => {}
+                _ => continue,
+            }
             return Ok((key.clone(), id));
         }
         bail!("failed to find world item corresponding to interface `{interface}`")
@@ -1055,7 +1053,7 @@ impl NameMangling for Legacy {
                 .get(name.interface().as_str())
             {
                 let key = WorldKey::Interface(*id);
-                if items.contains_key(&key) {
+                if let Some(WorldItem::Interface { id, .. }) = items.get(&key) {
                     return Ok((key, *id));
                 }
             }
@@ -1065,10 +1063,10 @@ impl NameMangling for Legacy {
         // match based on versions. This means that a core wasm import for
         // "1.2.3" might end up matching an interface at "1.2.4", for example.
         // (or "1.2.2", depending on what's available).
-        for (key, _) in items {
-            let id = match key {
-                WorldKey::Interface(id) => *id,
-                WorldKey::Name(_) => continue,
+        for (key, item) in items {
+            let id = match (key, item) {
+                (WorldKey::Interface(_), WorldItem::Interface { id, .. }) => *id,
+                _ => continue,
             };
             // Make sure the interface names match
             let interface = &resolve.interfaces[id];

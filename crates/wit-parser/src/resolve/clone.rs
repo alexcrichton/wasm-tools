@@ -175,25 +175,32 @@ impl<'a> Cloner<'a> {
     }
 
     fn interface(&mut self, id: &mut InterfaceId) {
-        let mut new = self.resolve.interfaces[*id].clone();
-        let next_id = self.resolve.interfaces.next_id();
-        let mut clone = Cloner::new(
-            self.resolve,
-            TypeOwner::Interface(*id),
-            TypeOwner::Interface(next_id),
-        );
-        for id in new.types.values_mut() {
-            clone.type_id(id);
-        }
-        for func in new.functions.values_mut() {
-            clone.function(func);
-        }
-        new.package = Some(match self.new_owner {
+        *id = interface(self.resolve, *id);
+        let new_package = match self.new_owner {
             TypeOwner::Interface(id) => self.resolve.interfaces[id].package.unwrap(),
             TypeOwner::World(id) => self.resolve.worlds[id].package.unwrap(),
             TypeOwner::None => unreachable!(),
-        });
-        *id = self.resolve.interfaces.alloc(new);
-        assert_eq!(*id, next_id);
+        };
+        self.resolve.interfaces[*id].package = Some(new_package);
     }
+}
+
+pub fn interface(resolve: &mut Resolve, id: InterfaceId) -> InterfaceId {
+    let mut new = resolve.interfaces[id].clone();
+    if new.clone_of.is_none() {
+        new.clone_of = Some(id);
+    }
+    let next_id = resolve.interfaces.next_id();
+    let mut clone = Cloner::new(
+        resolve,
+        TypeOwner::Interface(id),
+        TypeOwner::Interface(next_id),
+    );
+    for id in new.types.values_mut() {
+        clone.type_id(id);
+    }
+    for func in new.functions.values_mut() {
+        clone.function(func);
+    }
+    resolve.interfaces.alloc(new)
 }

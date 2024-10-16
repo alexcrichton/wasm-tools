@@ -807,6 +807,7 @@ impl<'a> EncodingState<'a> {
                 TypeOwner::Interface(id) => id,
                 _ => unreachable!(),
             };
+            // here
             let idx = if owner == export || exports_used.contains(&owner) {
                 log::trace!("consulting exports for {id:?}");
                 nested.state.export_type_map[&id]

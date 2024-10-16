@@ -897,6 +897,7 @@ impl WitPackageDecoder<'_> {
                     functions: IndexMap::new(),
                     package: None,
                     stability: Default::default(),
+                    clone_of: None,
                 })
             });
 
@@ -952,6 +953,7 @@ impl WitPackageDecoder<'_> {
             functions: IndexMap::new(),
             package: None,
             stability: Default::default(),
+            clone_of: None,
         };
 
         let owner = TypeOwner::Interface(self.resolve.interfaces.next_id());
@@ -1462,6 +1464,11 @@ impl WitPackageDecoder<'_> {
             .interfaces
             .iter()
             .all(|(_, i)| i.package.is_some()));
+        for world in self.resolve.worlds.iter().map(|p| p.0).collect::<Vec<_>>() {
+            self.resolve.elaborate_world(world).unwrap();
+        }
+        #[cfg(debug_assertions)]
+        self.resolve.assert_valid();
         (self.resolve, id)
     }
 

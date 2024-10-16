@@ -654,7 +654,7 @@ package {name} is defined in two different locations:\n\
         } = resolve;
 
         let mut moved_types = Vec::new();
-        for (id, mut ty) in types {
+        for (id, ty) in types {
             let new_id = match type_map.get(&id).copied() {
                 Some(id) => {
                     update_stability(&ty.stability, &mut self.types[id].stability)?;
@@ -663,12 +663,18 @@ package {name} is defined in two different locations:\n\
                 None => {
                     log::debug!("moving type {:?}", ty.name);
                     moved_types.push(id);
-                    remap.update_typedef(self, &mut ty, None)?;
                     self.types.alloc(ty)
                 }
             };
             assert_eq!(remap.types.len(), id.index());
             remap.types.push(Some(new_id));
+        }
+        // TODO: comment on forward-references
+        for id in moved_types.iter() {
+            let new_id = remap.map_type(*id, None)?;
+            let mut ty = mem::replace(&mut self.types[new_id].kind, TypeDefKind::Unknown);
+            remap.update_typedef_kind(self, &mut ty, None)?;
+            self.types[new_id].kind = ty;
         }
 
         let mut moved_interfaces = Vec::new();
@@ -914,6 +920,9 @@ package {name} is defined in two different locations:\n\
             let prev = into_world.exports.insert(name, export);
             assert!(prev.is_none());
         }
+
+        // TODO: comment how exports may overlap with imports now
+        self.elaborate_world(into)?;
 
         #[cfg(debug_assertions)]
         self.assert_valid();
@@ -1510,7 +1519,7 @@ package {name} is defined in two different locations:\n\
         let mut interface_types = Vec::new();
         for (id, iface) in self.interfaces.iter() {
             assert!(self.packages.get(iface.package.unwrap()).is_some());
-            if iface.name.is_some() {
+            if iface.name.is_some() && iface.clone_of.is_none() {
                 assert!(package_interfaces[iface.package.unwrap().index()].contains(&id));
             }
 
@@ -1623,24 +1632,31 @@ package {name} is defined in two different locations:\n\
             if ty.kind == other.kind {
                 continue;
             }
-            let my_interface = match ty.owner {
+            let my_interface_id = match ty.owner {
                 TypeOwner::Interface(id) => id,
                 _ => continue,
             };
-            let other_interface = match other.owner {
+            let other_interface_id = match other.owner {
                 TypeOwner::Interface(id) => id,
                 _ => continue,
             };
 
-            let my_package = self.interfaces[my_interface].package;
-            let other_package = self.interfaces[other_interface].package;
+            let my_interface = &self.interfaces[my_interface_id];
+            let other_interface = &self.interfaces[other_interface_id];
+
+            if other_interface.clone_of.is_some() {
+                continue;
+            }
+
+            let my_package = my_interface.package;
+            let other_package = other_interface.package;
             let my_package_pos = positions.get_index_of(&my_package).unwrap();
             let other_package_pos = positions.get_index_of(&other_package).unwrap();
 
             if my_package_pos == other_package_pos {
                 let interfaces = &positions[&my_package];
-                let my_interface_pos = interfaces.get_index_of(&my_interface).unwrap();
-                let other_interface_pos = interfaces.get_index_of(&other_interface).unwrap();
+                let my_interface_pos = interfaces.get_index_of(&my_interface_id).unwrap();
+                let other_interface_pos = interfaces.get_index_of(&other_interface_id).unwrap();
                 assert!(other_interface_pos <= my_interface_pos);
             } else {
                 assert!(other_package_pos < my_package_pos);
@@ -1673,6 +1689,14 @@ package {name} is defined in two different locations:\n\
                 }
             }
         }
+        let exported_interfaces = world
+            .exports
+            .iter()
+            .filter_map(|(_, item)| match item {
+                WorldItem::Interface { id, .. } => Some(*id),
+                _ => None,
+            })
+            .collect::<IndexSet<_>>();
         for (key, item) in world.exports.iter() {
             log::debug!(
                 "asserting elaborated world export {}",
@@ -1682,13 +1706,22 @@ package {name} is defined in two different locations:\n\
                 // Types referred to by this function must be imported.
                 WorldItem::Function(f) => self.assert_world_function_imports_types(world, key, f),
 
-                // Dependencies of exported interfaces must also be exported, or
-                // if imported then that entire chain of imports must be
-                // imported and not exported.
                 WorldItem::Interface { id, .. } => {
+                    // If the key is `Interface` and doesn't match `id` then our
+                    // id must be a clone of that interface.
+                    if let WorldKey::Interface(id2) = key {
+                        if id == id2 {
+                            assert!(!world.imports.contains_key(key));
+                        } else {
+                            assert!(world.imports.contains_key(key));
+                            assert_eq!(self.interfaces[*id].clone_of, Some(*id2));
+                        }
+                    }
+                    // Dependencies of exported interfaces must also be
+                    // exported, or if imported then that entire chain of
+                    // imports must be imported and not exported.
                     for dep in self.interface_direct_deps(*id) {
-                        let dep_key = WorldKey::Interface(dep);
-                        if world.exports.contains_key(&dep_key) {
+                        if exported_interfaces.contains(&dep) {
                             continue;
                         }
                         self.foreach_interface_dep(dep, &mut |dep| {
@@ -1816,7 +1849,7 @@ package {name} is defined in two different locations:\n\
     /// noted on `elaborate_world_exports`.
     ///
     /// The world is mutated in-place in this `Resolve`.
-    fn elaborate_world(&mut self, world_id: WorldId) -> Result<()> {
+    pub(crate) fn elaborate_world(&mut self, world_id: WorldId) -> Result<()> {
         // First process all imports. This is easier than exports since the only
         // requirement here is that all interfaces need to be added with a
         // topological order between them.
@@ -1865,7 +1898,7 @@ package {name} is defined in two different locations:\n\
         for (name, item) in world.exports.iter() {
             match item {
                 WorldItem::Interface { id, stability } => {
-                    let prev = export_interfaces.insert(*id, (name.clone(), stability));
+                    let prev = export_interfaces.insert(*id, (name.clone(), stability.clone()));
                     assert!(prev.is_none());
                 }
                 WorldItem::Function(_) => {
@@ -1959,8 +1992,8 @@ package {name} is defined in two different locations:\n\
     /// export is added for something that's required to be an error then the
     /// operation fails.
     fn elaborate_world_exports(
-        &self,
-        export_interfaces: &IndexMap<InterfaceId, (WorldKey, &Stability)>,
+        &mut self,
+        export_interfaces: &IndexMap<InterfaceId, (WorldKey, Stability)>,
         imports: &mut IndexMap<WorldKey, WorldItem>,
         exports: &mut IndexMap<WorldKey, WorldItem>,
     ) -> Result<()> {
@@ -2001,13 +2034,28 @@ package {name} is defined in two different locations:\n\
                 );
             }
         }
+
+        // TODO: comment this
+        let mut replacements = HashMap::new();
+        for (key, item) in exports.iter_mut() {
+            if imports.contains_key(key) {
+                if let WorldItem::Interface { id, .. } = item {
+                    let new = clone::interface(self, *id);
+                    let prev = replacements.insert(*id, new);
+                    assert!(prev.is_none());
+                    *id = new;
+                }
+            }
+
+            self.update_interface_deps_of_world_item(item, &mut replacements);
+        }
         return Ok(());
 
         fn add_world_export(
             resolve: &Resolve,
             imports: &mut IndexMap<WorldKey, WorldItem>,
             exports: &mut IndexMap<WorldKey, WorldItem>,
-            export_interfaces: &IndexMap<InterfaceId, (WorldKey, &Stability)>,
+            export_interfaces: &IndexMap<InterfaceId, (WorldKey, Stability)>,
             required_imports: &mut HashSet<InterfaceId>,
             id: InterfaceId,
             key: &WorldKey,
@@ -2957,10 +3005,19 @@ impl Remap {
         ty: &mut TypeDef,
         span: Option<Span>,
     ) -> Result<()> {
+        self.update_typedef_kind(resolve, &mut ty.kind, span)
+    }
+
+    fn update_typedef_kind(
+        &mut self,
+        resolve: &mut Resolve,
+        kind: &mut TypeDefKind,
+        span: Option<Span>,
+    ) -> Result<()> {
         // NB: note that `ty.owner` is not updated here since interfaces
         // haven't been mapped yet and that's done in a separate step.
         use crate::TypeDefKind::*;
-        match &mut ty.kind {
+        match kind {
             Handle(handle) => match handle {
                 crate::Handle::Own(ty) | crate::Handle::Borrow(ty) => {
                     self.update_type_id(ty, span)?
@@ -3082,6 +3139,10 @@ impl Remap {
                     .unwrap_or("<unknown>"),
             )
         });
+
+        if let Some(id) = iface.clone_of {
+            iface.clone_of = Some(self.map_interface(id, None)?);
+        }
 
         // NB: note that `iface.doc` is not updated here since interfaces
         // haven't been mapped yet and that's done in a separate step.
@@ -3715,6 +3776,8 @@ impl<'a> MergeMap<'a> {
                     // if either is unnamed it won't be present in
                     // `interface_map` so this'll return an error.
                     _ => {
+                        let from = self.from.interfaces[*from].clone_of.unwrap_or(*from);
+                        let into = self.into.interfaces[*into].clone_of.unwrap_or(*into);
                         if self.interface_map.get(&from) != Some(&into) {
                             bail!("interfaces are not the same");
                         }

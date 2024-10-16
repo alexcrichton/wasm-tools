@@ -316,6 +316,7 @@ impl<'a> Resolver<'a> {
             stability: Default::default(),
             functions: IndexMap::new(),
             package: None,
+            clone_of: None,
         })
     }
 
