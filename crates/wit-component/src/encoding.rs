@@ -1945,6 +1945,7 @@ impl ComponentEncoder {
     }
 
     fn merge_metadata(&mut self, metadata: Bindgen) -> Result<IndexSet<WorldKey>> {
+        println!("what");
         self.metadata.merge(metadata)
     }
 

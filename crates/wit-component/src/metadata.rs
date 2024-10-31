@@ -237,6 +237,7 @@ pub fn decode(wasm: &[u8]) -> Result<(Option<Vec<u8>>, Bindgen)> {
             wasmparser::Payload::CustomSection(cs) if cs.name().starts_with("component-type") => {
                 let data = Bindgen::decode_custom_section(cs.data())
                     .with_context(|| format!("decoding custom section {}", cs.name()))?;
+                println!("what2");
                 ret.merge(data)
                     .with_context(|| format!("updating metadata for section {}", cs.name()))?;
                 found_custom = true;
@@ -411,6 +412,7 @@ impl Bindgen {
             .merge(resolve)
             .context("failed to merge WIT package sets together")?;
         let world = remap.map_world(world, None)?;
+        dbg!(&self.resolve.worlds[world].exports);
         let exports = self.resolve.worlds[world].exports.keys().cloned().collect();
         self.resolve
             .merge_worlds(world, self.world)

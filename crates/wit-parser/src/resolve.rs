@@ -2037,17 +2037,22 @@ package {name} is defined in two different locations:\n\
 
         // TODO: comment this
         let mut replacements = HashMap::new();
-        for (key, item) in exports.iter_mut() {
-            if imports.contains_key(key) {
-                if let WorldItem::Interface { id, .. } = item {
+        for (mut key, mut item) in mem::take(exports) {
+            if imports.contains_key(&key) {
+                if let WorldItem::Interface { id, .. } = &mut item {
                     let new = clone::interface(self, *id);
                     let prev = replacements.insert(*id, new);
                     assert!(prev.is_none());
                     *id = new;
+                    if let WorldKey::Interface(id) = &mut key {
+                        *id = new;
+                    }
                 }
             }
 
-            self.update_interface_deps_of_world_item(item, &mut replacements);
+            self.update_interface_deps_of_world_item(&item, &mut replacements);
+            let prev = exports.insert(key, item);
+            assert!(prev.is_none());
         }
         return Ok(());
 
