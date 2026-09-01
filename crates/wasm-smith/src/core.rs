@@ -2998,9 +2998,10 @@ impl Module {
                 // Pick a kind of element segment to generate which will also
                 // give us a hint of the maximum size, if any.
                 let (kind, max_size_hint) = u.choose(&choices)?(u)?;
-                let max = max_size_hint
-                    .map(|i| usize::try_from(i).unwrap())
-                    .unwrap_or_else(|| self.config.max_elements);
+                let max = match max_size_hint.map(|i| usize::try_from(i).unwrap()) {
+                    Some(max) => max.min(self.config.max_elements),
+                    None => self.config.max_elements,
+                };
 
                 // Infer, from the kind of segment, the type of the element
                 // segment. Passive/declared segments can be declared with any
