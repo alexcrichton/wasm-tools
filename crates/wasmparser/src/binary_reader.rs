@@ -1424,6 +1424,19 @@ impl<'a> BinaryReader<'a> {
             0x15 => visitor.visit_i64_mul_wide_s(),
             0x16 => visitor.visit_i64_mul_wide_u(),
 
+            0x30 | 0x31 => {
+                #[cfg(feature = "simd")]
+                if let Some(visitor) = visitor.simd_visitor() {
+                    let memarg = self.read_memarg(1)?;
+                    return Ok(if code == 0x30 {
+                        visitor.visit_f32_load_f16(memarg)
+                    } else {
+                        visitor.visit_f32_store_f16(memarg)
+                    });
+                }
+                bail!(pos, "unexpected SIMD opcode: 0xfc 0x{code:x}")
+            }
+
             _ => bail!(pos, "unknown 0xfc subopcode: 0x{code:x}"),
         })
     }
@@ -1740,6 +1753,42 @@ impl<'a> BinaryReader<'a> {
             0x111 => visitor.visit_i16x8_relaxed_q15mulr_s(),
             0x112 => visitor.visit_i16x8_relaxed_dot_i8x16_i7x16_s(),
             0x113 => visitor.visit_i32x4_relaxed_dot_i8x16_i7x16_add_s(),
+
+            0x120 => visitor.visit_f16x8_splat(),
+            0x121 => visitor.visit_f16x8_extract_lane(self.read_lane_index()?),
+            0x122 => visitor.visit_f16x8_replace_lane(self.read_lane_index()?),
+            0x130 => visitor.visit_f16x8_abs(),
+            0x131 => visitor.visit_f16x8_neg(),
+            0x132 => visitor.visit_f16x8_sqrt(),
+            0x133 => visitor.visit_f16x8_ceil(),
+            0x134 => visitor.visit_f16x8_floor(),
+            0x135 => visitor.visit_f16x8_trunc(),
+            0x136 => visitor.visit_f16x8_nearest(),
+            0x137 => visitor.visit_f16x8_eq(),
+            0x138 => visitor.visit_f16x8_ne(),
+            0x139 => visitor.visit_f16x8_lt(),
+            0x13a => visitor.visit_f16x8_gt(),
+            0x13b => visitor.visit_f16x8_le(),
+            0x13c => visitor.visit_f16x8_ge(),
+            0x13d => visitor.visit_f16x8_add(),
+            0x13e => visitor.visit_f16x8_sub(),
+            0x13f => visitor.visit_f16x8_mul(),
+            0x140 => visitor.visit_f16x8_div(),
+            0x141 => visitor.visit_f16x8_min(),
+            0x142 => visitor.visit_f16x8_max(),
+            0x143 => visitor.visit_f16x8_pmin(),
+            0x144 => visitor.visit_f16x8_pmax(),
+            0x145 => visitor.visit_i16x8_trunc_sat_f16x8_s(),
+            0x146 => visitor.visit_i16x8_trunc_sat_f16x8_u(),
+            0x147 => visitor.visit_f16x8_convert_i16x8_s(),
+            0x148 => visitor.visit_f16x8_convert_i16x8_u(),
+            0x149 => visitor.visit_f16x8_demote_f32x4_zero(),
+            0x14a => visitor.visit_f16x8_demote_f64x2_zero(),
+            0x14b => visitor.visit_f32x4_promote_low_f16x8(),
+            0x14c => visitor.visit_i16x8_trunc_f16x8_s(),
+            0x14d => visitor.visit_i16x8_trunc_f16x8_u(),
+            0x14e => visitor.visit_f16x8_madd(),
+            0x14f => visitor.visit_f16x8_nmadd(),
 
             _ => bail!(pos, "unknown 0xfd subopcode: 0x{code:x}"),
         })

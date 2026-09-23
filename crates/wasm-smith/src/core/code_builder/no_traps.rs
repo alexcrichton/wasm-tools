@@ -354,6 +354,7 @@ fn get_memarg(inst: &Instruction) -> wasm_encoder::MemArg {
         Instruction::I32Load(memarg)
         | Instruction::I64Load(memarg)
         | Instruction::F32Load(memarg)
+        | Instruction::F32LoadF16(memarg)
         | Instruction::F64Load(memarg)
         | Instruction::I32Load8S(memarg)
         | Instruction::I32Load8U(memarg)
@@ -381,6 +382,7 @@ fn get_memarg(inst: &Instruction) -> wasm_encoder::MemArg {
         | Instruction::I32Store(memarg)
         | Instruction::I64Store(memarg)
         | Instruction::F32Store(memarg)
+        | Instruction::F32StoreF16(memarg)
         | Instruction::F64Store(memarg)
         | Instruction::I32Store8(memarg)
         | Instruction::I32Store16(memarg)
@@ -519,7 +521,10 @@ fn type_of_memory_access(inst: &Instruction) -> ValType {
         | Instruction::I64Store16(_)
         | Instruction::I64Store32(_) => ValType::I64,
 
-        Instruction::F32Load(_) | Instruction::F32Store(_) => ValType::F32,
+        Instruction::F32Load(_)
+        | Instruction::F32Store(_)
+        | Instruction::F32LoadF16(_)
+        | Instruction::F32StoreF16(_) => ValType::F32,
 
         Instruction::F64Load(_) | Instruction::F64Store(_) => ValType::F64,
 

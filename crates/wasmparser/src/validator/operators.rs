@@ -2042,6 +2042,7 @@ macro_rules! validate_proposal {
     (desc legacy_exceptions) => ("legacy exceptions");
     (desc stack_switching) => ("stack switching");
     (desc wide_arithmetic) => ("wide arithmetic");
+    (desc fp16) => ("fp16");
     (desc custom_descriptors) => ("custom descriptors operations");
 }
 

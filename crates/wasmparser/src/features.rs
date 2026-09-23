@@ -371,6 +371,13 @@ define_wasm_features! {
         /// Corresponds to the 📡 character in
         /// <https://github.com/WebAssembly/component-model/blob/main/design/mvp/Explainer.md>.
         pub cm_accessors: CM_ACCESSORS(1 << 43) = false;
+
+        /// The WebAssembly [fp16 proposal][proposal] which adds
+        /// half-precision floating point loads and stores along with an
+        /// `f16x8` SIMD lane shape and instructions for it.
+        ///
+        /// [proposal]: https://github.com/WebAssembly/half-precision
+        pub fp16: FP16(1 << 44) = false;
     }
 }
 

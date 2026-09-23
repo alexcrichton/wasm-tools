@@ -715,6 +715,48 @@ macro_rules! _for_each_operator_group {
                 I32x4RelaxedDotI8x16I7x16AddS => visit_i32x4_relaxed_dot_i8x16_i7x16_add_s (arity 3 -> 1)
             }
 
+            // fp16 (half-precision) proposal
+            // https://github.com/WebAssembly/half-precision
+            @fp16 {
+                F32LoadF16 { memarg: $crate::MemArg } => visit_f32_load_f16 (arity 1 -> 1)
+                F32StoreF16 { memarg: $crate::MemArg } => visit_f32_store_f16 (arity 2 -> 0)
+                F16x8Splat => visit_f16x8_splat (arity 1 -> 1)
+                F16x8ExtractLane { lane: u8 } => visit_f16x8_extract_lane (arity 1 -> 1)
+                F16x8ReplaceLane { lane: u8 } => visit_f16x8_replace_lane (arity 2 -> 1)
+                F16x8Abs => visit_f16x8_abs (arity 1 -> 1)
+                F16x8Neg => visit_f16x8_neg (arity 1 -> 1)
+                F16x8Sqrt => visit_f16x8_sqrt (arity 1 -> 1)
+                F16x8Ceil => visit_f16x8_ceil (arity 1 -> 1)
+                F16x8Floor => visit_f16x8_floor (arity 1 -> 1)
+                F16x8Trunc => visit_f16x8_trunc (arity 1 -> 1)
+                F16x8Nearest => visit_f16x8_nearest (arity 1 -> 1)
+                F16x8Eq => visit_f16x8_eq (arity 2 -> 1)
+                F16x8Ne => visit_f16x8_ne (arity 2 -> 1)
+                F16x8Lt => visit_f16x8_lt (arity 2 -> 1)
+                F16x8Gt => visit_f16x8_gt (arity 2 -> 1)
+                F16x8Le => visit_f16x8_le (arity 2 -> 1)
+                F16x8Ge => visit_f16x8_ge (arity 2 -> 1)
+                F16x8Add => visit_f16x8_add (arity 2 -> 1)
+                F16x8Sub => visit_f16x8_sub (arity 2 -> 1)
+                F16x8Mul => visit_f16x8_mul (arity 2 -> 1)
+                F16x8Div => visit_f16x8_div (arity 2 -> 1)
+                F16x8Min => visit_f16x8_min (arity 2 -> 1)
+                F16x8Max => visit_f16x8_max (arity 2 -> 1)
+                F16x8Pmin => visit_f16x8_pmin (arity 2 -> 1)
+                F16x8Pmax => visit_f16x8_pmax (arity 2 -> 1)
+                I16x8TruncSatF16x8S => visit_i16x8_trunc_sat_f16x8_s (arity 1 -> 1)
+                I16x8TruncSatF16x8U => visit_i16x8_trunc_sat_f16x8_u (arity 1 -> 1)
+                F16x8ConvertI16x8S => visit_f16x8_convert_i16x8_s (arity 1 -> 1)
+                F16x8ConvertI16x8U => visit_f16x8_convert_i16x8_u (arity 1 -> 1)
+                F16x8DemoteF32x4Zero => visit_f16x8_demote_f32x4_zero (arity 1 -> 1)
+                F16x8DemoteF64x2Zero => visit_f16x8_demote_f64x2_zero (arity 1 -> 1)
+                F32x4PromoteLowF16x8 => visit_f32x4_promote_low_f16x8 (arity 1 -> 1)
+                I16x8TruncF16x8S => visit_i16x8_trunc_f16x8_s (arity 1 -> 1)
+                I16x8TruncF16x8U => visit_i16x8_trunc_f16x8_u (arity 1 -> 1)
+                F16x8Madd => visit_f16x8_madd (arity 3 -> 1)
+                F16x8Nmadd => visit_f16x8_nmadd (arity 3 -> 1)
+            }
+
             @exceptions {
                 TryTable { try_table: $crate::TryTable } => visit_try_table (arity custom)
                 Throw { tag_index: u32 } => visit_throw (arity custom)
@@ -809,11 +851,14 @@ macro_rules! define_for_each_non_simd_operator {
     // be a "tt muncher macro"
     (@ $($t:tt)*) => {define_for_each_non_simd_operator!(filter [] @ $($t)*);};
 
-    // filter out simd/relaxed-simd proposals
+    // filter out simd/relaxed-simd/fp16 proposals
     (filter $filter:tt @simd $simd:tt $($rest:tt)*) => {
         define_for_each_non_simd_operator!(filter $filter $($rest)*);
     };
     (filter $filter:tt @relaxed_simd $simd:tt $($rest:tt)*) => {
+        define_for_each_non_simd_operator!(filter $filter $($rest)*);
+    };
+    (filter $filter:tt @fp16 $simd:tt $($rest:tt)*) => {
         define_for_each_non_simd_operator!(filter $filter $($rest)*);
     };
 
@@ -894,7 +939,7 @@ macro_rules! define_for_each_simd_operator {
     // Switch to "tt muncher" mode
     (@ $($t:tt)*) => {define_for_each_simd_operator!(filter [] @ $($t)*);};
 
-    // Collect the `@simd` and `@relaxed_simd` proposals.
+    // Collect the `@simd`, `@relaxed_simd`, and `@fp16` proposals.
     (
         filter [$($t:tt)*]
         @simd {
@@ -921,6 +966,21 @@ macro_rules! define_for_each_simd_operator {
             filter [
                 $($t)*
                 $( @relaxed_simd $op $({ $($arg: $argty),* })? => $visit ($($ann)*) )*
+            ]
+            $($rest)*
+        );
+    };
+    (
+        filter [$($t:tt)*]
+        @fp16 {
+            $( $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*) )*
+        }
+        $($rest:tt)*
+    ) => {
+        define_for_each_simd_operator!(
+            filter [
+                $($t)*
+                $( @fp16 $op $({ $($arg: $argty),* })? => $visit ($($ann)*) )*
             ]
             $($rest)*
         );
@@ -970,6 +1030,7 @@ _for_each_operator_group!(define_for_each_simd_operator);
 /// - `@bulk_memory `:[Wasm `bulk-memory` proposal]
 /// - `@simd`: [Wasm `simd` proposal]
 /// - `@relaxed_simd`: [Wasm `relaxed-simd` proposal]
+/// - `@fp16`: [Wasm `fp16` proposal]
 /// - `@threads`: [Wasm `threads` proposal]
 /// - `@gc`: [Wasm `gc` proposal]
 /// - `@stack_switching`: [Wasm `stack-switching` proposal]
@@ -1011,6 +1072,8 @@ _for_each_operator_group!(define_for_each_simd_operator);
 ///
 /// [Wasm `wide-arithmetic` proposal]:
 /// https://github.com/WebAssembly/wide-arithmetic
+/// [Wasm `fp16` proposal]:
+/// https://github.com/WebAssembly/half-precision
 ///
 /// ```
 /// fn do_nothing(op: &wasmparser::Operator) {
@@ -1243,6 +1306,7 @@ pub use _for_each_visit_operator_impl as for_each_visit_operator;
 ///
 /// - `@simd`: [Wasm `simd` proposal]
 /// - `@relaxed_simd`: [Wasm `relaxed-simd` proposal]
+/// - `@fp16`: [Wasm `fp16` proposal]
 ///
 /// For more information about the structure and use of this macro please
 /// refer to the documentation of the [`for_each_operator`] macro.
@@ -1252,6 +1316,8 @@ pub use _for_each_visit_operator_impl as for_each_visit_operator;
 ///
 /// [Wasm `relaxed-simd` proposal]:
 /// https://github.com/WebAssembly/relaxed-simd
+/// [Wasm `fp16` proposal]:
+/// https://github.com/WebAssembly/half-precision
 ///
 /// [`VisitSimdOperator`]: crate::VisitSimdOperator
 ///
@@ -1274,7 +1340,7 @@ pub use _for_each_visit_operator_impl as for_each_visit_operator;
 ///     // The outer layer of repetition represents how all operators are
 ///     // provided to the macro at the same time.
 ///     //
-///     // The `$proposal` identifier is either `@simd` or `@relaxed_simd`.
+///     // The `$proposal` identifier is `@simd`, `@relaxed_simd`, or `@fp16`.
 ///     //
 ///     // The shape of this macro is identical to [`for_each_visit_operator`].
 ///     // Please refer to its documentation if you want to learn more.

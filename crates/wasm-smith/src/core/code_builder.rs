@@ -590,6 +590,44 @@ instructions! {
     (Some(simd_v128_v128_on_stack_relaxed), i16x8_relaxed_q15mulr_s, VectorInt),
     (Some(simd_v128_v128_on_stack_relaxed), i16x8_relaxed_dot_i8x16_i7x16_s, VectorInt),
     (Some(simd_v128_v128_v128_on_stack_relaxed), i32x4_relaxed_dot_i8x16_i7x16_add_s, VectorInt),
+    // fp16 proposal
+    (Some(fp16_have_memory_and_offset), f32_load_f16, Memory),
+    (Some(fp16_f32_store_valid), f32_store_f16, Memory),
+    (Some(fp16_f32_on_stack), f16x8_splat, Vector),
+    (Some(fp16_v128_on_stack), f16x8_extract_lane, Vector),
+    (Some(fp16_v128_f32_on_stack), f16x8_replace_lane, Vector),
+    (Some(fp16_v128_on_stack), f16x8_abs, Vector),
+    (Some(fp16_v128_on_stack), f16x8_neg, Vector),
+    (Some(fp16_v128_on_stack), f16x8_sqrt, Vector),
+    (Some(fp16_v128_on_stack), f16x8_ceil, Vector),
+    (Some(fp16_v128_on_stack), f16x8_floor, Vector),
+    (Some(fp16_v128_on_stack), f16x8_trunc, Vector),
+    (Some(fp16_v128_on_stack), f16x8_nearest, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_eq, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_ne, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_lt, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_gt, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_le, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_ge, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_add, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_sub, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_mul, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_div, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_min, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_max, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_pmin, Vector),
+    (Some(fp16_v128_v128_on_stack), f16x8_pmax, Vector),
+    (Some(fp16_v128_on_stack), i16x8_trunc_sat_f16x8_s, Vector),
+    (Some(fp16_v128_on_stack), i16x8_trunc_sat_f16x8_u, Vector),
+    (Some(fp16_v128_on_stack), f16x8_convert_i16x8_s, Vector),
+    (Some(fp16_v128_on_stack), f16x8_convert_i16x8_u, Vector),
+    (Some(fp16_v128_on_stack), f16x8_demote_f32x4_zero, Vector),
+    (Some(fp16_v128_on_stack), f16x8_demote_f64x2_zero, Vector),
+    (Some(fp16_v128_on_stack), f32x4_promote_low_f16x8, Vector),
+    (Some(fp16_v128_on_stack), i16x8_trunc_f16x8_s, Vector),
+    (Some(fp16_v128_on_stack), i16x8_trunc_f16x8_u, Vector),
+    (Some(fp16_v128_v128_v128_on_stack), f16x8_madd, Vector),
+    (Some(fp16_v128_v128_v128_on_stack), f16x8_nmadd, Vector),
     (Some(wide_arithmetic_binop128_on_stack), i64_add128, NumericInt),
     (Some(wide_arithmetic_binop128_on_stack), i64_sub128, NumericInt),
     (Some(wide_arithmetic_mul_wide_on_stack), i64_mul_wide_s, NumericInt),
@@ -3238,6 +3276,48 @@ fn f32_store(
         no_traps::store(Instruction::F32Store(memarg), module, builder, instructions);
     } else {
         instructions.push(Instruction::F32Store(memarg));
+    }
+    Ok(())
+}
+
+fn f32_load_f16(
+    u: &mut Unstructured,
+    module: &Module,
+    builder: &mut CodeBuilder,
+    instructions: &mut Vec<Instruction>,
+) -> Result<()> {
+    let memarg = mem_arg(u, module, builder, &[0, 1])?;
+    builder.allocs.operands.push(Some(ValType::F32));
+    if module.config.disallow_traps {
+        no_traps::load(
+            Instruction::F32LoadF16(memarg),
+            module,
+            builder,
+            instructions,
+        );
+    } else {
+        instructions.push(Instruction::F32LoadF16(memarg));
+    }
+    Ok(())
+}
+
+fn f32_store_f16(
+    u: &mut Unstructured,
+    module: &Module,
+    builder: &mut CodeBuilder,
+    instructions: &mut Vec<Instruction>,
+) -> Result<()> {
+    builder.pop_operands(module, &[ValType::F32]);
+    let memarg = mem_arg(u, module, builder, &[0, 1])?;
+    if module.config.disallow_traps {
+        no_traps::store(
+            Instruction::F32StoreF16(memarg),
+            module,
+            builder,
+            instructions,
+        );
+    } else {
+        instructions.push(Instruction::F32StoreF16(memarg));
     }
     Ok(())
 }
@@ -6759,6 +6839,43 @@ fn simd_v128_on_stack_relaxed(module: &Module, builder: &mut CodeBuilder) -> boo
 }
 
 #[inline]
+fn fp16_v128_on_stack(module: &Module, builder: &mut CodeBuilder) -> bool {
+    module.config.fp16_enabled && simd_v128_on_stack(module, builder)
+}
+
+#[inline]
+fn fp16_v128_v128_on_stack(module: &Module, builder: &mut CodeBuilder) -> bool {
+    module.config.fp16_enabled && simd_v128_v128_on_stack(module, builder)
+}
+
+#[inline]
+fn fp16_v128_v128_v128_on_stack(module: &Module, builder: &mut CodeBuilder) -> bool {
+    module.config.fp16_enabled && simd_v128_v128_v128_on_stack(module, builder)
+}
+
+#[inline]
+fn fp16_f32_on_stack(module: &Module, builder: &mut CodeBuilder) -> bool {
+    !module.config.disallow_traps && module.config.fp16_enabled && f32_on_stack(module, builder)
+}
+
+#[inline]
+fn fp16_v128_f32_on_stack(module: &Module, builder: &mut CodeBuilder) -> bool {
+    !module.config.disallow_traps
+        && module.config.fp16_enabled
+        && builder.types_on_stack(module, &[ValType::V128, ValType::F32])
+}
+
+#[inline]
+fn fp16_have_memory_and_offset(module: &Module, builder: &mut CodeBuilder) -> bool {
+    module.config.fp16_enabled && have_memory_and_offset(module, builder)
+}
+
+#[inline]
+fn fp16_f32_store_valid(module: &Module, builder: &mut CodeBuilder) -> bool {
+    module.config.fp16_enabled && f32_store_valid(module, builder)
+}
+
+#[inline]
 fn simd_v128_v128_on_stack(module: &Module, builder: &mut CodeBuilder) -> bool {
     !module.config.disallow_traps
         && module.config.simd_enabled
@@ -7341,6 +7458,43 @@ simd_ternop!(
     I32x4RelaxedDotI8x16I7x16AddS,
     i32x4_relaxed_dot_i8x16_i7x16_add_s
 );
+
+// fp16 proposal
+simd_unop!(F16x8Splat, f16x8_splat, F32 -> V128);
+simd_lane_access!(F16x8ExtractLane, f16x8_extract_lane, &[ValType::V128] => &[ValType::F32], 8);
+simd_lane_access!(F16x8ReplaceLane, f16x8_replace_lane, &[ValType::V128, ValType::F32] => &[ValType::V128], 8);
+simd_unop!(F16x8Abs, f16x8_abs);
+simd_unop!(F16x8Neg, f16x8_neg);
+simd_unop!(F16x8Sqrt, f16x8_sqrt);
+simd_unop!(F16x8Ceil, f16x8_ceil);
+simd_unop!(F16x8Floor, f16x8_floor);
+simd_unop!(F16x8Trunc, f16x8_trunc);
+simd_unop!(F16x8Nearest, f16x8_nearest);
+simd_binop!(F16x8Eq, f16x8_eq);
+simd_binop!(F16x8Ne, f16x8_ne);
+simd_binop!(F16x8Lt, f16x8_lt);
+simd_binop!(F16x8Gt, f16x8_gt);
+simd_binop!(F16x8Le, f16x8_le);
+simd_binop!(F16x8Ge, f16x8_ge);
+simd_binop!(F16x8Add, f16x8_add);
+simd_binop!(F16x8Sub, f16x8_sub);
+simd_binop!(F16x8Mul, f16x8_mul);
+simd_binop!(F16x8Div, f16x8_div);
+simd_binop!(F16x8Min, f16x8_min);
+simd_binop!(F16x8Max, f16x8_max);
+simd_binop!(F16x8Pmin, f16x8_pmin);
+simd_binop!(F16x8Pmax, f16x8_pmax);
+simd_unop!(I16x8TruncSatF16x8S, i16x8_trunc_sat_f16x8_s);
+simd_unop!(I16x8TruncSatF16x8U, i16x8_trunc_sat_f16x8_u);
+simd_unop!(F16x8ConvertI16x8S, f16x8_convert_i16x8_s);
+simd_unop!(F16x8ConvertI16x8U, f16x8_convert_i16x8_u);
+simd_unop!(F16x8DemoteF32x4Zero, f16x8_demote_f32x4_zero);
+simd_unop!(F16x8DemoteF64x2Zero, f16x8_demote_f64x2_zero);
+simd_unop!(F32x4PromoteLowF16x8, f32x4_promote_low_f16x8);
+simd_unop!(I16x8TruncF16x8S, i16x8_trunc_f16x8_s);
+simd_unop!(I16x8TruncF16x8U, i16x8_trunc_f16x8_u);
+simd_ternop!(F16x8Madd, f16x8_madd);
+simd_ternop!(F16x8Nmadd, f16x8_nmadd);
 
 #[inline]
 fn wide_arithmetic_binop128_on_stack(module: &Module, builder: &mut CodeBuilder) -> bool {

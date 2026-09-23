@@ -1,0 +1,60 @@
+{
+  "source_filename": "tests/cli/fp16.wast",
+  "commands": [
+    {
+      "type": "module",
+      "line": 3,
+      "filename": "fp16.0.wasm",
+      "module_type": "binary"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 66,
+      "filename": "fp16.1.wasm",
+      "module_type": "binary",
+      "text": "alignment must not be larger than natural"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 72,
+      "filename": "fp16.2.wasm",
+      "module_type": "binary",
+      "text": "unknown memory 0"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 77,
+      "filename": "fp16.3.wasm",
+      "module_type": "binary",
+      "text": "type mismatch"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 83,
+      "filename": "fp16.4.wasm",
+      "module_type": "binary",
+      "text": "SIMD index out of bounds"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 88,
+      "filename": "fp16.5.wasm",
+      "module_type": "binary",
+      "text": "type mismatch"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 93,
+      "filename": "fp16.6.wasm",
+      "module_type": "binary",
+      "text": "type mismatch"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 98,
+      "filename": "fp16.7.wasm",
+      "module_type": "binary",
+      "text": "type mismatch"
+    }
+  ]
+}

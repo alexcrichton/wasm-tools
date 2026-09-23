@@ -1,0 +1,188 @@
+(module
+  (type (;0;) (func (param i32) (result f32)))
+  (type (;1;) (func (param i32 f32)))
+  (type (;2;) (func (param f32) (result v128)))
+  (type (;3;) (func (param v128) (result f32)))
+  (type (;4;) (func (param v128 f32) (result v128)))
+  (type (;5;) (func (param v128) (result v128)))
+  (type (;6;) (func (param v128 v128) (result v128)))
+  (type (;7;) (func (param v128 v128 v128) (result v128)))
+  (memory (;0;) 1)
+  (func (;0;) (type 0) (param i32) (result f32)
+    local.get 0
+    f32.load_f16
+  )
+  (func (;1;) (type 0) (param i32) (result f32)
+    local.get 0
+    f32.load_f16 offset=2 align=1
+  )
+  (func (;2;) (type 1) (param i32 f32)
+    local.get 0
+    local.get 1
+    f32.store_f16
+  )
+  (func (;3;) (type 1) (param i32 f32)
+    local.get 0
+    local.get 1
+    f32.store_f16 offset=4
+  )
+  (func (;4;) (type 2) (param f32) (result v128)
+    local.get 0
+    f16x8.splat
+  )
+  (func (;5;) (type 3) (param v128) (result f32)
+    local.get 0
+    f16x8.extract_lane 7
+  )
+  (func (;6;) (type 4) (param v128 f32) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.replace_lane 0
+  )
+  (func (;7;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.abs
+  )
+  (func (;8;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.neg
+  )
+  (func (;9;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.sqrt
+  )
+  (func (;10;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.ceil
+  )
+  (func (;11;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.floor
+  )
+  (func (;12;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.trunc
+  )
+  (func (;13;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.nearest
+  )
+  (func (;14;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.eq
+  )
+  (func (;15;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.ne
+  )
+  (func (;16;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.lt
+  )
+  (func (;17;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.gt
+  )
+  (func (;18;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.le
+  )
+  (func (;19;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.ge
+  )
+  (func (;20;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.add
+  )
+  (func (;21;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.sub
+  )
+  (func (;22;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.mul
+  )
+  (func (;23;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.div
+  )
+  (func (;24;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.min
+  )
+  (func (;25;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.max
+  )
+  (func (;26;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.pmin
+  )
+  (func (;27;) (type 6) (param v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f16x8.pmax
+  )
+  (func (;28;) (type 5) (param v128) (result v128)
+    local.get 0
+    i16x8.trunc_sat_f16x8_s
+  )
+  (func (;29;) (type 5) (param v128) (result v128)
+    local.get 0
+    i16x8.trunc_sat_f16x8_u
+  )
+  (func (;30;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.convert_i16x8_s
+  )
+  (func (;31;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.convert_i16x8_u
+  )
+  (func (;32;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.demote_f32x4_zero
+  )
+  (func (;33;) (type 5) (param v128) (result v128)
+    local.get 0
+    f16x8.demote_f64x2_zero
+  )
+  (func (;34;) (type 5) (param v128) (result v128)
+    local.get 0
+    f32x4.promote_low_f16x8
+  )
+  (func (;35;) (type 5) (param v128) (result v128)
+    local.get 0
+    i16x8.trunc_f16x8_s
+  )
+  (func (;36;) (type 5) (param v128) (result v128)
+    local.get 0
+    i16x8.trunc_f16x8_u
+  )
+  (func (;37;) (type 7) (param v128 v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    local.get 2
+    f16x8.madd
+  )
+  (func (;38;) (type 7) (param v128 v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    local.get 2
+    f16x8.nmadd
+  )
+)

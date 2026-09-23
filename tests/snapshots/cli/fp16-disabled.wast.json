@@ -1,0 +1,33 @@
+{
+  "source_filename": "tests/cli/fp16-disabled.wast",
+  "commands": [
+    {
+      "type": "assert_invalid",
+      "line": 4,
+      "filename": "fp16-disabled.0.wasm",
+      "module_type": "binary",
+      "text": "fp16 support is not enabled"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 10,
+      "filename": "fp16-disabled.1.wasm",
+      "module_type": "binary",
+      "text": "fp16 support is not enabled"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 16,
+      "filename": "fp16-disabled.2.wasm",
+      "module_type": "binary",
+      "text": "fp16 support is not enabled"
+    },
+    {
+      "type": "assert_invalid",
+      "line": 21,
+      "filename": "fp16-disabled.3.wasm",
+      "module_type": "binary",
+      "text": "fp16 support is not enabled"
+    }
+  ]
+}

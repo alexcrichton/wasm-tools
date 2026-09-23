@@ -785,6 +785,130 @@ where
     fn visit_i32x4_relaxed_dot_i8x16_i7x16_add_s(&mut self) -> Self::Output {
         self.check_v128_ternary_op()
     }
+    fn visit_f32_load_f16(&mut self, memarg: MemArg) -> Self::Output {
+        let ty = self.check_memarg(memarg)?;
+        self.pop_operand(Some(ty))?;
+        self.push_operand(ValType::F32)?;
+        Ok(())
+    }
+    fn visit_f32_store_f16(&mut self, memarg: MemArg) -> Self::Output {
+        let ty = self.check_memarg(memarg)?;
+        self.pop_operand(Some(ValType::F32))?;
+        self.pop_operand(Some(ty))?;
+        Ok(())
+    }
+    fn visit_f16x8_splat(&mut self) -> Self::Output {
+        self.check_v128_splat(ValType::F32)
+    }
+    fn visit_f16x8_extract_lane(&mut self, lane: u8) -> Self::Output {
+        self.check_simd_lane_index(lane, 8)?;
+        self.pop_operand(Some(ValType::V128))?;
+        self.push_operand(ValType::F32)?;
+        Ok(())
+    }
+    fn visit_f16x8_replace_lane(&mut self, lane: u8) -> Self::Output {
+        self.check_simd_lane_index(lane, 8)?;
+        self.pop_operand(Some(ValType::F32))?;
+        self.pop_operand(Some(ValType::V128))?;
+        self.push_operand(ValType::V128)?;
+        Ok(())
+    }
+    fn visit_f16x8_abs(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_neg(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_sqrt(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_ceil(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_floor(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_trunc(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_nearest(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_eq(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_ne(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_lt(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_gt(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_le(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_ge(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_add(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_sub(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_mul(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_div(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_min(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_max(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_pmin(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_f16x8_pmax(&mut self) -> Self::Output {
+        self.check_v128_fbinary_op()
+    }
+    fn visit_i16x8_trunc_sat_f16x8_s(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_i16x8_trunc_sat_f16x8_u(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_convert_i16x8_s(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_convert_i16x8_u(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_demote_f32x4_zero(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_demote_f64x2_zero(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f32x4_promote_low_f16x8(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_i16x8_trunc_f16x8_s(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_i16x8_trunc_f16x8_u(&mut self) -> Self::Output {
+        self.check_v128_funary_op()
+    }
+    fn visit_f16x8_madd(&mut self) -> Self::Output {
+        self.check_v128_ternary_op()
+    }
+    fn visit_f16x8_nmadd(&mut self) -> Self::Output {
+        self.check_v128_ternary_op()
+    }
     fn visit_v128_any_true(&mut self) -> Self::Output {
         self.check_v128_bitmask_op()
     }

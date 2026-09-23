@@ -3592,6 +3592,271 @@ impl<'a> InstructionSink<'a> {
         self
     }
 
+    // Half-precision (fp16) proposal
+
+    /// Encode [`Instruction::F32LoadF16`].
+    pub fn f32_load_f16(&mut self, m: MemArg) -> &mut Self {
+        self.sink.push(0xFC);
+        0x30u32.encode(self.sink);
+        m.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F32StoreF16`].
+    pub fn f32_store_f16(&mut self, m: MemArg) -> &mut Self {
+        self.sink.push(0xFC);
+        0x31u32.encode(self.sink);
+        m.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Splat`].
+    pub fn f16x8_splat(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x120u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8ExtractLane`].
+    pub fn f16x8_extract_lane(&mut self, lane: Lane) -> &mut Self {
+        self.sink.push(0xFD);
+        0x121u32.encode(self.sink);
+        self.sink.push(lane);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8ReplaceLane`].
+    pub fn f16x8_replace_lane(&mut self, lane: Lane) -> &mut Self {
+        self.sink.push(0xFD);
+        0x122u32.encode(self.sink);
+        self.sink.push(lane);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Abs`].
+    pub fn f16x8_abs(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x130u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Neg`].
+    pub fn f16x8_neg(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x131u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Sqrt`].
+    pub fn f16x8_sqrt(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x132u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Ceil`].
+    pub fn f16x8_ceil(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x133u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Floor`].
+    pub fn f16x8_floor(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x134u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Trunc`].
+    pub fn f16x8_trunc(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x135u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Nearest`].
+    pub fn f16x8_nearest(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x136u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Eq`].
+    pub fn f16x8_eq(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x137u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Ne`].
+    pub fn f16x8_ne(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x138u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Lt`].
+    pub fn f16x8_lt(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x139u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Gt`].
+    pub fn f16x8_gt(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x13au32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Le`].
+    pub fn f16x8_le(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x13bu32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Ge`].
+    pub fn f16x8_ge(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x13cu32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Add`].
+    pub fn f16x8_add(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x13du32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Sub`].
+    pub fn f16x8_sub(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x13eu32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Mul`].
+    pub fn f16x8_mul(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x13fu32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Div`].
+    pub fn f16x8_div(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x140u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Min`].
+    pub fn f16x8_min(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x141u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Max`].
+    pub fn f16x8_max(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x142u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Pmin`].
+    pub fn f16x8_pmin(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x143u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Pmax`].
+    pub fn f16x8_pmax(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x144u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::I16x8TruncSatF16x8S`].
+    pub fn i16x8_trunc_sat_f16x8_s(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x145u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::I16x8TruncSatF16x8U`].
+    pub fn i16x8_trunc_sat_f16x8_u(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x146u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8ConvertI16x8S`].
+    pub fn f16x8_convert_i16x8_s(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x147u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8ConvertI16x8U`].
+    pub fn f16x8_convert_i16x8_u(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x148u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8DemoteF32x4Zero`].
+    pub fn f16x8_demote_f32x4_zero(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x149u32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8DemoteF64x2Zero`].
+    pub fn f16x8_demote_f64x2_zero(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x14au32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F32x4PromoteLowF16x8`].
+    pub fn f32x4_promote_low_f16x8(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x14bu32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::I16x8TruncF16x8S`].
+    pub fn i16x8_trunc_f16x8_s(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x14cu32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::I16x8TruncF16x8U`].
+    pub fn i16x8_trunc_f16x8_u(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x14du32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Madd`].
+    pub fn f16x8_madd(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x14eu32.encode(self.sink);
+        self
+    }
+
+    /// Encode [`Instruction::F16x8Nmadd`].
+    pub fn f16x8_nmadd(&mut self) -> &mut Self {
+        self.sink.push(0xFD);
+        0x14fu32.encode(self.sink);
+        self
+    }
+
     // Atomic instructions (the threads proposal)
 
     /// Encode [`Instruction::MemoryAtomicNotify`].

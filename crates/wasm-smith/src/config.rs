@@ -748,6 +748,13 @@ define_config! {
         /// Defaults to `false`.
         pub wide_arithmetic_enabled: bool = true,
 
+        /// Determines whether the [fp16 proposal] is enabled.
+        ///
+        /// [fp16 proposal]: https://github.com/WebAssembly/half-precision
+        ///
+        /// Defaults to `false`.
+        pub fp16_enabled: bool = false,
+
         /// Determines whether the [extended-const proposal] is enabled.
         ///
         /// [extended-const proposal]: https://github.com/WebAssembly/extended-const
@@ -912,6 +919,7 @@ impl<'a> Arbitrary<'a> for Config {
             // Proposals that are not stage4+ are disabled by default.
             custom_page_sizes_enabled: false,
             wide_arithmetic_enabled: false,
+            fp16_enabled: false,
             shared_everything_threads_enabled: false,
             custom_descriptors_enabled: false,
         };
@@ -953,6 +961,7 @@ impl Config {
         // well.
         if !self.simd_enabled {
             self.relaxed_simd_enabled = false;
+            self.fp16_enabled = false;
         }
 
         // It is impossible to use the shared-everything-threads proposal
@@ -1012,6 +1021,7 @@ impl Config {
         );
         features.set(WasmFeatures::EXTENDED_CONST, self.extended_const_enabled);
         features.set(WasmFeatures::WIDE_ARITHMETIC, self.wide_arithmetic_enabled);
+        features.set(WasmFeatures::FP16, self.fp16_enabled);
         features.set(
             WasmFeatures::CUSTOM_DESCRIPTORS,
             self.custom_descriptors_enabled,

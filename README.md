@@ -212,6 +212,7 @@ over time as the proposal evolves. Additionally the proposal may also have
 changed since these proposals were implemented, so there may be a mismatch too.
 
 * [x] [custom-page-sizes](https://github.com/WebAssembly/custom-page-sizes)
+* [x] [fp16](https://github.com/WebAssembly/half-precision)
 * [x] [memory-control](https://github.com/WebAssembly/memory-control)
 * [x] [shared-everything-threads](https://github.com/WebAssembly/shared-everything-threads)
 * [x] [stack-switching](https://github.com/WebAssembly/stack-switching)
